@@ -1,0 +1,615 @@
+================================================================================
+  DR HOUSING — lib/ DIRECTORY STRUCTURE, SCREENS & CONTROLLERS
+  Generated: 2026-05-03
+================================================================================
+
+
+════════════════════════════════════════════════════════════════════════════════
+  SECTION 1 — FULL RECURSIVE FILE & FOLDER TREE
+════════════════════════════════════════════════════════════════════════════════
+
+lib/
+├── core/
+│   ├── constant/
+│   │   └── app_colors.dart
+│   ├── controllers/
+│   │   └── user_controller.dart
+│   ├── functions/
+│   │   └── helper_functions.dart
+│   ├── localization/
+│   │   └── local_controller.getx.dart
+│   ├── services/
+│   │   └── payment_service.dart
+│   └── widgets/
+│       ├── paywall_bottom_sheet.dart
+│       └── premium_lock_overlay.dart
+│
+├── models/
+│   └── static/
+│       └── auth/
+│           └── user_model.module.dart
+│
+└── modules/
+    ├── auth/
+    │   ├── choose_auth_method/
+    │   │   ├── controller/
+    │   │   │   └── choose_auth_method_controller.getx.dart
+    │   │   └── view/
+    │   │       └── choose_auth_method_view.dart
+    │   ├── chooseLanguage/
+    │   │   ├── controller/
+    │   │   │   └── choose_language_controller.getx.dart
+    │   │   └── view/
+    │   │       └── choose_language_view.dart
+    │   ├── complete_profile/
+    │   │   ├── controller/
+    │   │   │   └── complete_profile_controller.dart
+    │   │   └── view/
+    │   │       └── complete_profile_view.dart
+    │   ├── forget_password/
+    │   │   ├── controller/
+    │   │   │   └── forget_password_controller.getx.dart
+    │   │   └── view/
+    │   │       └── forget_password_view.dart
+    │   ├── logic_view/
+    │   │   ├── controller/
+    │   │   │   └── logic_auth_controller.getx.dart
+    │   │   └── view/
+    │   │       └── logic_view.dart
+    │   ├── on_boarding/
+    │   │   ├── controller/
+    │   │   │   └── on_boarding_controller.getx.dart
+    │   │   └── view/
+    │   │       └── on_boarding_view.dart
+    │   ├── reset_password/
+    │   │   ├── controller/
+    │   │   │   └── reset_password_controller.dart
+    │   │   └── view/
+    │   │       └── reset_oassword_view.dart   [NOTE: typo in filename]
+    │   ├── sign_in/
+    │   │   ├── controller/
+    │   │   │   └── sign_in_controller.getx.dart
+    │   │   └── view/
+    │   │       └── sign_in_view.dart
+    │   ├── sign_up/
+    │   │   ├── controller/
+    │   │   │   └── sign_up_controller.getx.dart
+    │   │   └── view/
+    │   │       └── sign_up_view.dart
+    │   ├── splash/
+    │   │   ├── controller/
+    │   │   │   └── splash_controller.getx.dart
+    │   │   └── view/
+    │   │       └── splash_view.dart
+    │   ├── success_send_email/
+    │   │   ├── controller/
+    │   │   │   └── success_send_email_controller.getx.dart
+    │   │   └── view/
+    │   │       └── success_send_email_view.dart
+    │   └── verify_email/
+    │       ├── controller/
+    │       │   └── verify_email_controller.getx.dart
+    │       └── view/
+    │           └── verify_email_view.dart
+    │
+    ├── main/
+    │   └── view/
+    │       └── main_view.dart
+    │
+    └── navigation_items/
+        ├── bookings/
+        │   ├── controller/
+        │   │   └── booking_controller.dart
+        │   └── view/
+        │       └── bookings_view.dart
+        ├── home/
+        │   ├── controller/
+        │   │   └── apartment_controller.dart
+        │   ├── modules/
+        │   │   └── view/
+        │   │       └── show_apartment_details_view.dart
+        │   ├── view/
+        │   │   └── home_view.dart
+        │   └── widget/
+        │       ├── filter_bottom_sheet.dart
+        │       └── search_bar_widget.dart
+        ├── premium_subscription/
+        │   └── view/
+        │       └── premium_subscription_view.dart
+        ├── profile/
+        │   ├── controller/
+        │   │   └── profile_controller.dart
+        │   ├── modules/
+        │   │   ├── app_info/
+        │   │   │   └── view/
+        │   │   │       └── app_info_view.dart
+        │   │   ├── app_version/
+        │   │   │   └── view/
+        │   │   │       └── app_version_view.dart
+        │   │   ├── change_theme/
+        │   │   │   ├── controller/
+        │   │   │   │   └── change_theme_controller.getx.dart
+        │   │   │   └── view/
+        │   │   │       └── change_theme_view.dart
+        │   │   ├── edit_personal_info/
+        │   │   │   ├── controller/
+        │   │   │   │   └── edit_personal_info_controller.dart
+        │   │   │   └── view/
+        │   │   │       └── edit_personal_info_view.dart
+        │   │   ├── manage_language/
+        │   │   │   ├── controller/
+        │   │   │   │   └── manage_language_controller.getx.dart
+        │   │   │   └── view/
+        │   │   │       └── manage_language_view.dart
+        │   │   ├── my_subscription/
+        │   │   │   └── view/
+        │   │   │       └── my_subscription_view.dart
+        │   │   ├── tenant_card_edit/
+        │   │   │   ├── controller/
+        │   │   │   │   └── tenant_card_controller.dart
+        │   │   │   └── view/
+        │   │   │       └── tenant_card_edit_view.dart
+        │   │   └── tenant_profile/
+        │   │       └── view/
+        │   │           └── tenant_profile_view.dart
+        │   └── view/
+        │       └── profile_view.dart
+        ├── saved/
+        │   ├── controller/
+        │   │   └── saved_apartments_controller.dart
+        │   └── view/
+        │       └── saved_view.dart
+        └── search/
+            ├── controller/
+            │   └── property_search_controller.dart
+            └── view/
+                └── search_view.dart
+
+
+════════════════════════════════════════════════════════════════════════════════
+  SECTION 2 — SCREENS (28 view files)
+════════════════════════════════════════════════════════════════════════════════
+
+  TOTALS: 28 screens across 5 groups
+  ─────────────────────────────────────────────────────────────────────────────
+
+  ── AUTH FLOW (12 screens) ───────────────────────────────────────────────────
+
+  1.  FILE:  lib/modules/auth/splash/view/splash_view.dart
+      CLASS: SplashView (StatelessWidget)
+      DESC:  Branded loading screen that initialises the auth listener
+
+  2.  FILE:  lib/modules/auth/chooseLanguage/view/choose_language_view.dart
+      CLASS: ChooseLanguageView (StatelessWidget)
+      DESC:  First-run language picker with flag tiles
+
+  3.  FILE:  lib/modules/auth/on_boarding/view/on_boarding_view.dart
+      CLASS: OnBoardingView (StatelessWidget)
+      DESC:  Multi-slide PageView carousel introducing the app
+
+  4.  FILE:  lib/modules/auth/choose_auth_method/view/choose_auth_method_view.dart
+      CLASS: ChooseAuthMethodView (StatelessWidget)
+      DESC:  Entry gate letting the user pick Google Sign-In or email
+
+  5.  FILE:  lib/modules/auth/sign_up/view/sign_up_view.dart
+      CLASS: SignUpView (StatelessWidget)
+      DESC:  Email account creation form with name, password, and terms
+
+  6.  FILE:  lib/modules/auth/sign_in/view/sign_in_view.dart
+      CLASS: SignInView (GetView<SignInControllerImp>)
+      DESC:  Email/password login with forgot-password and Google options
+
+  7.  FILE:  lib/modules/auth/forget_password/view/forget_password_view.dart
+      CLASS: ForgetPasswordView (StatelessWidget)
+      DESC:  Email input to trigger a Supabase password-reset link
+
+  8.  FILE:  lib/modules/auth/reset_password/view/reset_oassword_view.dart
+      CLASS: ResetPasswordView (GetView<ResetPasswordControllerImp>)
+      DESC:  New-password + confirmation form after clicking the reset link
+      NOTE:  Filename has a typo — "oassword" instead of "password"
+
+  9.  FILE:  lib/modules/auth/verify_email/view/verify_email_view.dart
+      CLASS: VerifyEmailView (StatelessWidget)
+      DESC:  Holds the user until they verify their email, with a resend option
+
+  10. FILE:  lib/modules/auth/success_send_email/view/success_send_email_view.dart
+      CLASS: SuccessSendEmailView (StatelessWidget)
+      DESC:  Confirmation screen after reset email sent, with "open mail app" shortcut
+
+  11. FILE:  lib/modules/auth/complete_profile/view/complete_profile_view.dart
+      CLASS: CompleteProfileView (StatelessWidget)
+      DESC:  Multi-section profile completion form (personal, professional, financial, household)
+
+  12. FILE:  lib/modules/auth/logic_view/view/logic_view.dart
+      CLASS: LogicView (StatelessWidget)
+      DESC:  Invisible routing screen that checks session state and dispatches to the correct route
+
+  ── MAIN SHELL (1 screen) ────────────────────────────────────────────────────
+
+  13. FILE:  lib/modules/main/view/main_view.dart
+      CLASS: MainView (StatelessWidget)
+      DESC:  Bottom navigation shell hosting Home, Saved, Bookings, and Profile tabs
+
+  ── HOME TAB (2 screens) ─────────────────────────────────────────────────────
+
+  14. FILE:  lib/modules/navigation_items/home/view/home_view.dart
+      CLASS: HomeView (StatelessWidget)
+      DESC:  Apartment listings feed with search bar, filter button, and premium gate on tap
+
+  15. FILE:  lib/modules/navigation_items/home/modules/view/show_apartment_details_view.dart
+      CLASS: ShowApartmentDetailsView (StatelessWidget)
+      DESC:  Full apartment detail page with gallery, amenities, booking CTA, and blurred lock overlay for free users
+
+  ── SAVED TAB (1 screen) ─────────────────────────────────────────────────────
+
+  16. FILE:  lib/modules/navigation_items/saved/view/saved_view.dart
+      CLASS: SavedView (StatelessWidget)
+      DESC:  Favourited apartments list with empty and error states
+
+  ── BOOKINGS TAB (1 screen) ──────────────────────────────────────────────────
+
+  17. FILE:  lib/modules/navigation_items/bookings/view/bookings_view.dart
+      CLASS: BookingsView (StatelessWidget)
+      DESC:  Scheduled viewings list with status filter chips (All / Pending / Cancelled / Completed)
+
+  ── SEARCH (1 screen) ────────────────────────────────────────────────────────
+
+  18. FILE:  lib/modules/navigation_items/search/view/search_view.dart
+      CLASS: SearchView (StatefulWidget)
+      DESC:  Live property search with inline filter bottom sheet for price, bedrooms, and pets
+
+  ── PROFILE TAB & SUB-SCREENS (10 screens) ───────────────────────────────────
+
+  19. FILE:  lib/modules/navigation_items/profile/view/profile_view.dart
+      CLASS: ProfileView (StatelessWidget)
+      DESC:  Profile hub with avatar, premium badge, and grouped settings menu
+
+  20. FILE:  lib/modules/navigation_items/profile/modules/edit_personal_info/view/edit_personal_info_view.dart
+      CLASS: EditPersonalInfoView (StatelessWidget)
+      DESC:  Form to update name, phone, employment status, and job title
+
+  21. FILE:  lib/modules/navigation_items/profile/modules/tenant_card_edit/view/tenant_card_edit_view.dart
+      CLASS: TenantCardEditView (StatelessWidget)
+      DESC:  Editable tenant CV with marital status, occupants, pets, budget, and preferred cities
+
+  22. FILE:  lib/modules/navigation_items/profile/modules/tenant_profile/view/tenant_profile_view.dart
+      CLASS: TenantProfileView (StatelessWidget)
+      DESC:  Read-only tenant profile card with completion percentage
+
+  23. FILE:  lib/modules/navigation_items/profile/modules/my_subscription/view/my_subscription_view.dart
+      CLASS: MySubscriptionView (StatelessWidget)
+      DESC:  Two-state subscription screen: neon premium card with privileges, or free plan with upgrade CTA
+
+  24. FILE:  lib/modules/navigation_items/profile/modules/change_theme/view/change_theme_view.dart
+      CLASS: ChangeThemeView (StatelessWidget)
+      DESC:  Dark / Light / System theme picker with Rive animations
+
+  25. FILE:  lib/modules/navigation_items/profile/modules/manage_language/view/manage_language_view.dart
+      CLASS: ManageLanguageView (StatelessWidget)
+      DESC:  In-app language switcher (English / Arabic)
+
+  26. FILE:  lib/modules/navigation_items/profile/modules/app_info/view/app_info_view.dart
+      CLASS: AppInfoView (StatefulWidget)
+      DESC:  App overview with hero icon, feature list, legal links, and developer credit
+
+  27. FILE:  lib/modules/navigation_items/profile/modules/app_version/view/app_version_view.dart
+      CLASS: AppVersionView (StatefulWidget)
+      DESC:  Release info card (version, build, platform) + changelog + "up to date" badge
+
+  28. FILE:  lib/modules/navigation_items/premium_subscription/view/premium_subscription_view.dart
+      CLASS: PremiumSubscriptionView (StatefulWidget)
+      DESC:  Legacy marketing screen for premium with shimmer animation (superseded by paywall_bottom_sheet)
+
+
+════════════════════════════════════════════════════════════════════════════════
+  SECTION 3 — CONTROLLERS (23 total)
+════════════════════════════════════════════════════════════════════════════════
+
+  ── CORE / SHARED (2 controllers) ────────────────────────────────────────────
+
+  [1] UserController
+      FILE:    lib/core/controllers/user_controller.dart
+      EXTENDS: GetxController
+      METHODS:
+        · fetchUserData()
+            Loads current user profile from Supabase profiles table
+        · updateUserProfile({String? fullName, String? phone, String? jobTitle, String? employmentStatus})
+            Patches only the provided fields in the database and updates local state
+        · clearUser()
+            Wipes the reactive user value on sign-out
+
+  [2] AppLocalController
+      FILE:    lib/core/localization/local_controller.getx.dart
+      EXTENDS: GetxController
+      METHODS:
+        · changeLocal(String langCode)
+            Updates the app locale and triggers a full localization rebuild
+
+  ── AUTH CONTROLLERS (12 controllers) ────────────────────────────────────────
+
+  [3] SplashControllerImp
+      FILE:    lib/modules/auth/splash/controller/splash_controller.getx.dart
+      EXTENDS: SplashController
+      METHODS:
+        · initApp()
+            Waits 2 seconds then initialises LogicAuthControllerImp to begin auth routing
+
+  [4] LogicAuthControllerImp
+      FILE:    lib/modules/auth/logic_view/controller/logic_auth_controller.getx.dart
+      EXTENDS: LogicAuthController
+      METHODS:
+        · initApp()
+            Checks existing Supabase session immediately, then subscribes to onAuthStateChange
+            to route the user to the correct screen (main app or auth flow)
+        · _navigateToAuth()
+            Routes to language selection or auth method choice based on SharedPreferences
+
+  [5] ChooseLanguageControllerImp
+      FILE:    lib/modules/auth/chooseLanguage/controller/choose_language_controller.getx.dart
+      EXTENDS: ChooseLanguageController
+      METHODS:
+        · selectLang(String code)
+            Marks the given language code as selected in the UI
+        · chooseLanguage()
+            Validates selection, persists language preference, navigates to onboarding
+
+  [6] OnBoardingControllerImp
+      FILE:    lib/modules/auth/on_boarding/controller/on_boarding_controller.getx.dart
+      EXTENDS: OnBoardingController
+      METHODS:
+        · addPercent()
+            Recalculates and updates the circle progress indicator for the current page
+        · jumpToNextSlide()
+            Advances to the next slide, or exits to choose auth method on last slide
+        · skipButton()
+            Jumps directly to the last onboarding slide
+        · goToSignUp()
+            Navigates to the sign-up screen
+
+  [7] ChooseAuthMethodControllerImp
+      FILE:    lib/modules/auth/choose_auth_method/controller/choose_auth_method_controller.getx.dart
+      EXTENDS: ChooseAuthMethodController
+      METHODS:
+        · goToSignIn()
+            Navigates to the sign-in screen
+        · goToSignUp()
+            Navigates to the sign-up screen
+
+  [8] SignUpControllerImp
+      FILE:    lib/modules/auth/sign_up/controller/sign_up_controller.getx.dart
+      EXTENDS: SignUpController
+      METHODS:
+        · signUp()
+            Validates the form and creates an account via Supabase auth
+        · showPassword()
+            Toggles password field visibility
+        · goToSignIn()
+            Navigates to the sign-in screen
+        · _handleAuthError(AuthException e)
+            Maps AuthException codes to user-facing snackbar messages
+
+  [9] SignInControllerImp
+      FILE:    lib/modules/auth/sign_in/controller/sign_in_controller.getx.dart
+      EXTENDS: SignInController
+      METHODS:
+        · signIn()
+            Validates the form and authenticates the user via Supabase
+        · showPassword()
+            Toggles password field visibility
+        · goToSignUp()
+            Navigates to the sign-up screen
+        · goToForgetPassword()
+            Navigates to the forgot-password screen
+        · _handleAuthError(AuthException e)
+            Maps AuthException codes to user-facing snackbar messages
+
+  [10] ForgetPasswordControllerImp
+       FILE:    lib/modules/auth/forget_password/controller/forget_password_controller.getx.dart
+       EXTENDS: ForgetPasswordController
+       METHODS:
+         · sendEmail()
+             Validates the email field and triggers a Supabase password-reset link
+
+  [11] ResetPasswordControllerImp
+       FILE:    lib/modules/auth/reset_password/controller/reset_password_controller.dart
+       EXTENDS: ResetPasswordController
+       METHODS:
+         · resetPassword()
+             Validates form and updates the user password via Supabase
+         · showPassword()
+             Toggles new-password field visibility
+         · showConfirmPassword()
+             Toggles confirm-password field visibility
+
+  [12] VerifyEmailControllerImp
+       FILE:    lib/modules/auth/verify_email/controller/verify_email_controller.getx.dart
+       EXTENDS: VerifyEmailController
+       METHODS:
+         · reSendEmail()
+             Resends the verification email (currently commented out in implementation)
+         · goToSignIn()
+             Navigates to the sign-in screen
+         · openUserMailApp()
+             Launches Gmail (Android) or Mail (iOS) via platform-specific deep link
+
+  [13] SuccessSendEmailControllerImp
+       FILE:    lib/modules/auth/success_send_email/controller/success_send_email_controller.getx.dart
+       EXTENDS: SuccessSendEmailController
+       METHODS:
+         · openUserMailApp()
+             Deep-links to the device mail application
+         · goToSignIn()
+             Navigates to the sign-in screen
+
+  [14] CompleteProfileControllerImp
+       FILE:    lib/modules/auth/complete_profile/controller/complete_profile_controller.dart
+       EXTENDS: CompleteProfileController
+       METHODS:
+         · selectEmploymentStatus(String status)
+             Sets the selected employment status reactively
+         · selectMaritalStatus(String status)
+             Sets the selected marital status reactively
+         · setMonthlyIncome(double value)
+             Updates the monthly income slider value
+         · incrementOccupants()
+             Increases occupant count (max 10)
+         · decrementOccupants()
+             Decreases occupant count (min 1)
+         · setSmoker(bool value)
+             Sets the smoker preference toggle
+         · setPets(bool value)
+             Sets the pets preference toggle
+         · toggleCity(String city)
+             Adds or removes a city from the preferred cities selection
+         · saveProfile()
+             Validates the form and persists all profile data to Supabase
+
+  ── FEATURE CONTROLLERS (4 controllers) ──────────────────────────────────────
+
+  [15] ApartmentController
+       FILE:    lib/modules/navigation_items/home/controller/apartment_controller.dart
+       EXTENDS: GetxController
+       METHODS:
+         · fetchApartments()
+             Fetches all apartments with each user's favourite and booking statuses merged in
+         · toggleFavorite(ApartmentModel apartment)
+             Optimistically toggles favourite status with rollback on error
+         · createBooking({required ApartmentModel apartment, required DateTime bookingDate})
+             Creates a new viewing booking with duplicate-date validation
+         · resetFilters()
+             Clears all active search/filter Rx fields (query, price, beds, amenities)
+         · refresh()
+             Re-fetches all apartment data from the database
+
+  [16] SavedApartmentsController
+       FILE:    lib/modules/navigation_items/saved/controller/saved_apartments_controller.dart
+       EXTENDS: GetxController
+       METHODS:
+         · fetchSavedApartments()
+             Loads favourited apartments joined with full apartment detail data
+         · unfavorite(ApartmentModel apartment)
+             Removes apartment from saved list with optimistic UI and rollback on error
+
+  [17] BookingController
+       FILE:    lib/modules/navigation_items/bookings/controller/booking_controller.dart
+       EXTENDS: GetxController
+       METHODS:
+         · fetchBookings()
+             Loads all user bookings joined with apartment details
+         · cancelBooking(BookingModel booking)
+             Optimistically cancels a pending booking with rollback on error
+         · deleteBooking(BookingModel booking)
+             Removes a cancelled or completed booking from history with rollback on error
+
+  [18] PropertySearchController
+       FILE:    lib/modules/navigation_items/search/controller/property_search_controller.dart
+       EXTENDS: GetxController
+       METHODS:
+         · updateQuery(String q)
+             Updates the live search query text
+         · initTempFilters()
+             Seeds temporary local filter state before the filter modal opens
+         · applyFilters()
+             Commits temporary filter values to reactive state and re-fetches results
+
+  ── PROFILE CONTROLLERS (5 controllers) ──────────────────────────────────────
+
+  [19] ProfileControllerImp
+       FILE:    lib/modules/navigation_items/profile/controller/profile_controller.dart
+       EXTENDS: ProfileController
+       METHODS:
+         · signOut()
+             Signs out the authenticated user and clears all user state
+
+  [20] EditPersonalInfoControllerImp
+       FILE:    lib/modules/navigation_items/profile/modules/edit_personal_info/controller/edit_personal_info_controller.dart
+       EXTENDS: EditPersonalInfoController
+       METHODS:
+         · getPersonInformations()
+             Pre-fills all form fields from the current UserController state
+         · selectEmploymentStatus(String status)
+             Reactively updates the selected employment status
+         · saveProfile()
+             Validates the form and patches changes via UserController.updateUserProfile()
+
+  [21] TenantCardController
+       FILE:    lib/modules/navigation_items/profile/modules/tenant_card_edit/controller/tenant_card_controller.dart
+       EXTENDS: GetxController
+       METHODS:
+         · fetchPreferences()
+             Loads tenant card preferences from Supabase
+         · updateUserPreferences()
+             Persists all tenant card fields back to Supabase
+         · selectMaritalStatus(String status)
+             Sets the marital status reactively
+         · setMonthlyBudget(double value)
+             Updates the monthly rental budget slider value
+         · incrementOccupants()
+             Increases occupant count (max 10)
+         · decrementOccupants()
+             Decreases occupant count (min 1)
+         · setPets(bool value)
+             Sets the pets preference toggle
+         · toggleCity(String city)
+             Adds or removes a city from the preferred cities multi-select
+
+  [22] ChangeThemeControllerImp
+       FILE:    lib/modules/navigation_items/profile/modules/change_theme/controller/change_theme_controller.getx.dart
+       EXTENDS: ChangeThemeController
+       METHODS:
+         · changeToLightMode()
+             Switches to light theme and persists the choice via SharedPreferences
+         · changeToDarkMode()
+             Switches to dark theme and persists the choice via SharedPreferences
+         · changeToSystemMode()
+             Switches to system theme and persists the choice via SharedPreferences
+
+  [23] ManageLanguageControllerImp
+       FILE:    lib/modules/navigation_items/profile/modules/manage_language/controller/manage_language_controller.getx.dart
+       EXTENDS: ManageLanguageController
+       METHODS:
+         · getCurrentLanguage()
+             Loads the currently saved language code from SharedPreferences
+         · changeLanguage({required String langCode})
+             Applies the new locale via AppLocalController and persists it to SharedPreferences
+
+
+════════════════════════════════════════════════════════════════════════════════
+  SECTION 4 — SUMMARY & NOTES
+════════════════════════════════════════════════════════════════════════════════
+
+  Total screens (view files):   28
+  Total controllers:            23
+  Total lib/ files (approx):   60+
+
+  KEY NOTES:
+  ─────────────────────────────────────────────────────────────────────────────
+  1. TYPO IN FILENAME
+     lib/modules/auth/reset_password/view/reset_oassword_view.dart
+     Should be: reset_password_view.dart
+
+  2. LEGACY SCREEN
+     lib/modules/navigation_items/premium_subscription/view/premium_subscription_view.dart
+     This appears to be a legacy/alternate paywall. The current paywall implementation
+     is lib/core/widgets/paywall_bottom_sheet.dart (bottom sheet pattern).
+
+  3. PREMIUM GATE PATTERN
+     PaymentService.requirePremium() is wired into home_view.dart and
+     show_apartment_details_view.dart. Free users see PremiumLockOverlay (blur)
+     and are redirected to paywall_bottom_sheet.dart on interaction.
+
+  4. AUTH FLOW ORDER
+     SplashView → ChooseLanguageView → OnBoardingView → ChooseAuthMethodView
+     → (SignUpView | SignInView) → VerifyEmailView → CompleteProfileView
+     → LogicView → MainView
+
+  5. SEARCH VS HOME FILTER
+     There are two separate search/filter implementations:
+     · home/widget/search_bar_widget.dart + filter_bottom_sheet.dart
+       (used in HomeView, writes to ApartmentController Rx fields)
+     · search/controller/property_search_controller.dart
+       (used in SearchView, separate standalone search screen)
+
+================================================================================
+  END OF FILE
+================================================================================
