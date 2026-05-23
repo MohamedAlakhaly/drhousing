@@ -1,4 +1,6 @@
+import 'package:apartment_rentals/core/constant/app_colors.dart';
 import 'package:external_app_launcher/external_app_launcher.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
@@ -13,18 +15,40 @@ class HelperFunctions {
   }
 
   static String formatPrice(int price) {
-  if (price >= 1000) {
-    final thousands = price ~/ 1000;
-    final remainder = price % 1000;
-    return remainder == 0
-        ? '€ $thousands,000'
-        : '€ $thousands,${remainder.toString().padLeft(3, '0')}';
+    if (price >= 1000) {
+      final thousands = price ~/ 1000;
+      final remainder = price % 1000;
+      return remainder == 0
+          ? '€ $thousands,000'
+          : '€ $thousands,${remainder.toString().padLeft(3, '0')}';
+    }
+    return '€ $price';
   }
-  return '€ $price';
-}
 
-Future<void> openUserMailApp() async {
+  Future<void> openUrl(String url) async {
+    final uri = Uri.parse(url);
+    if (await canLaunchUrl(uri)) {
+      await launchUrl(uri, mode: LaunchMode.externalApplication);
+    }
+  }
+
+  static Color getPrimary(BuildContext context) {
+    return HelperFunctions.isDarkMode(context)
+        ? AppColors.primary
+        : AppColors.primaryDark;
+  }
+
+  Future<void> openUserMailApp() async {
     try {
+      if (kIsWeb) {
+        // على الويب — يفتح Gmail في المتصفح
+        await launchUrl(
+          Uri.parse('https://mail.google.com'),
+          mode: LaunchMode.externalApplication,
+        );
+        return;
+      }
+
       if (await LaunchApp.isAppInstalled(
         androidPackageName: 'com.google.android.gm',
       )) {
@@ -43,13 +67,10 @@ Future<void> openUserMailApp() async {
     }
   }
 
-
   // String formatFirestoreTimestamp(Timestamp timestamp) {
   //   DateTime dateTime = timestamp.toDate();
   //   return DateFormat("MMMM d, y • h:mm a").format(dateTime);
   // }
-
-
 
   //   String formatFirestoreTimestampOnlyDate(Timestamp timestamp) {
   //   DateTime dateTime = timestamp.toDate();
@@ -68,7 +89,6 @@ Future<void> openUserMailApp() async {
   //     return DateFormat("dd / MM / y").format(dateTime);
   //   }
 
-
   Future<void> launchUrlMethod(String urlString) async {
     final Uri url = Uri.parse(urlString);
     if (!await launchUrl(url, mode: LaunchMode.externalApplication)) {
@@ -86,27 +106,26 @@ Future<void> openUserMailApp() async {
   }
 
   String getInitials(String name) {
-  if (name.isEmpty) return "??";
+    if (name.isEmpty) return "??";
 
-  List<String> nameParts = name.trim().split(RegExp(r'\s+'));
-  String initials = "";
+    List<String> nameParts = name.trim().split(RegExp(r'\s+'));
+    String initials = "";
 
-  if (nameParts.length >= 2) {
-    initials = nameParts[0][0] + nameParts[1][0];
-  } else if (nameParts.length == 1) {
-    initials = nameParts[0][0];
+    if (nameParts.length >= 2) {
+      initials = nameParts[0][0] + nameParts[1][0];
+    } else if (nameParts.length == 1) {
+      initials = nameParts[0][0];
+    }
+
+    return initials.toUpperCase();
   }
 
-  return initials.toUpperCase();
-}
-  
   Future<void> makePhoneCall(String phoneNumber) async {
-  final Uri url = Uri(scheme: 'tel', path: phoneNumber);
-  if (await canLaunchUrl(url)) {
-    await launchUrl(url);
-  } else {
-    throw 'Could not launch $url';
+    final Uri url = Uri(scheme: 'tel', path: phoneNumber);
+    if (await canLaunchUrl(url)) {
+      await launchUrl(url);
+    } else {
+      throw 'Could not launch $url';
+    }
   }
-}
-
 }

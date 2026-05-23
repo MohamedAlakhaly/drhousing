@@ -72,7 +72,7 @@ class AuthButton extends StatelessWidget {
         child: GlowContainer(
           width: double.infinity,
           height: 56,
-          color: AppColors.primary,
+          color:HelperFunctions.getPrimary(context),
           borderRadius: BorderRadius.circular(16),
           glowColor: AppColors.primary.withValues(alpha: 0.38),
           blurRadius: 20,

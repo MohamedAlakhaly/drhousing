@@ -1,3 +1,5 @@
+import 'package:apartment_rentals/core/constant/app_colors.dart';
+import 'package:apartment_rentals/core/functions/helper_functions.dart';
 import 'package:apartment_rentals/core/functions/option_translator.dart';
 import 'package:apartment_rentals/modules/navigation_items/home/controller/apartment_controller.dart';
 import 'package:flutter/material.dart';
@@ -5,7 +7,6 @@ import 'package:get/get.dart';
 
 void showFilterBottomSheet(BuildContext context) {
   final ApartmentController controller = Get.find();
-
   showModalBottomSheet(
     context: context,
     isScrollControlled: true,
@@ -16,7 +17,6 @@ void showFilterBottomSheet(BuildContext context) {
 
 class _FilterSheet extends StatefulWidget {
   final ApartmentController controller;
-
   const _FilterSheet({required this.controller});
 
   @override
@@ -25,7 +25,7 @@ class _FilterSheet extends StatefulWidget {
 
 class _FilterSheetState extends State<_FilterSheet> {
   late double _maxPrice;
-  late int _beds; // 0=All, 1,2,3, -1=4+
+  late int _beds;
   late List<String> _amenities;
 
   static const _bedOptions = [
@@ -63,17 +63,36 @@ class _FilterSheetState extends State<_FilterSheet> {
     if (price >= 1000) {
       final thousands = (price / 1000).floor();
       final remainder = (price % 1000).round();
-      return remainder == 0 ? '€$thousands,000' : '€$thousands,${remainder.toString().padLeft(3, '0')}';
+      return remainder == 0
+          ? '€$thousands,000'
+          : '€$thousands,${remainder.toString().padLeft(3, '0')}';
     }
     return '€${price.round()}';
   }
 
   @override
   Widget build(BuildContext context) {
+    final bool isDark = HelperFunctions.isDarkMode(context);
+    final primary = HelperFunctions.getPrimary(context);
+
+    // ── Colors based on mode ──────────────────────────────────────────────
+    final bgColor = isDark ? const Color(0xFF161616) : AppColors.bgLight;
+    final handleColor = isDark ? const Color(0xFF333333) : AppColors.borderLight;
+    final titleColor = isDark ? AppColors.textPrimary : AppColors.textBlack;
+    final labelColor = isDark ? AppColors.textPrimary : AppColors.textBlack;
+    final cardBg = isDark ? AppColors.bgCard : AppColors.bgCardLight;
+    final cardBorder = isDark ? const Color(0xFF2A2A2A) : AppColors.borderLight;
+    final selectedBg = isDark ? const Color(0xFF1A1F0A) : primary.withValues(alpha: 0.08);
+    final unselectedText = isDark ? AppColors.textMuted : const Color(0xFF666666);
+    final sliderInactive = isDark ? const Color(0xFF2A2A2A) : AppColors.borderLight;
+
     return Container(
-      decoration: const BoxDecoration(
-        color: Color(0xFF161616),
-        borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
+      decoration: BoxDecoration(
+        color: bgColor,
+        borderRadius: const BorderRadius.vertical(top: Radius.circular(24)),
+        boxShadow: isDark
+            ? null
+            : [BoxShadow(color: Colors.black.withValues(alpha: 0.08), blurRadius: 20, offset: const Offset(0, -4))],
       ),
       padding: EdgeInsets.only(
         left: 20,
@@ -86,66 +105,57 @@ class _FilterSheetState extends State<_FilterSheet> {
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisSize: MainAxisSize.min,
           children: [
-            // Handle
+            // ── Handle ────────────────────────────────────────────────────
             Center(
               child: Container(
                 width: 40,
                 height: 4,
                 decoration: BoxDecoration(
-                  color: const Color(0xFF333333),
+                  color: handleColor,
                   borderRadius: BorderRadius.circular(2),
                 ),
               ),
             ),
             const SizedBox(height: 20),
+
             Text(
               'filters_title'.tr,
-              style: const TextStyle(
-                color: Colors.white,
+              style: TextStyle(
+                color: titleColor,
                 fontSize: 18,
                 fontWeight: FontWeight.w700,
-                fontFamily: 'Satoshi',
               ),
             ),
             const SizedBox(height: 24),
 
-            // ── Max Price ────────────────────────────────────────
+            // ── Max Price ─────────────────────────────────────────────────
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
                   'max_price'.tr,
-                  style: const TextStyle(
-                    color: Colors.white,
-                    fontSize: 14,
-                    fontWeight: FontWeight.w600,
-                    fontFamily: 'Satoshi',
-                  ),
+                  style: TextStyle(color: labelColor, fontSize: 14, fontWeight: FontWeight.w600),
                 ),
                 Container(
                   padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
                   decoration: BoxDecoration(
-                    color: const Color(0xFF1A1F0A),
+                    color: selectedBg,
                     borderRadius: BorderRadius.circular(8),
+                    border: Border.all(color: primary.withValues(alpha: 0.3)),
                   ),
                   child: Text(
                     _maxPrice >= 5000 ? 'any_label'.tr : _formatPrice(_maxPrice),
-                    style: const TextStyle(
-                      color: Color(0xFFCCFF00),
-                      fontSize: 13,
-                      fontWeight: FontWeight.w600,
-                      fontFamily: 'Satoshi',
-                    ),
+                    style: TextStyle(color: primary, fontSize: 13, fontWeight: FontWeight.w600),
                   ),
                 ),
               ],
             ),
             SliderTheme(
               data: SliderThemeData(
-                activeTrackColor: const Color(0xFFCCFF00),
-                inactiveTrackColor: const Color(0xFF2A2A2A),
-                thumbColor: const Color(0xFFCCFF00),
-                overlayColor: const Color(0xFFCCFF00).withAlpha(30),
+                activeTrackColor: primary,
+                inactiveTrackColor: sliderInactive,
+                thumbColor: primary,
+                overlayColor: primary.withAlpha(30),
                 trackHeight: 3,
                 thumbShape: const RoundSliderThumbShape(enabledThumbRadius: 7),
                 overlayShape: const RoundSliderOverlayShape(overlayRadius: 16),
@@ -160,15 +170,10 @@ class _FilterSheetState extends State<_FilterSheet> {
             ),
             const SizedBox(height: 20),
 
-            // ── Bedrooms ─────────────────────────────────────────
+            // ── Bedrooms ──────────────────────────────────────────────────
             Text(
               'bedrooms_label'.tr,
-              style: const TextStyle(
-                color: Colors.white,
-                fontSize: 14,
-                fontWeight: FontWeight.w600,
-                fontFamily: 'Satoshi',
-              ),
+              style: TextStyle(color: labelColor, fontSize: 14, fontWeight: FontWeight.w600),
             ),
             const SizedBox(height: 10),
             Row(
@@ -182,25 +187,18 @@ class _FilterSheetState extends State<_FilterSheet> {
                       duration: const Duration(milliseconds: 150),
                       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                       decoration: BoxDecoration(
-                        color: selected
-                            ? const Color(0xFF1A1F0A)
-                            : const Color(0xFF1E1E1E),
+                        color: selected ? selectedBg : cardBg,
                         borderRadius: BorderRadius.circular(10),
                         border: Border.all(
-                          color: selected
-                              ? const Color(0xFFCCFF00)
-                              : const Color(0xFF2A2A2A),
+                          color: selected ? primary : cardBorder,
                         ),
                       ),
                       child: Text(
                         opt.label,
                         style: TextStyle(
-                          color: selected
-                              ? const Color(0xFFCCFF00)
-                              : const Color(0xFF888888),
+                          color: selected ? primary : unselectedText,
                           fontSize: 13,
                           fontWeight: FontWeight.w600,
-                          fontFamily: 'Satoshi',
                         ),
                       ),
                     ),
@@ -210,15 +208,10 @@ class _FilterSheetState extends State<_FilterSheet> {
             ),
             const SizedBox(height: 20),
 
-            // ── Amenities ────────────────────────────────────────
+            // ── Amenities ─────────────────────────────────────────────────
             Text(
               'amenities_label'.tr,
-              style: const TextStyle(
-                color: Colors.white,
-                fontSize: 14,
-                fontWeight: FontWeight.w600,
-                fontFamily: 'Satoshi',
-              ),
+              style: TextStyle(color: labelColor, fontSize: 14, fontWeight: FontWeight.w600),
             ),
             const SizedBox(height: 10),
             Wrap(
@@ -234,25 +227,16 @@ class _FilterSheetState extends State<_FilterSheet> {
                     duration: const Duration(milliseconds: 150),
                     padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
                     decoration: BoxDecoration(
-                      color: selected
-                          ? const Color(0xFF1A1F0A)
-                          : const Color(0xFF1E1E1E),
+                      color: selected ? selectedBg : cardBg,
                       borderRadius: BorderRadius.circular(10),
-                      border: Border.all(
-                        color: selected
-                            ? const Color(0xFFCCFF00)
-                            : const Color(0xFF2A2A2A),
-                      ),
+                      border: Border.all(color: selected ? primary : cardBorder),
                     ),
                     child: Text(
                       OptionTranslator.translateAmenity(a),
                       style: TextStyle(
-                        color: selected
-                            ? const Color(0xFFCCFF00)
-                            : const Color(0xFF888888),
+                        color: selected ? primary : unselectedText,
                         fontSize: 13,
                         fontWeight: FontWeight.w600,
-                        fontFamily: 'Satoshi',
                       ),
                     ),
                   ),
@@ -261,7 +245,7 @@ class _FilterSheetState extends State<_FilterSheet> {
             ),
             const SizedBox(height: 28),
 
-            // ── Buttons ──────────────────────────────────────────
+            // ── Buttons ───────────────────────────────────────────────────
             Row(
               children: [
                 Expanded(
@@ -270,17 +254,17 @@ class _FilterSheetState extends State<_FilterSheet> {
                     child: Container(
                       height: 50,
                       decoration: BoxDecoration(
+                        color: cardBg,
                         borderRadius: BorderRadius.circular(14),
-                        border: Border.all(color: const Color(0xFF2A2A2A)),
+                        border: Border.all(color: cardBorder),
                       ),
                       alignment: Alignment.center,
                       child: Text(
                         'reset_label'.tr,
-                        style: const TextStyle(
-                          color: Color(0xFF888888),
+                        style: TextStyle(
+                          color: unselectedText,
                           fontSize: 14,
                           fontWeight: FontWeight.w600,
-                          fontFamily: 'Satoshi',
                         ),
                       ),
                     ),
@@ -294,8 +278,16 @@ class _FilterSheetState extends State<_FilterSheet> {
                     child: Container(
                       height: 50,
                       decoration: BoxDecoration(
-                        color: const Color(0xFFCCFF00),
+                        color: primary,
                         borderRadius: BorderRadius.circular(14),
+                        boxShadow: [
+                          BoxShadow(
+                            color: primary.withValues(alpha: 0.35),
+                            blurRadius: 16,
+                            spreadRadius: 1,
+                            offset: const Offset(0, 4),
+                          ),
+                        ],
                       ),
                       alignment: Alignment.center,
                       child: Text(
@@ -304,7 +296,6 @@ class _FilterSheetState extends State<_FilterSheet> {
                           color: Color(0xFF0F0F0F),
                           fontSize: 14,
                           fontWeight: FontWeight.w700,
-                          fontFamily: 'Satoshi',
                         ),
                       ),
                     ),

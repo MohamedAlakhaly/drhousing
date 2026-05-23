@@ -231,12 +231,12 @@ class TenantCardEditView extends StatelessWidget {
                                       decoration: BoxDecoration(
                                         color: isDarkMode
                                             ? AppColors.primaryBg
-                                            : AppColors.primary
+                                            : HelperFunctions.getPrimary(context)
                                                 .withValues(alpha: 0.10),
                                         borderRadius:
                                             BorderRadius.circular(20),
                                         border: Border.all(
-                                          color: AppColors.primary.withValues(
+                                          color: HelperFunctions.getPrimary(context).withValues(
                                             alpha: 0.4,
                                           ),
                                         ),
@@ -244,8 +244,8 @@ class TenantCardEditView extends StatelessWidget {
                                       child: Obx(() {
                                         return Text(
                                           '€${ctrl.monthlyBudget.toInt()}',
-                                          style: const TextStyle(
-                                            color: AppColors.primary,
+                                          style:  TextStyle(
+                                            color: HelperFunctions.getPrimary(context),
                                             fontWeight: FontWeight.w700,
                                             fontSize: 14,
                                           ),
@@ -257,13 +257,13 @@ class TenantCardEditView extends StatelessWidget {
                                 const SizedBox(height: 16),
                                 SliderTheme(
                                   data: SliderThemeData(
-                                    activeTrackColor: AppColors.primary,
+                                    activeTrackColor: HelperFunctions.getPrimary(context),
                                     inactiveTrackColor: isDarkMode
                                         ? AppColors.bgSurface
                                         : AppColors.bgSurfaceLight,
-                                    thumbColor: AppColors.primary,
+                                    thumbColor: HelperFunctions.getPrimary(context),
                                     overlayColor:
-                                        AppColors.primary.withValues(alpha: 0.18),
+                                        HelperFunctions.getPrimary(context).withValues(alpha: 0.18),
                                     thumbShape:
                                         const RoundSliderThumbShape(
                                       enabledThumbRadius: 10,
@@ -349,9 +349,9 @@ class TenantCardEditView extends StatelessWidget {
                                 ),
                                 child: Row(
                                   children: [
-                                    const Icon(
+                                     Icon(
                                       Iconsax.location,
-                                      color: AppColors.primary,
+                                      color: HelperFunctions.getPrimary(context),
                                       size: 18,
                                     ),
                                     const SizedBox(width: 12),
@@ -391,21 +391,21 @@ class TenantCardEditView extends StatelessWidget {
                                         decoration: BoxDecoration(
                                           color: isDarkMode
                                               ? AppColors.primaryBg
-                                              : AppColors.primary
+                                              : HelperFunctions.getPrimary(context)
                                                   .withValues(alpha: 0.10),
                                           borderRadius:
                                               BorderRadius.circular(20),
                                           border: Border.all(
                                             color:
-                                                AppColors.primary.withValues(
+                                                HelperFunctions.getPrimary(context).withValues(
                                               alpha: 0.5,
                                             ),
                                           ),
                                         ),
                                         child: Text(
                                           '$n',
-                                          style: const TextStyle(
-                                            color: AppColors.primary,
+                                          style:  TextStyle(
+                                            color: HelperFunctions.getPrimary(context),
                                             fontSize: 11,
                                             fontWeight: FontWeight.w700,
                                           ),
@@ -436,9 +436,9 @@ class TenantCardEditView extends StatelessWidget {
                           child: GlowContainer(
                             width: double.infinity,
                             padding: const EdgeInsets.symmetric(vertical: 18),
-                            color: AppColors.primary,
+                            color: HelperFunctions.getPrimary(context),
                             borderRadius: BorderRadius.circular(16),
-                            glowColor: AppColors.primary.withValues(alpha: 0.40),
+                            glowColor: HelperFunctions.getPrimary(context).withValues(alpha: 0.40),
                             spreadRadius: 2,
                             blurRadius: 22,
                             child: Obx(() {
@@ -537,10 +537,10 @@ class _SectionCard extends StatelessWidget {
                     decoration: BoxDecoration(
                       color: isDarkMode
                           ? AppColors.primaryBg
-                          : AppColors.primary.withValues(alpha: 0.10),
+                          : HelperFunctions.getPrimary(context).withValues(alpha: 0.10),
                       borderRadius: BorderRadius.circular(10),
                     ),
-                    child: Icon(icon, color: AppColors.primary, size: 17),
+                    child: Icon(icon, color: HelperFunctions.getPrimary(context), size: 17),
                   ),
                   const SizedBox(width: 12),
                   Text(
@@ -597,12 +597,12 @@ class _SelectChip extends StatelessWidget {
           color: isSelected
               ? (isDarkMode
                   ? AppColors.primaryBg
-                  : AppColors.primary.withValues(alpha: 0.10))
+                  : HelperFunctions.getPrimary(context).withValues(alpha: 0.10))
               : (isDarkMode ? AppColors.bgSurface : AppColors.bgSurfaceLight),
           borderRadius: BorderRadius.circular(30),
           border: Border.all(
             color: isSelected
-                ? AppColors.primary
+                ? HelperFunctions.getPrimary(context)
                 : (isDarkMode ? AppColors.divider : AppColors.borderLight),
             width: 1.5,
           ),
@@ -610,7 +610,7 @@ class _SelectChip extends StatelessWidget {
         child: Text(
           label,
           style: TextStyle(
-            color: isSelected ? AppColors.primary : AppColors.textMuted,
+            color: isSelected ? HelperFunctions.getPrimary(context) : AppColors.textMuted,
             fontWeight: isSelected ? FontWeight.w700 : FontWeight.normal,
             fontSize: 13,
           ),
@@ -643,12 +643,12 @@ class _YesNoChip extends StatelessWidget {
           color: isSelected
               ? (isDarkMode
                   ? AppColors.primaryBg
-                  : AppColors.primary.withValues(alpha: 0.10))
+                  : HelperFunctions.getPrimary(context).withValues(alpha: 0.10))
               : (isDarkMode ? AppColors.bgSurface : AppColors.bgSurfaceLight),
           borderRadius: BorderRadius.circular(24),
           border: Border.all(
             color: isSelected
-                ? AppColors.primary
+                ? HelperFunctions.getPrimary(context)
                 : (isDarkMode ? AppColors.divider : AppColors.borderLight),
             width: 1.5,
           ),
@@ -656,7 +656,7 @@ class _YesNoChip extends StatelessWidget {
         child: Text(
           label,
           style: TextStyle(
-            color: isSelected ? AppColors.primary : AppColors.textMuted,
+            color: isSelected ? HelperFunctions.getPrimary(context) : AppColors.textMuted,
             fontWeight: isSelected ? FontWeight.w700 : FontWeight.normal,
             fontSize: 13,
           ),
@@ -728,19 +728,19 @@ class _CounterBtn extends StatelessWidget {
           color: active
               ? (isDarkMode
                   ? AppColors.primaryBg
-                  : AppColors.primary.withValues(alpha: 0.10))
+                  : HelperFunctions.getPrimary(context).withValues(alpha: 0.10))
               : (isDarkMode ? AppColors.bgSurface : AppColors.bgSurfaceLight),
           borderRadius: BorderRadius.circular(10),
           border: Border.all(
             color: active
-                ? AppColors.primary
+                ? HelperFunctions.getPrimary(context)
                 : (isDarkMode ? AppColors.divider : AppColors.borderLight),
             width: 1.5,
           ),
         ),
         child: Icon(
           icon,
-          color: active ? AppColors.primary : AppColors.textMuted,
+          color: active ? HelperFunctions.getPrimary(context) : AppColors.textMuted,
           size: 18,
         ),
       ),
@@ -839,20 +839,20 @@ class _CitiesBottomSheetState extends State<_CitiesBottomSheet> {
                               : AppColors.bgSurfaceLight)
                           : (isDarkMode
                               ? AppColors.primaryBg
-                              : AppColors.primary.withValues(alpha: 0.10)),
+                              : HelperFunctions.getPrimary(context).withValues(alpha: 0.10)),
                       borderRadius: BorderRadius.circular(20),
                       border: Border.all(
                         color: n == 0
                             ? (isDarkMode
                                 ? AppColors.divider
                                 : AppColors.borderLight)
-                            : AppColors.primary,
+                            : HelperFunctions.getPrimary(context),
                       ),
                     ),
                     child: Text(
                       '$n ${'selected_label'.tr}',
                       style: TextStyle(
-                        color: n == 0 ? AppColors.textMuted : AppColors.primary,
+                        color: n == 0 ? AppColors.textMuted : HelperFunctions.getPrimary(context),
                         fontSize: 12,
                         fontWeight: FontWeight.w600,
                       ),
@@ -872,7 +872,7 @@ class _CitiesBottomSheetState extends State<_CitiesBottomSheet> {
                 color: isDarkMode ? AppColors.textPrimary : AppColors.textBlack,
                 fontSize: 14,
               ),
-              cursorColor: AppColors.primary,
+              cursorColor: HelperFunctions.getPrimary(context),
               decoration: InputDecoration(
                 hintText: 'search_cities_hint'.tr,
                 hintStyle: const TextStyle(
@@ -908,8 +908,8 @@ class _CitiesBottomSheetState extends State<_CitiesBottomSheet> {
                 ),
                 focusedBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(14),
-                  borderSide: const BorderSide(
-                    color: AppColors.primary,
+                  borderSide:  BorderSide(
+                    color: HelperFunctions.getPrimary(context),
                     width: 1.5,
                   ),
                 ),
@@ -958,7 +958,7 @@ class _CitiesBottomSheetState extends State<_CitiesBottomSheet> {
                           color: isSelected
                               ? (isDarkMode
                                   ? AppColors.primaryBg
-                                  : AppColors.primary.withValues(alpha: 0.08))
+                                  : HelperFunctions.getPrimary(context).withValues(alpha: 0.08))
                               : Colors.transparent,
                           borderRadius: BorderRadius.circular(12),
                         ),
@@ -972,7 +972,7 @@ class _CitiesBottomSheetState extends State<_CitiesBottomSheet> {
                               decoration: BoxDecoration(
                                 shape: BoxShape.circle,
                                 color: isSelected
-                                    ? AppColors.primary
+                                    ? HelperFunctions.getPrimary(context)
                                     : (isDarkMode
                                         ? AppColors.textDim
                                         : const Color(0xffcccccc)),
@@ -983,7 +983,7 @@ class _CitiesBottomSheetState extends State<_CitiesBottomSheet> {
                                 city,
                                 style: TextStyle(
                                   color: isSelected
-                                      ? AppColors.primary
+                                      ? HelperFunctions.getPrimary(context)
                                       : (isDarkMode
                                           ? AppColors.textPrimary
                                           : AppColors.textBlack),
@@ -1000,12 +1000,12 @@ class _CitiesBottomSheetState extends State<_CitiesBottomSheet> {
                               height: 22,
                               decoration: BoxDecoration(
                                 color: isSelected
-                                    ? AppColors.primary
+                                    ? HelperFunctions.getPrimary(context)
                                     : Colors.transparent,
                                 borderRadius: BorderRadius.circular(6),
                                 border: Border.all(
                                   color: isSelected
-                                      ? AppColors.primary
+                                      ? HelperFunctions.getPrimary(context)
                                       : (isDarkMode
                                           ? AppColors.divider
                                           : AppColors.borderLight),
@@ -1045,9 +1045,9 @@ class _CitiesBottomSheetState extends State<_CitiesBottomSheet> {
               child: GlowContainer(
                 width: double.infinity,
                 padding: const EdgeInsets.symmetric(vertical: 16),
-                color: AppColors.primary,
+                color: HelperFunctions.getPrimary(context),
                 borderRadius: BorderRadius.circular(14),
-                glowColor: AppColors.primary.withValues(alpha: 0.35),
+                glowColor: HelperFunctions.getPrimary(context).withValues(alpha: 0.35),
                 blurRadius: 20,
                 spreadRadius: 1,
                 child: Center(

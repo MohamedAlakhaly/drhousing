@@ -14,6 +14,7 @@ class AppColors {
   static const Color bgCard = Color(0xff202020);
   static const Color primary = Color(0xFFc9f14e);
   static const Color primaryLight = Color(0xFFd9f87e);
+  static const Color primaryDark = Color(0xFFa8c300);
 
   //   static const Color primary = Color(0xFFFFD700);
   // static const Color primaryLight = Color(0xFFFFF1AD);

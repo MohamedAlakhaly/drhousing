@@ -45,7 +45,6 @@ doc/api/
 Podfile.lock
 
 # ── Web ────────────────────────────────────────────────────────
-lib/generated_plugin_registrant.dart
 
 # ── macOS ──────────────────────────────────────────────────────
 **/macos/Flutter/GeneratedPluginRegistrant.swift

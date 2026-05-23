@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:apartment_rentals/core/constant/app_colors.dart';
 import 'package:apartment_rentals/core/constant/app_routes.dart';
 import 'package:apartment_rentals/core/controllers/user_controller.dart';
@@ -92,7 +94,7 @@ class TenantProfileView extends StatelessWidget {
         Get.find<TenantCardController>();
     return Scaffold(
       backgroundColor: isDarkMode ? AppColors.bgDark : AppColors.bgLight,
-      appBar: _buildAppBar(isDarkMode),
+      appBar: _buildAppBar(isDarkMode, context),
       body: SingleChildScrollView(
         physics: const BouncingScrollPhysics(),
         padding: const EdgeInsets.fromLTRB(20, 4, 20, 48),
@@ -100,7 +102,10 @@ class TenantProfileView extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const SizedBox(height: 20),
-            _ProfileHeader(userController: userController),
+            _ProfileHeader(
+              userController: userController,
+              tenantCardController: tenantCardController,
+            ),
             const SizedBox(height: 20),
             _CompletionCard(
               userController: userController,
@@ -133,28 +138,36 @@ class TenantProfileView extends StatelessWidget {
     );
   }
 
-  PreferredSizeWidget _buildAppBar(bool isDarkMode) {
+  PreferredSizeWidget _buildAppBar(bool isDarkMode, BuildContext context) {
     return CustomAppBar(
       title: 'my_tenant_card'.tr,
       actions: [
         GestureDetector(
           onTap: () => Get.to(() => const TenantCardEditView()),
           child: Container(
-            margin: const EdgeInsets.only(right: 16),
-            padding: const EdgeInsets.all(9),
+            margin: const EdgeInsets.only(right: 8, left: 8),
+            padding: const EdgeInsets.all(12),
             decoration: BoxDecoration(
-              color: isDarkMode ? AppColors.primaryBg : Colors.grey[300],
-              borderRadius: BorderRadius.circular(11),
+              color: isDarkMode ? AppColors.bgCard : AppColors.bgCardLight,
+              borderRadius: BorderRadius.circular(12),
               border: Border.all(
-                color: isDarkMode
-                    ? AppColors.primary.withValues(alpha: 0.4)
-                    : Colors.transparent,
-                width: 1,
+                color: isDarkMode ? AppColors.divider : AppColors.borderLight,
               ),
+              boxShadow: isDarkMode
+                  ? null
+                  : [
+                      BoxShadow(
+                        color: Colors.black.withValues(alpha: 0.06),
+                        blurRadius: 8,
+                        offset: const Offset(0, 2),
+                      ),
+                    ],
             ),
             child: Icon(
               Iconsax.edit,
-              color: isDarkMode ? AppColors.primary : AppColors.textBlack,
+              color: isDarkMode
+                  ? HelperFunctions.getPrimary(context)
+                  : AppColors.textBlack,
               size: 16,
             ),
           ),
@@ -168,117 +181,151 @@ class TenantProfileView extends StatelessWidget {
 
 class _ProfileHeader extends StatelessWidget {
   final UserController userController;
-  const _ProfileHeader({required this.userController});
+  final TenantCardController tenantCardController;
+  const _ProfileHeader({
+    required this.userController,
+    required this.tenantCardController,
+  });
 
   @override
   Widget build(BuildContext context) {
+    log(
+      _computeProfilePercent(userController, tenantCardController).toString(),
+    );
+
     final bool isDarkMode = HelperFunctions.isDarkMode(context);
-    return Column(
-          children: [
-            Center(
-              child: Stack(
-                children: [
-                  Container(
-                    width: 104,
-                    height: 104,
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      color: isDarkMode
-                          ? AppColors.bgSurface
-                          : AppColors.bgSurfaceLight,
-                      border: Border.all(color: AppColors.primary, width: 2),
-                      boxShadow: [
-                        BoxShadow(
-                          color: AppColors.primary.withValues(alpha: 0.22),
-                          blurRadius: 24,
-                          spreadRadius: 4,
-                        ),
-                      ],
-                    ),
-                    child: Center(
-                      child: Text(
-                        HelperFunctions().getInitials(
-                          userController.displayName,
-                        ),
-                        style: const TextStyle(
-                          color: AppColors.primary,
-                          fontSize: 34,
-                          fontWeight: FontWeight.w800,
-                          letterSpacing: -0.5,
-                        ),
-                      ),
-                    ),
-                  ),
-
-                  Positioned(
-                    bottom: 3,
-                    right: 3,
-                    child: Container(
-                      padding: const EdgeInsets.all(5),
-                      decoration: const BoxDecoration(
-                        color: AppColors.primary,
+    return Obx(() {
+      double percent = _computeProfilePercent(
+        userController,
+        tenantCardController,
+      );
+      return Column(
+            children: [
+              Center(
+                child: Stack(
+                  children: [
+                    Container(
+                      width: 104,
+                      height: 104,
+                      decoration: BoxDecoration(
                         shape: BoxShape.circle,
+                        color: isDarkMode
+                            ? AppColors.bgSurface
+                            : AppColors.bgSurfaceLight,
+                        border: Border.all(
+                          color: HelperFunctions.getPrimary(context),
+                          width: 2,
+                        ),
+                        boxShadow: [
+                          BoxShadow(
+                            color: HelperFunctions.getPrimary(
+                              context,
+                            ).withValues(alpha: 0.22),
+                            blurRadius: 24,
+                            spreadRadius: 4,
+                          ),
+                        ],
                       ),
-                      child: const Icon(
-                        Icons.check_rounded,
-                        color: Colors.black,
-                        size: 13,
+                      child: Center(
+                        child: Text(
+                          HelperFunctions().getInitials(
+                            userController.displayName,
+                          ),
+                          style: TextStyle(
+                            color: HelperFunctions.getPrimary(context),
+                            fontSize: 34,
+                            fontWeight: FontWeight.w800,
+                            letterSpacing: -0.5,
+                          ),
+                        ),
                       ),
                     ),
-                  ),
-                ],
-              ),
-            ),
-            const SizedBox(height: 14),
-            Text(
-              userController.displayName,
-              style: TextStyle(
-                color: isDarkMode ? AppColors.textPrimary : AppColors.textBlack,
-                fontSize: 24,
-                fontWeight: FontWeight.w800,
-                letterSpacing: -0.4,
-              ),
-            ),
-            const SizedBox(height: 4),
-            Text(
-              userController.email,
-              style: const TextStyle(color: AppColors.textMuted, fontSize: 13),
-            ),
 
-            const SizedBox(height: 14),
-            Container(
-              padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 7),
-              decoration: BoxDecoration(
-                color: AppColors.primaryBg,
-                borderRadius: BorderRadius.circular(20),
-                border: Border.all(color: AppColors.primary, width: 1),
+                    Positioned(
+                      bottom: 3,
+                      right: 3,
+                      child: Container(
+                        padding: const EdgeInsets.all(5),
+                        decoration: BoxDecoration(
+                          color: HelperFunctions.getPrimary(context),
+                          shape: BoxShape.circle,
+                        ),
+                        child: const Icon(
+                          Icons.check_rounded,
+                          color: Colors.black,
+                          size: 13,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
               ),
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Icon(
-                    Icons.verified_rounded,
-                    color: AppColors.primary,
-                    size: 15,
+              const SizedBox(height: 14),
+              Text(
+                userController.displayName,
+                style: TextStyle(
+                  color: isDarkMode
+                      ? AppColors.textPrimary
+                      : AppColors.textBlack,
+                  fontSize: 24,
+                  fontWeight: FontWeight.w800,
+                  letterSpacing: -0.4,
+                ),
+              ),
+              const SizedBox(height: 4),
+              Text(
+                userController.email,
+                style: const TextStyle(
+                  color: AppColors.textMuted,
+                  fontSize: 13,
+                ),
+              ),
+
+              const SizedBox(height: 14),
+
+              if (percent == 1.0)
+                Container(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 14,
+                    vertical: 7,
                   ),
-                  SizedBox(width: 6),
-                  Text(
-                    'verified_tenant'.tr,
-                    style: TextStyle(
-                      color: AppColors.primary,
-                      fontSize: 12,
-                      fontWeight: FontWeight.w600,
-                      letterSpacing: 0.3,
+                  decoration: BoxDecoration(
+                    color: AppColors.primaryBg,
+                    borderRadius: BorderRadius.circular(20),
+                    border: Border.all(
+                      color: HelperFunctions.getPrimary(context),
+                      width: 1,
                     ),
                   ),
-                ],
-              ),
-            ),
-          ],
-        )
-        .animate()
-        .fadeIn(duration: 500.ms)
-        .slideY(begin: -0.06, end: 0, duration: 400.ms);
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Icon(
+                        Icons.verified_rounded,
+                        color: HelperFunctions.getPrimary(context),
+                        size: 15,
+                      ),
+                      SizedBox(width: 6),
+                      Text(
+                        'verified_tenant'.tr,
+                        style: TextStyle(
+                          color: HelperFunctions.getPrimary(context),
+                          fontSize: 12,
+                          fontWeight: FontWeight.w600,
+                          letterSpacing: 0.3,
+                        ),
+                      ),
+                    ],
+                  ),
+                ).animate()
+          .fadeIn(duration: 900.ms)
+          .slideY(begin: -0.06, end: 0, duration: 400.ms),
+            ],
+          )
+          .animate()
+          .fadeIn(duration: 500.ms)
+          .slideY(begin: -0.06, end: 0, duration: 400.ms);
+    });
   }
 }
 
@@ -331,10 +378,16 @@ class _InfoCard extends StatelessWidget {
                     decoration: BoxDecoration(
                       color: isDarkMode
                           ? AppColors.primaryBg
-                          : AppColors.primary.withValues(alpha: 0.10),
+                          : HelperFunctions.getPrimary(
+                              context,
+                            ).withValues(alpha: 0.10),
                       borderRadius: BorderRadius.circular(10),
                     ),
-                    child: Icon(headerIcon, color: AppColors.primary, size: 15),
+                    child: Icon(
+                      headerIcon,
+                      color: HelperFunctions.getPrimary(context),
+                      size: 15,
+                    ),
                   ),
                   const SizedBox(width: 10),
                   Flexible(
@@ -567,10 +620,14 @@ class _ProfessionalCard extends StatelessWidget {
                       decoration: BoxDecoration(
                         color: isDarkMode
                             ? AppColors.primaryBg
-                            : AppColors.primary.withValues(alpha: 0.10),
+                            : HelperFunctions.getPrimary(
+                                context,
+                              ).withValues(alpha: 0.10),
                         borderRadius: BorderRadius.circular(20),
                         border: Border.all(
-                          color: AppColors.primary.withValues(alpha: 0.4),
+                          color: HelperFunctions.getPrimary(
+                            context,
+                          ).withValues(alpha: 0.4),
                         ),
                       ),
                       child: Row(
@@ -580,8 +637,8 @@ class _ProfessionalCard extends StatelessWidget {
                           const SizedBox(width: 5),
                           Text(
                             'active_badge'.tr,
-                            style: const TextStyle(
-                              color: AppColors.primary,
+                            style: TextStyle(
+                              color: HelperFunctions.getPrimary(context),
                               fontSize: 11,
                               fontWeight: FontWeight.w600,
                             ),
@@ -606,8 +663,8 @@ class _PulseDot extends StatelessWidget {
     return Container(
           width: 6,
           height: 6,
-          decoration: const BoxDecoration(
-            color: AppColors.primary,
+          decoration: BoxDecoration(
+            color: HelperFunctions.getPrimary(context),
             shape: BoxShape.circle,
           ),
         )
@@ -717,8 +774,8 @@ class _FinancialCard extends StatelessWidget {
                     children: [
                       Text(
                         _formattedIncome,
-                        style: const TextStyle(
-                          color: AppColors.primary,
+                        style: TextStyle(
+                          color: HelperFunctions.getPrimary(context),
                           fontSize: 40,
                           fontWeight: FontWeight.w800,
                           letterSpacing: -1,
@@ -757,7 +814,7 @@ class _FinancialCard extends StatelessWidget {
                       backgroundColor: isDarkMode
                           ? AppColors.bgSurface
                           : AppColors.bgSurfaceLight,
-                      color: AppColors.primary,
+                      color: HelperFunctions.getPrimary(context),
                     ),
                   ),
                   const SizedBox(height: 7),
@@ -884,17 +941,19 @@ class _HouseholdCard extends StatelessWidget {
                                 shape: BoxShape.circle,
                                 color: isDarkMode
                                     ? AppColors.primaryBg
-                                    : AppColors.primary.withValues(alpha: 0.10),
+                                    : HelperFunctions.getPrimary(
+                                        context,
+                                      ).withValues(alpha: 0.10),
                                 border: Border.all(
-                                  color: AppColors.primary.withValues(
-                                    alpha: 0.4,
-                                  ),
+                                  color: HelperFunctions.getPrimary(
+                                    context,
+                                  ).withValues(alpha: 0.4),
                                   width: 1,
                                 ),
                               ),
                               child: Icon(
                                 Icons.person_rounded,
-                                color: AppColors.primary,
+                                color: HelperFunctions.getPrimary(context),
                                 size: 13,
                               ),
                             ),
@@ -906,8 +965,8 @@ class _HouseholdCard extends StatelessWidget {
                             padding: const EdgeInsets.only(left: 4),
                             child: Text(
                               "+${tenantCardController.occupantsCount.value - 3}",
-                              style: const TextStyle(
-                                color: AppColors.primary,
+                              style: TextStyle(
+                                color: HelperFunctions.getPrimary(context),
                                 fontSize: 12,
                                 fontWeight: FontWeight.bold,
                               ),
@@ -976,13 +1035,17 @@ class _LifestyleChip extends StatelessWidget {
             color: isActive
                 ? (isDarkMode
                       ? AppColors.primaryBg
-                      : AppColors.primary.withValues(alpha: 0.10))
+                      : HelperFunctions.getPrimary(
+                          context,
+                        ).withValues(alpha: 0.10))
                 : (isDarkMode ? AppColors.bgSurface : AppColors.bgSurfaceLight),
             borderRadius: BorderRadius.circular(10),
           ),
           child: Icon(
             icon,
-            color: isActive ? AppColors.primary : AppColors.textMuted,
+            color: isActive
+                ? HelperFunctions.getPrimary(context)
+                : AppColors.textMuted,
             size: 16,
           ),
         ),
@@ -1003,7 +1066,7 @@ class _LifestyleChip extends StatelessWidget {
               value,
               style: TextStyle(
                 color: isActive
-                    ? AppColors.primary
+                    ? HelperFunctions.getPrimary(context)
                     : (isDarkMode
                           ? AppColors.textPrimary
                           : AppColors.textBlack),
@@ -1109,7 +1172,7 @@ class _CityChip extends StatelessWidget {
         color: isDarkMode ? AppColors.bgSurface : AppColors.bgSurfaceLight,
         borderRadius: BorderRadius.circular(20),
         border: Border.all(
-          color: AppColors.primary.withValues(alpha: 0.45),
+          color: HelperFunctions.getPrimary(context).withValues(alpha: 0.45),
           width: 1,
         ),
       ),
@@ -1119,8 +1182,8 @@ class _CityChip extends StatelessWidget {
           Container(
             width: 5,
             height: 5,
-            decoration: const BoxDecoration(
-              color: AppColors.primary,
+            decoration: BoxDecoration(
+              color: HelperFunctions.getPrimary(context),
               shape: BoxShape.circle,
             ),
           ),
@@ -1177,15 +1240,15 @@ class _CompletionCard extends StatelessWidget {
               backgroundColor: HelperFunctions.isDarkMode(context)
                   ? AppColors.bgSurface
                   : AppColors.bgSurfaceLight,
-              progressColor: AppColors.primary,
+              progressColor: HelperFunctions.getPrimary(context),
               circularStrokeCap: CircularStrokeCap.round,
               center: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   Text(
                     '${(percent * 100).round()}%',
-                    style: const TextStyle(
-                      color: AppColors.primary,
+                    style: TextStyle(
+                      color: HelperFunctions.getPrimary(context),
                       fontWeight: FontWeight.w800,
                       fontSize: 20,
                       height: 1,
@@ -1256,10 +1319,12 @@ class _EmptyTenantCard extends StatelessWidget {
             decoration: BoxDecoration(
               color: isDarkMode
                   ? AppColors.primaryBg
-                  : AppColors.primary.withValues(alpha: 0.07),
+                  : HelperFunctions.getPrimary(context).withValues(alpha: 0.07),
               borderRadius: BorderRadius.circular(16),
               border: Border.all(
-                color: AppColors.primary.withValues(alpha: 0.3),
+                color: HelperFunctions.getPrimary(
+                  context,
+                ).withValues(alpha: 0.3),
               ),
             ),
             child: Column(
@@ -1280,9 +1345,9 @@ class _EmptyTenantCard extends StatelessWidget {
                             ),
                           ],
                   ),
-                  child: const Icon(
+                  child: Icon(
                     Icons.edit_note_rounded,
-                    color: AppColors.primary,
+                    color: HelperFunctions.getPrimary(context),
                     size: 28,
                   ),
                 ),
@@ -1314,7 +1379,7 @@ class _EmptyTenantCard extends StatelessWidget {
                     vertical: 10,
                   ),
                   decoration: BoxDecoration(
-                    color: AppColors.primary,
+                    color: HelperFunctions.getPrimary(context),
                     borderRadius: BorderRadius.circular(20),
                   ),
                   child: Text(
@@ -1355,20 +1420,22 @@ class _CompletionRow extends StatelessWidget {
               color: item.isDone
                   ? (isDarkMode
                         ? AppColors.primaryBg
-                        : AppColors.primary.withValues(alpha: 0.12))
+                        : HelperFunctions.getPrimary(
+                            context,
+                          ).withValues(alpha: 0.12))
                   : Colors.transparent,
               shape: BoxShape.circle,
               border: Border.all(
                 color: item.isDone
-                    ? AppColors.primary
+                    ? HelperFunctions.getPrimary(context)
                     : (isDarkMode ? AppColors.divider : AppColors.borderLight),
                 width: 1.5,
               ),
             ),
             child: item.isDone
-                ? const Icon(
+                ? Icon(
                     Icons.check_rounded,
-                    color: AppColors.primary,
+                    color: HelperFunctions.getPrimary(context),
                     size: 10,
                   )
                 : null,

@@ -11,17 +11,17 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:flutter/foundation.dart';
 import 'package:intl/date_symbol_data_local.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await initialService();
   await Supabase.initialize(
     url: 'https://bjrhshhmjjyggzfuogsu.supabase.co',
     anonKey:
         'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJqcmhzaGhtamp5Z2d6ZnVvZ3N1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzY4NTA3ODcsImV4cCI6MjA5MjQyNjc4N30.6zlKDgHvFQIXIrrQZrIT6L1dqoWccz30YowoWi3ikac',
-    authOptions: FlutterAuthClientOptions(
-      authFlowType: AuthFlowType.implicit,
-    ),
+    authOptions: FlutterAuthClientOptions(authFlowType: AuthFlowType.implicit),
   );
+  await initialService();
   if (!kIsWeb) {
     await GoogleAuthService.initialize();
   }
@@ -37,21 +37,20 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     AppServices services = Get.find();
-    bool isLight = services.sharedPreferences.getBool('lightMode') ?? false;
     Get.put(AppLocalController());
     String? langCode =
         services.sharedPreferences.getString('langCode') ??
         Get.deviceLocale?.languageCode ??
         'en';
+    
     return GetMaterialApp(
-      title: 'Flutter Demo',
+      title: 'Dr Housing',
       debugShowCheckedModeBanner: false,
       initialRoute: AppRoutes.splash,
-      // home: OnBoardingView(),
+
       unknownRoute: GetPage(name: '/notfound', page: () => const LogicView()),
-      // أضف هذا
+
       routingCallback: (routing) {
-        // تجاهل الـ OAuth error routes
         if (routing?.current.startsWith('/error=') == true ||
             routing?.current.startsWith('/?code=') == true) {
           return;
@@ -60,28 +59,26 @@ class MyApp extends StatelessWidget {
       locale: Locale(langCode.toLowerCase()),
       translations: MyLocal(),
       fallbackLocale: Locale('en'),
-      // localizationsDelegates: const [
-      //   GlobalMaterialLocalizations.delegate,
-      //   GlobalWidgetsLocalizations.delegate,
-      //   GlobalCupertinoLocalizations.delegate,
-      // ],
-      // supportedLocales: const [
-      //   Locale('fr'),
-      //   Locale('ar'),
-      //   Locale('en'),
-      //   // Locale('ku',''),
-      //   // Locale('so'),
-      //   Locale('tr'),
-      //   // Locale('ti',''),
-      //   Locale('nl'),
-      //   Locale('uk'),
-      //   Locale('ps'),
-      //   Locale('es'),
-      // ],
+      localizationsDelegates: [
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+      ],
+      supportedLocales: const [
+        Locale('en'),
+        Locale('ar'),
+        Locale('fr'),
+        Locale('nl'),
+      ],
       getPages: getPages,
       theme: AppTheme.lightMode,
       darkTheme: AppTheme.darkMode,
-      themeMode: ThemeMode.system,
+      themeMode: () {
+        final saved = services.sharedPreferences.getString('themeMode');
+        if (saved == 'light') return ThemeMode.light;
+        if (saved == 'dark') return ThemeMode.dark;
+        return ThemeMode.system;
+      }(),
     );
   }
 }

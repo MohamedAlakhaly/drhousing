@@ -1,4 +1,5 @@
 import 'package:apartment_rentals/core/constant/app_routes.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
@@ -47,18 +48,23 @@ class SignUpControllerImp extends SignUpController {
           await supabase.auth.signUp(
             email: emailController.text.trim(),
             password: passwordController.text.trim(),
-            data: {
-              'full_name': usernameController.text.trim(),
-            },
+            data: {'full_name': usernameController.text.trim()},
+            emailRedirectTo: kIsWeb
+                ? 'https://drhousing.be'
+                : 'io.supabase.apartmentrentals://login-callback',
           );
 
-          Get.offAllNamed(AppRoutes.verifyEmail);
+          Get.offAllNamed(
+            AppRoutes.verifyEmail,
+            arguments: emailController.text.trim(),
+          );
           Get.snackbar(
             'account_created_title'.tr,
             'account_created_content'.tr,
           );
         } on AuthException catch (e) {
           _handleAuthError(e);
+          print(e.message.toString());
         } catch (e) {
           Get.snackbar(
             'account_creation_failed_title'.tr,
@@ -69,7 +75,10 @@ class SignUpControllerImp extends SignUpController {
           update();
         }
       } else {
-        Get.snackbar('privacy_policy_off_title'.tr, 'privacy_policy_off_content'.tr);
+        Get.snackbar(
+          'privacy_policy_off_title'.tr,
+          'privacy_policy_off_content'.tr,
+        );
       }
     }
   }
@@ -77,14 +86,14 @@ class SignUpControllerImp extends SignUpController {
   void _handleAuthError(AuthException e) {
     if (e.message.contains('already registered') ||
         e.message.contains('already been registered')) {
-      Get.snackbar('email_already_in_use_title'.tr, 'email_already_in_use_content'.tr);
+      Get.snackbar(
+        'email_already_in_use_title'.tr,
+        'email_already_in_use_content'.tr,
+      );
     } else if (e.message.contains('Password should be at least')) {
       Get.snackbar('weak_password_title'.tr, 'weak_password_content'.tr);
     } else {
-      Get.snackbar(
-        'account_creation_failed_title'.tr,
-        e.message,
-      );
+      Get.snackbar('account_creation_failed_title'.tr, e.message);
     }
   }
 

@@ -1,6 +1,7 @@
 import 'package:apartment_rentals/core/constant/app_colors.dart';
 import 'package:apartment_rentals/core/constant/app_images.dart';
 import 'package:apartment_rentals/core/constant/app_routes.dart';
+import 'package:apartment_rentals/core/functions/helper_functions.dart';
 import 'package:apartment_rentals/core/functions/input_validation.dart';
 import 'package:apartment_rentals/core/functions/social_method.dart';
 import 'package:apartment_rentals/global/auth_button.dart';
@@ -18,6 +19,7 @@ class SignInView extends GetView<SignInControllerImp> {
 
   @override
   Widget build(BuildContext context) {
+    bool isDarkMode = HelperFunctions.isDarkMode(context);
     Get.put(SignInControllerImp());
 
     return Scaffold(
@@ -38,12 +40,12 @@ class SignInView extends GetView<SignInControllerImp> {
                     width: 42,
                     height: 42,
                     decoration: BoxDecoration(
-                      color: AppColors.bgCard,
+                      color:isDarkMode ? AppColors.bgCard:Colors.grey[300],
                       borderRadius: BorderRadius.circular(12),
                     ),
-                    child: const Icon(
+                    child:  Icon(
                       Icons.arrow_back_ios_new_rounded,
-                      color: AppColors.textPrimary,
+                      color:isDarkMode ? AppColors.textPrimary:Colors.black ,
                       size: 18,
                     ),
                   ),
@@ -59,15 +61,15 @@ class SignInView extends GetView<SignInControllerImp> {
                             height: 80,
                             color: AppColors.primaryBg,
                             borderRadius: BorderRadius.circular(22),
-                            glowColor: AppColors.primary.withValues(
+                            glowColor: HelperFunctions.getPrimary(context).withValues(
                               alpha: 0.40,
                             ),
                             blurRadius: 28,
                             spreadRadius: 2,
-                            child: const Center(
+                            child: Center(
                               child: Icon(
                                 Icons.lock_rounded,
-                                color: AppColors.primary,
+                                color: HelperFunctions.getPrimary(context),
                                 size: 36,
                               ),
                             ),
@@ -88,7 +90,7 @@ class SignInView extends GetView<SignInControllerImp> {
                       child: Text(
                         'welcome_back_in_app_title'.tr,
                         style: TextStyle(
-                          color: AppColors.textPrimary,
+                          
                           fontSize: 28,
                           fontWeight: FontWeight.w800,
                           letterSpacing: -0.4,
@@ -153,7 +155,7 @@ class SignInView extends GetView<SignInControllerImp> {
                     child: Text(
                       'forgot_password'.tr,
                       style: TextStyle(
-                        color: AppColors.primary,
+                        color: HelperFunctions.getPrimary(context),
                         fontSize: 13,
                         fontWeight: FontWeight.w600,
                       ),
@@ -252,7 +254,7 @@ class SignInView extends GetView<SignInControllerImp> {
                         child:  Text(
                           'sign_up_button'.tr,
                           style: TextStyle(
-                            color: AppColors.primary,
+                            color: HelperFunctions.getPrimary(context),
                             fontSize: 13,
                             fontWeight: FontWeight.w700,
                           ),

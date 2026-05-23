@@ -74,7 +74,7 @@ dependencies:
   # google_maps_flutter: ^2.13.1
   # location: ^8.0.1
   lottie: ^3.3.2
-  flutter_localization: ^0.3.3
+  flutter_localization: ^0.4.0
   # quickalert: ^1.1.0
   # cloud_functions: ^6.0.6
   # image_picker: ^1.2.1
@@ -96,6 +96,7 @@ dependencies:
   package_info_plus: ^8.1.2
   http: ^1.6.0
   about: ^2.2.0
+  web: ^1.1.1
 
 dev_dependencies:
   flutter_test:
@@ -112,14 +113,14 @@ dev_dependencies:
 flutter_launcher_icons:
   android: "launcher_icon"
   ios: true
-  image_path: "assets/icons/logo.png"
+  image_path: "assets/icons/logo3.jpg"
   remove_alpha_ios: true
   min_sdk_android: 21
   adaptive_icon_background: "#000000"
-  adaptive_icon_foreground: "assets/icons/logo.png" # android min sdk min:16, default 21
+  adaptive_icon_foreground: "assets/icons/logo3.jpg" # android min sdk min:16, default 21
   web:
     generate: true
-    image_path: "assets/icons/logo.png"
+    image_path: "assets/icons/logo3.jpg"
     background_color: "#000000"
     theme_color: "#hexcode"
     
@@ -154,13 +155,11 @@ flutter:
     - assets/images/auth/forget_password/
     - assets/images/flags/
     - assets/images/onBoarding/
-    - assets/images/category/
-    - assets/images/global/
+    
     # - assets/images/category/stop_and_think/
     # - assets/images/category/garbage/
     - assets/animations/
-    - assets/images/settings/
-    # - assets/icons/
+    # - assets/images/settings/
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images

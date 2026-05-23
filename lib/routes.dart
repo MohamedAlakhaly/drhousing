@@ -8,7 +8,7 @@ import 'package:apartment_rentals/modules/auth/chooseLanguage/view/choose_langua
 import 'package:apartment_rentals/modules/auth/choose_auth_method/view/choose_auth_method_view.dart';
 import 'package:apartment_rentals/modules/auth/forget_password/view/forget_password_view.dart';
 import 'package:apartment_rentals/modules/auth/on_boarding/view/on_boarding_view.dart';
-import 'package:apartment_rentals/modules/auth/reset_password/view/reset_oassword_view.dart';
+import 'package:apartment_rentals/modules/auth/reset_password/view/reset_password_view.dart';
 import 'package:apartment_rentals/modules/auth/sign_in/view/sign_in_view.dart';
 import 'package:apartment_rentals/modules/auth/sign_up/view/sign_up_view.dart';
 import 'package:apartment_rentals/modules/auth/splash/view/splash_view.dart';

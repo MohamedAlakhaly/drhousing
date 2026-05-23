@@ -44,8 +44,12 @@ class HomeView extends StatelessWidget {
                   shape: BoxShape.circle,
                   gradient: RadialGradient(
                     colors: [
-                      AppColors.primary.withValues(alpha: 0.20),
-                      AppColors.primary.withValues(alpha: 0.10),
+                      HelperFunctions.getPrimary(
+                        context,
+                      ).withValues(alpha: 0.20),
+                      HelperFunctions.getPrimary(
+                        context,
+                      ).withValues(alpha: 0.10),
                       Colors.transparent,
                     ],
                   ),
@@ -71,7 +75,7 @@ class HomeView extends StatelessWidget {
               return Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  _buildHeader(isDarkMode, userController)
+                  _buildHeader(isDarkMode, userController, context)
                       .animate()
                       .fadeIn(duration: 500.ms)
                       .slideY(begin: -0.2, curve: Curves.easeOut),
@@ -120,8 +124,7 @@ class HomeView extends StatelessWidget {
                                         Responsive.isDesktop(context) ? 4 : 2,
                                     crossAxisSpacing: 16,
                                     mainAxisSpacing: 16,
-                                    mainAxisExtent:
-                                        380,
+                                    mainAxisExtent: 380,
                                   ),
                               itemCount: filtered.length,
                               itemBuilder: (context, index) => _apartmentCard(
@@ -145,7 +148,11 @@ class HomeView extends StatelessWidget {
 
   // ─── Header ─────────────────────────────────────────────────────────────────
 
-  Widget _buildHeader(bool isDarkMode, UserController userController) {
+  Widget _buildHeader(
+    bool isDarkMode,
+    UserController userController,
+    BuildContext context,
+  ) {
     return Padding(
       padding: const EdgeInsets.fromLTRB(20, 20, 20, 4),
       child: Row(
@@ -163,18 +170,50 @@ class HomeView extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(height: 4),
-                Text(
-                  userController.displayName,
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                  style: TextStyle(
-                    color: isDarkMode
-                        ? AppColors.textPrimary
-                        : AppColors.textBlack,
-                    fontSize: 22,
-                    fontWeight: FontWeight.w700,
-                    letterSpacing: -0.4,
-                  ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      userController.displayName,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: TextStyle(
+                        color: isDarkMode
+                            ? AppColors.textPrimary
+                            : AppColors.textBlack,
+                        fontSize: 22,
+                        fontWeight: FontWeight.w700,
+                        letterSpacing: -0.4,
+                      ),
+                    ),
+
+                    if (userController.role != 'tenant')
+                      Container(
+                        padding: EdgeInsets.symmetric(horizontal: 15),
+                        decoration: BoxDecoration(
+                          color: AppColors.primaryBg,
+                          border: Border.all(
+                            color: HelperFunctions.getPrimary(
+                              context,
+                            ).withValues(alpha: 0.7),
+                          ),
+                          borderRadius: BorderRadius.circular(25),
+                        ),
+                        child: Text(
+                          userController.role == 'super_admin'
+                              ? 'admin_role_super'.tr
+                              : 'admin_role_manager'.tr,
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          style: TextStyle(
+                            color: HelperFunctions.getPrimary(context),
+                            fontSize: 16,
+                            fontWeight: FontWeight.w700,
+                            letterSpacing: -0.4,
+                          ),
+                        ),
+                      ),
+                  ],
                 ),
               ],
             ),
@@ -228,16 +267,18 @@ class HomeView extends StatelessWidget {
                       borderRadius: BorderRadius.circular(16),
                       border: Border.all(
                         color: active
-                            ? AppColors.primary
+                            ? HelperFunctions.getPrimary(context)
                             : (isDarkMode
-                                  ? AppColors.primary.withValues(alpha: 0.35)
+                                  ? HelperFunctions.getPrimary(
+                                      context,
+                                    ).withValues(alpha: 0.35)
                                   : Colors.grey.shade400),
                       ),
                     ),
                     child: Icon(
                       Icons.tune_rounded,
                       color: active
-                          ? AppColors.primary
+                          ? HelperFunctions.getPrimary(context)
                           : (isDarkMode
                                 ? AppColors.textMuted
                                 : AppColors.textBlack),
@@ -251,8 +292,8 @@ class HomeView extends StatelessWidget {
                       child: Container(
                         width: 10,
                         height: 10,
-                        decoration: const BoxDecoration(
-                          color: AppColors.primary,
+                        decoration: BoxDecoration(
+                          color: HelperFunctions.getPrimary(context),
                           shape: BoxShape.circle,
                         ),
                       ),
@@ -315,12 +356,12 @@ class HomeView extends StatelessWidget {
               decoration: BoxDecoration(
                 color: AppColors.primaryBg,
                 borderRadius: BorderRadius.circular(12),
-                border: Border.all(color: AppColors.primary),
+                border: Border.all(color: HelperFunctions.getPrimary(context)),
               ),
               child: Text(
                 'reset_filters'.tr,
-                style: const TextStyle(
-                  color: AppColors.primary,
+                style: TextStyle(
+                  color: HelperFunctions.getPrimary(context),
                   fontWeight: FontWeight.w600,
                   fontSize: 14,
                 ),
@@ -388,9 +429,11 @@ class HomeView extends StatelessWidget {
                                         color: isDarkMode
                                             ? AppColors.bgSurface
                                             : AppColors.bgLight,
-                                        child: const Center(
+                                        child: Center(
                                           child: CircularProgressIndicator(
-                                            color: AppColors.primary,
+                                            color: HelperFunctions.getPrimary(
+                                              context,
+                                            ),
                                             strokeWidth: 2,
                                           ),
                                         ),
@@ -432,7 +475,9 @@ class HomeView extends StatelessWidget {
                                       vertical: 6,
                                     ),
                                     decoration: BoxDecoration(
-                                      color: AppColors.primary,
+                                      color: HelperFunctions.getPrimary(
+                                        context,
+                                      ),
                                       borderRadius: BorderRadius.circular(30),
                                     ),
                                     child: Row(
@@ -487,13 +532,15 @@ class HomeView extends StatelessWidget {
                                 isLiked: apartmentModel.isFavorite.value,
                                 size: 22,
                                 circleColor: CircleColor(
-                                  start: AppColors.primary.withValues(
-                                    alpha: 0.5,
-                                  ),
-                                  end: AppColors.primary,
+                                  start: HelperFunctions.getPrimary(
+                                    context,
+                                  ).withValues(alpha: 0.5),
+                                  end: HelperFunctions.getPrimary(context),
                                 ),
                                 bubblesColor: BubblesColor(
-                                  dotPrimaryColor: AppColors.primary,
+                                  dotPrimaryColor: HelperFunctions.getPrimary(
+                                    context,
+                                  ),
                                   dotSecondaryColor: Colors.orangeAccent,
                                 ),
                                 likeBuilder: (isLiked) => Icon(
@@ -501,7 +548,7 @@ class HomeView extends StatelessWidget {
                                       ? Icons.favorite_rounded
                                       : Icons.favorite_border_rounded,
                                   color: isLiked
-                                      ? AppColors.primary
+                                      ? HelperFunctions.getPrimary(context)
                                       : Colors.white,
                                   size: 20,
                                 ),
@@ -554,7 +601,7 @@ class HomeView extends StatelessWidget {
                                 ),
                                 style: TextStyle(
                                   color: isDarkMode
-                                      ? AppColors.primary
+                                      ? HelperFunctions.getPrimary(context)
                                       : AppColors.primaryBg,
                                   fontSize: 20,
                                   fontWeight: FontWeight.w700,
@@ -585,12 +632,16 @@ class HomeView extends StatelessWidget {
                                     '${apartmentModel.floor!} ${'floor_label'.tr}',
                                     isDarkMode,
                                   ),
-                                  const SizedBox(width: 8),
-                                  _featureChip(
-                                    Icons.square_foot,
-                                    '${apartmentModel.sqm} ${'sqm_label'.tr}',
-                                    isDarkMode,
-                                  ),
+                                  if (apartmentModel.sqm != 0)
+                                    
+                                    const SizedBox(width: 8),
+                                  if (apartmentModel.sqm != 0)
+                                    
+                                    _featureChip(
+                                      Icons.square_foot,
+                                      '${apartmentModel.sqm} ${'sqm_label'.tr}',
+                                      isDarkMode,
+                                    ),
                                   const SizedBox(width: 8),
                                   _featureChip(
                                     Icons.bed_outlined,
@@ -611,10 +662,10 @@ class HomeView extends StatelessWidget {
               )
               .animate()
               .fadeIn(
-                delay: Duration(milliseconds: 350 + (index * 150)),
-                duration: 500.ms,
+                delay: Duration(milliseconds: index < 5 ? (index * 80) : 0),
+                duration: 300.ms,
               )
-              .slideY(begin: 0.15, curve: Curves.easeOut),
+              .slideY(begin: 0.08, curve: Curves.easeOut),
     );
   }
 

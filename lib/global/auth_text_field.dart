@@ -1,4 +1,5 @@
 import 'package:apartment_rentals/core/constant/app_colors.dart';
+import 'package:apartment_rentals/core/functions/helper_functions.dart';
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
 
@@ -27,14 +28,15 @@ class AuthTextField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    bool isDarMode = HelperFunctions.isDarkMode(context);
     return TextFormField(
       controller: controller,
       obscureText: obscureText,
       validator: validator,
       keyboardType: keyboardType,
       textInputAction: textInputAction,
-      style: const TextStyle(color: AppColors.textPrimary, fontSize: 14),
-      cursorColor: AppColors.primary,
+      style:  TextStyle(color:isDarMode? AppColors.textMuted:Colors.black, fontSize: 14),
+      cursorColor: isDarMode? AppColors.primary:Colors.black,
       decoration: InputDecoration(
         hintText: hint,
         hintStyle: const TextStyle(color: AppColors.textMuted, fontSize: 14),
@@ -58,7 +60,7 @@ class AuthTextField extends StatelessWidget {
             : null,
         suffixIconConstraints: const BoxConstraints(minWidth: 0, minHeight: 0),
         filled: true,
-        fillColor: AppColors.bgCard,
+        fillColor:isDarMode? AppColors.bgCard:Colors.grey[300],
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(14),
           borderSide: BorderSide.none,
@@ -69,7 +71,7 @@ class AuthTextField extends StatelessWidget {
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(14),
-          borderSide: const BorderSide(color: AppColors.primary, width: 1.5),
+          borderSide: BorderSide(color:isDarMode? AppColors.primary:Colors.black, width: 1.5),
         ),
         errorBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(14),
@@ -77,9 +79,15 @@ class AuthTextField extends StatelessWidget {
         ),
         focusedErrorBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(14),
-          borderSide: const BorderSide(color: AppColors.dangerColor, width: 1.5),
+          borderSide: const BorderSide(
+            color: AppColors.dangerColor,
+            width: 1.5,
+          ),
         ),
-        contentPadding: const EdgeInsets.symmetric(vertical: 18, horizontal: 16),
+        contentPadding: const EdgeInsets.symmetric(
+          vertical: 18,
+          horizontal: 16,
+        ),
       ),
     );
   }

@@ -10,8 +10,8 @@ class MyLocal implements Translations{
   Map<String, Map<String, String>> get keys => {
     'ar':arabic,
     'en':english,
-    // 'fr':french,
-    // 'nl':dutch,
+    'fr':french,
+    'nl':dutch,
     // 'so':somali,
     // 'ti':tigrinya,
     // 'ps':pashto,

@@ -79,18 +79,24 @@ class ShowApartmentDetailsView extends StatelessWidget {
                           isLiked: apartmentModel.isFavorite.value,
                           size: 22,
                           circleColor: CircleColor(
-                            start: AppColors.primary.withValues(alpha: 0.5),
-                            end: AppColors.primary,
+                            start: HelperFunctions.getPrimary(
+                              context,
+                            ).withValues(alpha: 0.5),
+                            end: HelperFunctions.getPrimary(context),
                           ),
                           bubblesColor: BubblesColor(
-                            dotPrimaryColor: AppColors.primary,
+                            dotPrimaryColor: HelperFunctions.getPrimary(
+                              context,
+                            ),
                             dotSecondaryColor: Colors.orangeAccent,
                           ),
                           likeBuilder: (isLiked) => Icon(
                             isLiked
                                 ? Icons.favorite_rounded
                                 : Icons.favorite_border_rounded,
-                            color: isLiked ? AppColors.primary : Colors.white,
+                            color: isLiked
+                                ? HelperFunctions.getPrimary(context)
+                                : Colors.white,
                             size: 20,
                           ),
                           onTap: (isLiked) async {
@@ -126,22 +132,23 @@ class ShowApartmentDetailsView extends StatelessWidget {
                               child: Container(color: Colors.white),
                             ),
                             // ── Fade in animation ───────────────────────────
-                            imageBuilder: (ctx, imageProvider) => Container(
-                              decoration: BoxDecoration(
-                                image: DecorationImage(
-                                  image: imageProvider,
-                                  fit: BoxFit.cover,
-                                ),
-                              ),
-                            )
-                                .animate()
-                                .fadeIn(duration: 500.ms)
-                                .scale(
-                                  begin: const Offset(1.04, 1.04),
-                                  end: const Offset(1.0, 1.0),
-                                  duration: 600.ms,
-                                  curve: Curves.easeOut,
-                                ),
+                            imageBuilder: (ctx, imageProvider) =>
+                                Container(
+                                      decoration: BoxDecoration(
+                                        image: DecorationImage(
+                                          image: imageProvider,
+                                          fit: BoxFit.cover,
+                                        ),
+                                      ),
+                                    )
+                                    .animate()
+                                    .fadeIn(duration: 500.ms)
+                                    .scale(
+                                      begin: const Offset(1.04, 1.04),
+                                      end: const Offset(1.0, 1.0),
+                                      duration: 600.ms,
+                                      curve: Curves.easeOut,
+                                    ),
                             errorWidget: (_, __, ___) => Container(
                               color: AppColors.bgCard,
                               child: const Icon(
@@ -277,7 +284,7 @@ class ShowApartmentDetailsView extends StatelessWidget {
                             HelperFunctions.formatPrice(apartmentModel.price),
                             style: TextStyle(
                               color: isDarkMode
-                                  ? AppColors.primary
+                                  ? HelperFunctions.getPrimary(context)
                                   : AppColors.textBlack,
                               fontSize: 34,
                               fontWeight: FontWeight.w800,
@@ -304,21 +311,23 @@ class ShowApartmentDetailsView extends StatelessWidget {
                               color: AppColors.primaryBg,
                               borderRadius: BorderRadius.circular(20),
                               border: Border.all(
-                                color: AppColors.primary.withValues(alpha: 0.35),
+                                color: HelperFunctions.getPrimary(
+                                  context,
+                                ).withValues(alpha: 0.35),
                               ),
                             ),
                             child: Row(
                               children: [
-                                const Icon(
+                                Icon(
                                   Icons.verified_rounded,
-                                  color: AppColors.primary,
+                                  color: HelperFunctions.getPrimary(context),
                                   size: 13,
                                 ),
                                 const SizedBox(width: 4),
                                 Text(
                                   'verified_label'.tr,
-                                  style: const TextStyle(
-                                    color: AppColors.primary,
+                                  style: TextStyle(
+                                    color: HelperFunctions.getPrimary(context),
                                     fontSize: 11,
                                     fontWeight: FontWeight.w600,
                                   ),
@@ -383,11 +392,12 @@ class ShowApartmentDetailsView extends StatelessWidget {
                             ? '${apartmentModel.bedCount} ${'rooms_label'.tr}'
                             : '${apartmentModel.bedCount} ${'room_label'.tr}',
                       ),
-                      const SizedBox(width: 10),
-                      _StatChip(
-                        icon: Iconsax.maximize_3,
-                        label: '${apartmentModel.sqm} ${'sqm_label'.tr}',
-                      ),
+                      if (apartmentModel.sqm != 0) const SizedBox(width: 10),
+                      if (apartmentModel.sqm != 0)
+                        _StatChip(
+                          icon: Iconsax.maximize_3,
+                          label: '${apartmentModel.sqm} ${'sqm_label'.tr}',
+                        ),
                       const SizedBox(width: 10),
                       _StatChip(
                         icon: Iconsax.building,
@@ -411,11 +421,41 @@ class ShowApartmentDetailsView extends StatelessWidget {
                     crossAxisSpacing: 10,
                     mainAxisSpacing: 10,
                     children: [
-                      _AmenityItem(icon: Iconsax.car, label: 'parking_label'.tr, color: apartmentModel.hasParking ? AppColors.primary : AppColors.dangerColor),
-                      _AmenityItem(icon: Icons.local_laundry_service_rounded, label: 'laundry_label'.tr, color: apartmentModel.hasLaundry ? AppColors.primary : AppColors.dangerColor),
-                      _AmenityItem(icon: Icons.elevator_rounded, label: 'elevator_label'.tr, color: apartmentModel.hasElevator ? AppColors.primary : AppColors.dangerColor),
-                      _AmenityItem(icon: Icons.pets_rounded, label: 'pets_label'.tr, color: apartmentModel.hasPets ? AppColors.primary : AppColors.dangerColor),
-                      _AmenityItem(icon: Iconsax.sun_1, label: 'balcony_label'.tr, color: apartmentModel.hasBalcony ? AppColors.primary : AppColors.dangerColor),
+                      _AmenityItem(
+                        icon: Iconsax.car,
+                        label: 'parking_label'.tr,
+                        color: apartmentModel.hasParking
+                            ? HelperFunctions.getPrimary(context)
+                            : AppColors.dangerColor,
+                      ),
+                      _AmenityItem(
+                        icon: Icons.local_laundry_service_rounded,
+                        label: 'laundry_label'.tr,
+                        color: apartmentModel.hasLaundry
+                            ? HelperFunctions.getPrimary(context)
+                            : AppColors.dangerColor,
+                      ),
+                      _AmenityItem(
+                        icon: Icons.elevator_rounded,
+                        label: 'elevator_label'.tr,
+                        color: apartmentModel.hasElevator
+                            ? HelperFunctions.getPrimary(context)
+                            : AppColors.dangerColor,
+                      ),
+                      _AmenityItem(
+                        icon: Icons.pets_rounded,
+                        label: 'pets_label'.tr,
+                        color: apartmentModel.hasPets
+                            ? HelperFunctions.getPrimary(context)
+                            : AppColors.dangerColor,
+                      ),
+                      _AmenityItem(
+                        icon: Iconsax.sun_1,
+                        label: 'balcony_label'.tr,
+                        color: apartmentModel.hasBalcony
+                            ? HelperFunctions.getPrimary(context)
+                            : AppColors.dangerColor,
+                      ),
                     ],
                   ),
                 ).animate().fadeIn(delay: 300.ms, duration: 400.ms),
@@ -441,7 +481,9 @@ class ShowApartmentDetailsView extends StatelessWidget {
                 const SizedBox(height: 12),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 20),
-                  child: _DescriptionBox(text: apartmentModel.localizedDescription),
+                  child: _DescriptionBox(
+                    text: apartmentModel.localizedDescription,
+                  ),
                 ).animate().fadeIn(delay: 350.ms, duration: 400.ms),
 
                 const SizedBox(height: 28),
@@ -458,78 +500,88 @@ class ShowApartmentDetailsView extends StatelessWidget {
                       itemCount: apartmentModel.imageUrls.length,
                       itemBuilder: (_, i) => GestureDetector(
                         onTap: () => _showFullImage(context, i),
-                        child: Container(
-                          width: 140,
-                          margin: const EdgeInsets.only(right: 10),
-                          child: ClipRRect(
-                            borderRadius: BorderRadius.circular(14),
-                            child: Stack(
-                              fit: StackFit.expand,
-                              children: [
-                                // ── Shimmer ──────────────────────────────
-                                Shimmer.fromColors(
-                                  baseColor: const Color(0xFF1A1A1A),
-                                  highlightColor: const Color(0xFF2E2E2E),
-                                  child: Container(color: Colors.white),
-                                ),
-                                CachedNetworkImage(
-                                  imageUrl:
-                                      '${apartmentModel.imageUrls[i]}?width=300&quality=65',
-                                  fit: BoxFit.cover,
-                                  placeholder: (_, __) =>
-                                      const SizedBox.shrink(),
-                                  imageBuilder: (_, imageProvider) => Container(
-                                    decoration: BoxDecoration(
-                                      image: DecorationImage(
-                                        image: imageProvider,
-                                        fit: BoxFit.cover,
-                                      ),
-                                    ),
-                                  )
-                                      .animate()
-                                      .fadeIn(duration: 400.ms),
-                                  errorWidget: (_, __, ___) => Container(
-                                    color: AppColors.bgCard,
-                                    child: const Icon(
-                                      Icons.image,
-                                      color: AppColors.textMuted,
-                                    ),
-                                  ),
-                                ),
-                                // ── First image badge ─────────────────────
-                                if (i == 0)
-                                  Positioned(
-                                    top: 6,
-                                    left: 6,
-                                    child: Container(
-                                      padding: const EdgeInsets.symmetric(
-                                        horizontal: 6,
-                                        vertical: 3,
-                                      ),
-                                      decoration: BoxDecoration(
-                                        color: AppColors.primary,
-                                        borderRadius: BorderRadius.circular(6),
-                                      ),
-                                      child: Text(
-                                        'main_photo'.tr,
-                                        style: const TextStyle(
-                                          color: Colors.black,
-                                          fontSize: 9,
-                                          fontWeight: FontWeight.w700,
+                        child:
+                            Container(
+                                  width: 140,
+                                  margin: const EdgeInsets.only(right: 10),
+                                  child: ClipRRect(
+                                    borderRadius: BorderRadius.circular(14),
+                                    child: Stack(
+                                      fit: StackFit.expand,
+                                      children: [
+                                        // ── Shimmer ──────────────────────────────
+                                        Shimmer.fromColors(
+                                          baseColor: const Color(0xFF1A1A1A),
+                                          highlightColor: const Color(
+                                            0xFF2E2E2E,
+                                          ),
+                                          child: Container(color: Colors.white),
                                         ),
-                                      ),
+                                        CachedNetworkImage(
+                                          imageUrl:
+                                              '${apartmentModel.imageUrls[i]}?width=300&quality=65',
+                                          fit: BoxFit.cover,
+                                          placeholder: (_, __) =>
+                                              const SizedBox.shrink(),
+                                          imageBuilder: (_, imageProvider) =>
+                                              Container(
+                                                decoration: BoxDecoration(
+                                                  image: DecorationImage(
+                                                    image: imageProvider,
+                                                    fit: BoxFit.cover,
+                                                  ),
+                                                ),
+                                              ).animate().fadeIn(
+                                                duration: 400.ms,
+                                              ),
+                                          errorWidget: (_, __, ___) =>
+                                              Container(
+                                                color: AppColors.bgCard,
+                                                child: const Icon(
+                                                  Icons.image,
+                                                  color: AppColors.textMuted,
+                                                ),
+                                              ),
+                                        ),
+                                        // ── First image badge ─────────────────────
+                                        if (i == 0)
+                                          Positioned(
+                                            top: 6,
+                                            left: 6,
+                                            child: Container(
+                                              padding:
+                                                  const EdgeInsets.symmetric(
+                                                    horizontal: 6,
+                                                    vertical: 3,
+                                                  ),
+                                              decoration: BoxDecoration(
+                                                color:
+                                                    HelperFunctions.getPrimary(
+                                                      context,
+                                                    ),
+                                                borderRadius:
+                                                    BorderRadius.circular(6),
+                                              ),
+                                              child: Text(
+                                                'main_photo'.tr,
+                                                style: const TextStyle(
+                                                  color: Colors.black,
+                                                  fontSize: 9,
+                                                  fontWeight: FontWeight.w700,
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                      ],
                                     ),
                                   ),
-                              ],
-                            ),
-                          ),
-                        )
-                            .animate()
-                            .fadeIn(
-                              delay: Duration(milliseconds: 400 + (i * 60)),
-                              duration: 350.ms,
-                            )
-                            .slideX(begin: 0.1, curve: Curves.easeOut),
+                                )
+                                .animate()
+                                .fadeIn(
+                                  delay: Duration(milliseconds: 400 + (i * 60)),
+                                  duration: 350.ms,
+                                )
+                                .slideX(begin: 0.1, curve: Curves.easeOut),
                       ),
                     ),
                   ),
@@ -582,7 +634,8 @@ class ShowApartmentDetailsView extends StatelessWidget {
                   disabled: isBooked,
                   onTap: isBooked
                       ? null
-                      : () => showBookingWithValidation(context, apartmentModel),
+                      : () =>
+                            showBookingWithValidation(context, apartmentModel),
                 );
               }),
       ),
@@ -632,9 +685,9 @@ class _FullScreenGalleryState extends State<_FullScreenGallery> {
               child: CachedNetworkImage(
                 imageUrl: widget.urls[i],
                 fit: BoxFit.contain,
-                placeholder: (_, __) => const Center(
+                placeholder: (_, __) => Center(
                   child: CircularProgressIndicator(
-                    color: AppColors.primary,
+                    color: HelperFunctions.getPrimary(context),
                     strokeWidth: 2,
                   ),
                 ),
@@ -657,7 +710,11 @@ class _FullScreenGalleryState extends State<_FullScreenGallery> {
                     color: Colors.white.withValues(alpha: 0.2),
                   ),
                 ),
-                child: const Icon(Icons.close_rounded, color: Colors.white, size: 20),
+                child: const Icon(
+                  Icons.close_rounded,
+                  color: Colors.white,
+                  size: 20,
+                ),
               ),
             ),
           ),
@@ -679,7 +736,7 @@ class _FullScreenGalleryState extends State<_FullScreenGallery> {
                     height: 6,
                     decoration: BoxDecoration(
                       color: _currentIndex == i
-                          ? AppColors.primary
+                          ? HelperFunctions.getPrimary(context)
                           : Colors.white.withValues(alpha: 0.4),
                       borderRadius: BorderRadius.circular(3),
                     ),
@@ -728,9 +785,16 @@ class _LockBadge extends StatelessWidget {
       decoration: BoxDecoration(
         color: AppColors.primaryBg,
         shape: BoxShape.circle,
-        border: Border.all(color: AppColors.primary.withValues(alpha: 0.4), width: 1.5),
+        border: Border.all(
+          color: HelperFunctions.getPrimary(context).withValues(alpha: 0.4),
+          width: 1.5,
+        ),
       ),
-      child: const Icon(Iconsax.lock, color: AppColors.primary, size: 28),
+      child: Icon(
+        Iconsax.lock,
+        color: HelperFunctions.getPrimary(context),
+        size: 28,
+      ),
     );
   }
 }
@@ -750,14 +814,36 @@ class _StatChip extends StatelessWidget {
         decoration: BoxDecoration(
           color: isDarkMode ? AppColors.bgCard : AppColors.bgCardLight,
           borderRadius: BorderRadius.circular(14),
-          border: Border.all(color: isDarkMode ? AppColors.divider : AppColors.borderLight),
-          boxShadow: isDarkMode ? null : [BoxShadow(color: Colors.black.withValues(alpha: 0.05), blurRadius: 8, offset: const Offset(0, 2))],
+          border: Border.all(
+            color: isDarkMode ? AppColors.divider : AppColors.borderLight,
+          ),
+          boxShadow: isDarkMode
+              ? null
+              : [
+                  BoxShadow(
+                    color: Colors.black.withValues(alpha: 0.05),
+                    blurRadius: 8,
+                    offset: const Offset(0, 2),
+                  ),
+                ],
         ),
         child: Column(
           children: [
-            Icon(icon, color: AppColors.primary, size: 22),
+            Icon(icon, color: HelperFunctions.getPrimary(context), size: 22),
             const SizedBox(height: 6),
-            Text(label, style: TextStyle(color: isDarkMode ? AppColors.textMuted : const Color(0xff666666), fontSize: 12, fontWeight: FontWeight.w500), textAlign: TextAlign.center, maxLines: 1, overflow: TextOverflow.ellipsis),
+            Text(
+              label,
+              style: TextStyle(
+                color: isDarkMode
+                    ? AppColors.textMuted
+                    : const Color(0xff666666),
+                fontSize: 12,
+                fontWeight: FontWeight.w500,
+              ),
+              textAlign: TextAlign.center,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+            ),
           ],
         ),
       ),
@@ -775,7 +861,15 @@ class _SectionHeader extends StatelessWidget {
     final isDarkMode = HelperFunctions.isDarkMode(context);
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20),
-      child: Text(title, style: TextStyle(color: isDarkMode ? AppColors.textPrimary : AppColors.textBlack, fontSize: 17, fontWeight: FontWeight.w700, letterSpacing: -0.2)),
+      child: Text(
+        title,
+        style: TextStyle(
+          color: isDarkMode ? AppColors.textPrimary : AppColors.textBlack,
+          fontSize: 17,
+          fontWeight: FontWeight.w700,
+          letterSpacing: -0.2,
+        ),
+      ),
     );
   }
 }
@@ -785,7 +879,11 @@ class _AmenityItem extends StatelessWidget {
   final IconData icon;
   final String label;
   final Color color;
-  const _AmenityItem({required this.icon, required this.label, required this.color});
+  const _AmenityItem({
+    required this.icon,
+    required this.label,
+    required this.color,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -794,15 +892,35 @@ class _AmenityItem extends StatelessWidget {
       decoration: BoxDecoration(
         color: isDarkMode ? AppColors.bgCard : AppColors.bgCardLight,
         borderRadius: BorderRadius.circular(14),
-        border: Border.all(color: isDarkMode ? AppColors.divider : AppColors.borderLight),
-        boxShadow: isDarkMode ? null : [BoxShadow(color: Colors.black.withValues(alpha: 0.04), blurRadius: 6, offset: const Offset(0, 2))],
+        border: Border.all(
+          color: isDarkMode ? AppColors.divider : AppColors.borderLight,
+        ),
+        boxShadow: isDarkMode
+            ? null
+            : [
+                BoxShadow(
+                  color: Colors.black.withValues(alpha: 0.04),
+                  blurRadius: 6,
+                  offset: const Offset(0, 2),
+                ),
+              ],
       ),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Icon(icon, color: color, size: 22),
           const SizedBox(height: 5),
-          Text(label, style: TextStyle(color: isDarkMode ? AppColors.textMuted : const Color(0xff666666), fontSize: 10, fontWeight: FontWeight.w500), textAlign: TextAlign.center, maxLines: 1, overflow: TextOverflow.ellipsis),
+          Text(
+            label,
+            style: TextStyle(
+              color: isDarkMode ? AppColors.textMuted : const Color(0xff666666),
+              fontSize: 10,
+              fontWeight: FontWeight.w500,
+            ),
+            textAlign: TextAlign.center,
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+          ),
         ],
       ),
     );
@@ -831,14 +949,40 @@ class _DescriptionBoxState extends State<_DescriptionBox> {
         children: [
           AnimatedCrossFade(
             duration: const Duration(milliseconds: 250),
-            crossFadeState: _expanded ? CrossFadeState.showSecond : CrossFadeState.showFirst,
-            firstChild: Text(widget.text, maxLines: 3, overflow: TextOverflow.ellipsis, style: TextStyle(color: isDarkMode ? AppColors.textMuted : const Color(0xff555555), fontSize: 13, height: 1.65)),
-            secondChild: Text(widget.text, style: TextStyle(color: isDarkMode ? AppColors.textMuted : const Color(0xff555555), fontSize: 13, height: 1.65)),
+            crossFadeState: _expanded
+                ? CrossFadeState.showSecond
+                : CrossFadeState.showFirst,
+            firstChild: Text(
+              widget.text,
+              maxLines: 3,
+              overflow: TextOverflow.ellipsis,
+              style: TextStyle(
+                color: isDarkMode
+                    ? AppColors.textMuted
+                    : const Color(0xff555555),
+                fontSize: 13,
+                height: 1.65,
+              ),
+            ),
+            secondChild: Text(
+              widget.text,
+              style: TextStyle(
+                color: isDarkMode
+                    ? AppColors.textMuted
+                    : const Color(0xff555555),
+                fontSize: 13,
+                height: 1.65,
+              ),
+            ),
           ),
           const SizedBox(height: 6),
           Text(
             _expanded ? 'show_less'.tr : 'read_more'.tr,
-            style: const TextStyle(color: AppColors.primary, fontSize: 13, fontWeight: FontWeight.w600),
+            style: TextStyle(
+              color: HelperFunctions.getPrimary(context),
+              fontSize: 13,
+              fontWeight: FontWeight.w600,
+            ),
           ),
         ],
       ),
@@ -853,7 +997,12 @@ class _PrimaryButton extends StatelessWidget {
   final VoidCallback? onTap;
   final bool disabled;
 
-  const _PrimaryButton({required this.label, required this.onTap, this.icon, this.disabled = false});
+  const _PrimaryButton({
+    required this.label,
+    required this.onTap,
+    this.icon,
+    this.disabled = false,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -862,19 +1011,43 @@ class _PrimaryButton extends StatelessWidget {
       child: Container(
         height: 56,
         decoration: BoxDecoration(
-          color: disabled ? AppColors.bgCard : AppColors.primary,
+          color: disabled
+              ? AppColors.bgCard
+              : HelperFunctions.getPrimary(context),
           borderRadius: BorderRadius.circular(16),
           border: disabled ? Border.all(color: AppColors.divider) : null,
-          boxShadow: disabled ? null : [BoxShadow(color: AppColors.primary.withValues(alpha: 0.35), blurRadius: 20, spreadRadius: 1, offset: const Offset(0, 4))],
+          boxShadow: disabled
+              ? null
+              : [
+                  BoxShadow(
+                    color: HelperFunctions.getPrimary(
+                      context,
+                    ).withValues(alpha: 0.35),
+                    blurRadius: 20,
+                    spreadRadius: 1,
+                    offset: const Offset(0, 4),
+                  ),
+                ],
         ),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             if (icon != null) ...[
-              Icon(icon, color: disabled ? AppColors.textMuted : Colors.black, size: 18),
+              Icon(
+                icon,
+                color: disabled ? AppColors.textMuted : Colors.black,
+                size: 18,
+              ),
               const SizedBox(width: 8),
             ],
-            Text(label, style: TextStyle(color: disabled ? AppColors.textMuted : Colors.black, fontWeight: FontWeight.w700, fontSize: 15)),
+            Text(
+              label,
+              style: TextStyle(
+                color: disabled ? AppColors.textMuted : Colors.black,
+                fontWeight: FontWeight.w700,
+                fontSize: 15,
+              ),
+            ),
           ],
         ),
       ),
@@ -888,7 +1061,11 @@ class _RentalTermsCard extends StatelessWidget {
   final bool cpasAccepted;
   final bool billsIncluded;
 
-  const _RentalTermsCard({required this.housingAssistance, required this.cpasAccepted, required this.billsIncluded});
+  const _RentalTermsCard({
+    required this.housingAssistance,
+    required this.cpasAccepted,
+    required this.billsIncluded,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -898,16 +1075,56 @@ class _RentalTermsCard extends StatelessWidget {
       decoration: BoxDecoration(
         color: isDarkMode ? AppColors.bgCard : AppColors.bgCardLight,
         borderRadius: BorderRadius.circular(18),
-        border: Border.all(color: isDarkMode ? AppColors.divider : AppColors.borderLight),
-        boxShadow: isDarkMode ? null : [BoxShadow(color: Colors.black.withValues(alpha: 0.05), blurRadius: 12, offset: const Offset(0, 3))],
+        border: Border.all(
+          color: isDarkMode ? AppColors.divider : AppColors.borderLight,
+        ),
+        boxShadow: isDarkMode
+            ? null
+            : [
+                BoxShadow(
+                  color: Colors.black.withValues(alpha: 0.05),
+                  blurRadius: 12,
+                  offset: const Offset(0, 3),
+                ),
+              ],
       ),
       child: Column(
         children: [
-          _TermRow(icon: Icons.home_work_rounded, label: 'housing_assistance'.tr, sublabel: 'housing_assistance_sublabel'.tr, isActive: housingAssistance, badgeText: housingAssistance ? 'accepted_label'.tr : 'not_accepted_label'.tr),
-          Divider(color: isDarkMode ? AppColors.divider : AppColors.borderLight, height: 1),
-          _TermRow(icon: Icons.volunteer_activism_rounded, label: 'cpas_guarantee'.tr, sublabel: 'cpas_sublabel'.tr, isActive: cpasAccepted, badgeText: cpasAccepted ? 'accepted_label'.tr : 'not_accepted_label'.tr),
-          Divider(color: isDarkMode ? AppColors.divider : AppColors.borderLight, height: 1),
-          _TermRow(icon: Icons.bolt_rounded, label: billsIncluded ? 'all_bills_included'.tr : 'bills_extra'.tr, sublabel: billsIncluded ? 'utilities_list'.tr : 'utilities_separate'.tr, isActive: billsIncluded, badgeText: billsIncluded ? 'charges_incl'.tr : 'charges_excl'.tr),
+          _TermRow(
+            icon: Icons.home_work_rounded,
+            label: 'housing_assistance'.tr,
+            sublabel: 'housing_assistance_sublabel'.tr,
+            isActive: housingAssistance,
+            badgeText: housingAssistance
+                ? 'accepted_label'.tr
+                : 'not_accepted_label'.tr,
+          ),
+          Divider(
+            color: isDarkMode ? AppColors.divider : AppColors.borderLight,
+            height: 1,
+          ),
+          _TermRow(
+            icon: Icons.volunteer_activism_rounded,
+            label: 'cpas_guarantee'.tr,
+            sublabel: 'cpas_sublabel'.tr,
+            isActive: cpasAccepted,
+            badgeText: cpasAccepted
+                ? 'accepted_label'.tr
+                : 'not_accepted_label'.tr,
+          ),
+          Divider(
+            color: isDarkMode ? AppColors.divider : AppColors.borderLight,
+            height: 1,
+          ),
+          _TermRow(
+            icon: Icons.bolt_rounded,
+            label: billsIncluded ? 'all_bills_included'.tr : 'bills_extra'.tr,
+            sublabel: billsIncluded
+                ? 'utilities_list'.tr
+                : 'utilities_separate'.tr,
+            isActive: billsIncluded,
+            badgeText: billsIncluded ? 'charges_incl'.tr : 'charges_excl'.tr,
+          ),
         ],
       ),
     );
@@ -921,12 +1138,20 @@ class _TermRow extends StatelessWidget {
   final bool isActive;
   final String badgeText;
 
-  const _TermRow({required this.icon, required this.label, required this.sublabel, required this.isActive, required this.badgeText});
+  const _TermRow({
+    required this.icon,
+    required this.label,
+    required this.sublabel,
+    required this.isActive,
+    required this.badgeText,
+  });
 
   @override
   Widget build(BuildContext context) {
     final isDarkMode = HelperFunctions.isDarkMode(context);
-    final Color accent = isActive ? AppColors.primary : AppColors.dangerColor;
+    final Color accent = isActive
+        ? HelperFunctions.getPrimary(context)
+        : AppColors.dangerColor;
 
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 14),
@@ -936,7 +1161,9 @@ class _TermRow extends StatelessWidget {
             width: 40,
             height: 40,
             decoration: BoxDecoration(
-              color: isActive ? AppColors.primaryBg : AppColors.dangerColor.withValues(alpha: 0.08),
+              color: isActive
+                  ? AppColors.primaryBg
+                  : AppColors.dangerColor.withValues(alpha: 0.08),
               borderRadius: BorderRadius.circular(12),
             ),
             child: Icon(icon, color: accent, size: 20),
@@ -946,9 +1173,24 @@ class _TermRow extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(label, style: TextStyle(color: isDarkMode ? AppColors.textPrimary : AppColors.textBlack, fontWeight: FontWeight.w600, fontSize: 13.5)),
+                Text(
+                  label,
+                  style: TextStyle(
+                    color: isDarkMode
+                        ? AppColors.textPrimary
+                        : AppColors.textBlack,
+                    fontWeight: FontWeight.w600,
+                    fontSize: 13.5,
+                  ),
+                ),
                 const SizedBox(height: 2),
-                Text(sublabel, style: const TextStyle(color: AppColors.textMuted, fontSize: 11)),
+                Text(
+                  sublabel,
+                  style: const TextStyle(
+                    color: AppColors.textMuted,
+                    fontSize: 11,
+                  ),
+                ),
               ],
             ),
           ),
@@ -956,11 +1198,24 @@ class _TermRow extends StatelessWidget {
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
             decoration: BoxDecoration(
-              color: isActive ? AppColors.primaryBg : AppColors.dangerColor.withValues(alpha: 0.08),
+              color: isActive
+                  ? AppColors.primaryBg
+                  : AppColors.dangerColor.withValues(alpha: 0.08),
               borderRadius: BorderRadius.circular(20),
-              border: Border.all(color: isActive ? AppColors.primary.withValues(alpha: 0.4) : AppColors.dangerColor.withValues(alpha: 0.35)),
+              border: Border.all(
+                color: isActive
+                    ? HelperFunctions.getPrimary(context).withValues(alpha: 0.4)
+                    : AppColors.dangerColor.withValues(alpha: 0.35),
+              ),
             ),
-            child: Text(badgeText, style: TextStyle(color: accent, fontSize: 11, fontWeight: FontWeight.w600)),
+            child: Text(
+              badgeText,
+              style: TextStyle(
+                color: accent,
+                fontSize: 11,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
           ),
         ],
       ),

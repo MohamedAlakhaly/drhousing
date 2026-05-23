@@ -151,6 +151,7 @@ class EditPersonalInfoView extends StatelessWidget {
                                         onTap: () =>
                                             ctrl.selectEmploymentStatus(opt),
                                         isDarkMode: isDarkMode,
+                                        context: context
                                       ),
                                     )
                                     .toList(),
@@ -224,10 +225,10 @@ class EditPersonalInfoView extends StatelessWidget {
                         child: GlowContainer(
                           width: double.infinity,
                           padding: const EdgeInsets.symmetric(vertical: 18),
-                          color: AppColors.primary,
+                          color: HelperFunctions.getPrimary(context),
                           borderRadius: BorderRadius.circular(16),
                           glowColor:
-                              AppColors.primary.withValues(alpha: 0.40),
+                              HelperFunctions.getPrimary(context).withValues(alpha: 0.40),
                           spreadRadius: 2,
                           blurRadius: 22,
                           child: ctrl.isLoading
@@ -291,6 +292,7 @@ class EditPersonalInfoView extends StatelessWidget {
     required bool isSelected,
     required VoidCallback onTap,
     required bool isDarkMode,
+    required BuildContext context,
   }) {
     return GestureDetector(
       onTap: onTap,
@@ -301,12 +303,12 @@ class EditPersonalInfoView extends StatelessWidget {
           color: isSelected
               ? (isDarkMode
                   ? AppColors.primaryBg
-                  : AppColors.primary.withValues(alpha: 0.10))
+                  : HelperFunctions.getPrimary(context).withValues(alpha: 0.10))
               : (isDarkMode ? AppColors.bgSurface : AppColors.bgSurfaceLight),
           borderRadius: BorderRadius.circular(30),
           border: Border.all(
             color: isSelected
-                ? AppColors.primary
+                ? HelperFunctions.getPrimary(context)
                 : (isDarkMode ? AppColors.divider : AppColors.borderLight),
             width: 1.5,
           ),
@@ -314,7 +316,7 @@ class EditPersonalInfoView extends StatelessWidget {
         child: Text(
           label,
           style: TextStyle(
-            color: isSelected ? AppColors.primary : AppColors.textMuted,
+            color: isSelected ? HelperFunctions.getPrimary(context) : AppColors.textMuted,
             fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
             fontSize: 13,
           ),
@@ -360,10 +362,10 @@ class EditPersonalInfoView extends StatelessWidget {
                     decoration: BoxDecoration(
                       color: isDarkMode
                           ? AppColors.primaryBg
-                          : AppColors.primary.withValues(alpha: 0.10),
+                          : HelperFunctions.getPrimary(context).withValues(alpha: 0.10),
                       borderRadius: BorderRadius.circular(10),
                     ),
-                    child: Icon(icon, color: AppColors.primary, size: 18),
+                    child: Icon(icon, color: HelperFunctions.getPrimary(context), size: 18),
                   ),
                   const SizedBox(width: 12),
                   Text(
@@ -447,7 +449,7 @@ class _FieldCard extends StatelessWidget {
                 color: isDarkMode ? AppColors.textPrimary : AppColors.textBlack,
                 fontSize: 15,
               ),
-              cursorColor: AppColors.primary,
+              cursorColor: HelperFunctions.getPrimary(context),
               decoration: InputDecoration(
                 hintText: hint,
                 hintStyle: const TextStyle(
@@ -456,7 +458,7 @@ class _FieldCard extends StatelessWidget {
                 ),
                 prefixIcon: Padding(
                   padding: const EdgeInsets.only(left: 16, right: 12),
-                  child: Icon(icon, color: AppColors.primary, size: 18),
+                  child: Icon(icon, color: HelperFunctions.getPrimary(context), size: 18),
                 ),
                 prefixIconConstraints: const BoxConstraints(
                   minWidth: 0,
@@ -479,8 +481,8 @@ class _FieldCard extends StatelessWidget {
                 ),
                 focusedBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(14),
-                  borderSide: const BorderSide(
-                    color: AppColors.primary,
+                  borderSide: BorderSide(
+                    color: HelperFunctions.getPrimary(context),
                     width: 1.5,
                   ),
                 ),

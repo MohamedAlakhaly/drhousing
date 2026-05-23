@@ -87,12 +87,14 @@ class ChangeThemeView extends StatelessWidget {
                           isSelected: ctrl.themeMode == 'dark',
                           onTap: ctrl.changeToDarkMode,
                           isDarkMode: isDarkMode,
+                          context: context,
                         ),
                         _buildThemeButton(
                           label: 'lightButton'.tr,
                           isSelected: ctrl.themeMode == 'light',
                           onTap: ctrl.changeToLightMode,
                           isDarkMode: isDarkMode,
+                          context: context,
                         ),
                         _buildThemeButton(
                           label: 'systemButton'.tr,
@@ -100,6 +102,7 @@ class ChangeThemeView extends StatelessWidget {
                           onTap: ctrl.changeToSystemMode,
                           isDarkMode: isDarkMode,
                           icon: Icons.phone_android_rounded,
+                          context: context,
                         ),
                       ],
                     ),
@@ -118,6 +121,7 @@ class ChangeThemeView extends StatelessWidget {
     required bool isSelected,
     required VoidCallback onTap,
     required bool isDarkMode,
+    required BuildContext context,
     IconData? icon,
   }) {
     return GestureDetector(
@@ -127,12 +131,12 @@ class ChangeThemeView extends StatelessWidget {
         curve: Curves.ease,
         padding: const EdgeInsets.symmetric(horizontal: 28, vertical: 12),
         decoration: BoxDecoration(
-          color: isSelected ? AppColors.primary : Colors.transparent,
+          color: isSelected ? HelperFunctions.getPrimary(context) : Colors.transparent,
           borderRadius: BorderRadius.circular(50),
           boxShadow: isSelected
               ? [
                   BoxShadow(
-                    color: AppColors.primary.withValues(alpha: 0.3),
+                    color: HelperFunctions.getPrimary(context).withValues(alpha: 0.3),
                     blurRadius: 10,
                     spreadRadius: 1,
                   ),

@@ -12,17 +12,19 @@ class AdminBookingsController extends GetxController {
   final RxString errorMessage = ''.obs;
   final RxString selectedFilter = 'all'.obs;
 
-  static const _filters = ['all', 'pending', 'confirmed', 'cancelled', 'expired'];
+  static const _filters = [
+    'all',
+    'pending',
+    'confirmed',
+    'cancelled',
+    'expired',
+  ];
   List<String> get filters => _filters;
 
   List<AdminBookingModel> get filteredBookings {
     if (selectedFilter.value == 'all') return bookings.toList();
     if (selectedFilter.value == 'expired') {
-      return bookings
-          .where((b) =>
-              b.bookingDate.isBefore(DateTime.now()) &&
-              b.status.value == 'pending')
-          .toList();
+      return bookings.where((b) => b.status.value == 'expired').toList();
     }
     return bookings
         .where((b) => b.status.value == selectedFilter.value)
@@ -36,55 +38,70 @@ class AdminBookingsController extends GetxController {
   }
 
   Future<void> fetchBookings() async {
-  try {
-    isLoading.value = true;
-    errorMessage.value = '';
+    try {
+      isLoading.value = true;
+      
+      errorMessage.value = '';
 
-    // ١. جلب الحجوزات مع بيانات الشقة فقط
-    final bookingsResponse = await _supabase
-        .from('bookings')
-        .select('*, apartments!bookings_apartment_id_fkey(translations, title)')
-        .order('created_at', ascending: false);
+      // ١. جلب الحجوزات مع بيانات الشقة فقط
+      final bookingsResponse = await _supabase
+          .from('bookings')
+          .select(
+            '*, apartments!bookings_apartment_id_fkey(translations, title)',
+          )
+          .order('created_at', ascending: false);
 
-    // ٢. جلب بيانات المستخدمين بشكل منفصل
-    final userIds = (bookingsResponse as List)
-        .map((b) => b['user_id'] as String)
-        .toSet()
-        .toList();
+      // ٢. جلب بيانات المستخدمين بشكل منفصل
+      final userIds = (bookingsResponse as List)
+          .map((b) => b['user_id'] as String)
+          .toSet()
+          .toList();
 
-    final profilesResponse = await _supabase
-        .from('profiles')
-        .select('id, full_name, email, phone')
-        .inFilter('id', userIds);
+      final profilesResponse = await _supabase
+          .from('profiles')
+          .select('id, full_name, email, phone')
+          .inFilter('id', userIds);
 
-    // ٣. عمل Map للبروفايلات
-    final profilesMap = {
-      for (final p in profilesResponse as List)
-        p['id'] as String: p,
-    };
+      // ٣. عمل Map للبروفايلات
+      final profilesMap = {
+        for (final p in profilesResponse as List) p['id'] as String: p,
+      };
 
-    // ٤. دمج البيانات
-    bookings.value = (bookingsResponse).map((json) {
-      final userId = json['user_id'] as String;
-      final profile = profilesMap[userId] ?? {};
-      return AdminBookingModel.fromJson({
-        ...json,
-        'tenant_name': profile['full_name'] ?? '',
-        'tenant_email': profile['email'] ?? '',
-        'tenant_phone': profile['phone'] ?? '',
-      });
-    }).toList();
-
-  } on PostgrestException catch (e) {
-    errorMessage.value = e.message;
-    log('AdminBookingsController.fetchBookings [Postgrest]: ${e.message}');
-  } catch (e) {
-    errorMessage.value = 'unexpectedError'.tr;
-    log('AdminBookingsController.fetchBookings: $e');
-  } finally {
-    isLoading.value = false;
+      // ٤. دمج البيانات
+      bookings.value = (bookingsResponse).map((json) {
+        final userId = json['user_id'] as String;
+        final profile = profilesMap[userId] ?? {};
+        return AdminBookingModel.fromJson({
+          ...json,
+          'tenant_name': profile['full_name'] ?? '',
+          'tenant_email': profile['email'] ?? '',
+          'tenant_phone': profile['phone'] ?? '',
+        });
+      }).toList();
+    } on PostgrestException catch (e) {
+      errorMessage.value = e.message;
+      log('AdminBookingsController.fetchBookings [Postgrest]: ${e.message}');
+    } catch (e) {
+      errorMessage.value = 'unexpectedError'.tr;
+      log('AdminBookingsController.fetchBookings: $e');
+    } finally {
+      isLoading.value = false;
+    }
   }
-}
+
+  Future<void> markExpired(AdminBookingModel booking) async {
+    try {
+      await _supabase
+          .from('bookings')
+          .update({'status': 'expired'})
+          .eq('id', booking.id);
+      booking.status.value = 'expired';
+    } catch (e) {
+      log('AdminBookingsController.markExpired: $e');
+      Get.snackbar('errorTitle'.tr, 'unexpectedError'.tr);
+    }
+  }
+
   Future<void> deleteBooking(AdminBookingModel booking) async {
     try {
       await _supabase.from('bookings').delete().eq('id', booking.id);

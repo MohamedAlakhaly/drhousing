@@ -35,8 +35,8 @@ String _formatTime(DateTime dt) {
 
 // ── Status color helpers ──────────────────────────────────────────────────────
 
-Color _statusColor(String status) => switch (status) {
-  'confirmed' => AppColors.primary,
+Color _statusColor(String status,BuildContext context) => switch (status) {
+  'confirmed' => HelperFunctions.getPrimary(context),
   'cancelled' => AppColors.dangerColor,
   _ => const Color(0xFFFFA726), // pending → amber
 };
@@ -188,7 +188,7 @@ class BookingsView extends StatelessWidget {
                 }
 
                 return RefreshIndicator(
-                  color: AppColors.primary,
+                  color: HelperFunctions.getPrimary(context),
                   backgroundColor: isDarkMode ? AppColors.bgCard : Colors.white,
                   onRefresh: controller.fetchBookings,
                   child: ListView.builder(
@@ -239,12 +239,12 @@ class _FilterTab extends StatelessWidget {
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
         decoration: BoxDecoration(
           color: isSelected
-              ? AppColors.primary
+              ? HelperFunctions.getPrimary(context)
               : (isDarkMode ? AppColors.bgCard : AppColors.bgGrey),
           borderRadius: BorderRadius.circular(20),
           border: Border.all(
             color: isSelected
-                ? AppColors.primary
+                ? HelperFunctions.getPrimary(context)
                 : (isDarkMode ? AppColors.divider : AppColors.borderLight),
           ),
         ),
@@ -355,14 +355,14 @@ class _EmptyState extends StatelessWidget {
                         decoration: BoxDecoration(
                           gradient: LinearGradient(
                             colors: [
-                              AppColors.primary,
-                              AppColors.primary.withValues(alpha: 0.80),
+                              HelperFunctions.getPrimary(context),
+                              HelperFunctions.getPrimary(context).withValues(alpha: 0.80),
                             ],
                           ),
                           borderRadius: BorderRadius.circular(14),
                           boxShadow: [
                             BoxShadow(
-                              color: AppColors.primary.withValues(alpha: 0.35),
+                              color: HelperFunctions.getPrimary(context).withValues(alpha: 0.35),
                               blurRadius: 16,
                               offset: const Offset(0, 6),
                             ),
@@ -468,11 +468,11 @@ class _ErrorState extends StatelessWidget {
                         vertical: 14,
                       ),
                       decoration: BoxDecoration(
-                        color: AppColors.primary,
+                        color: HelperFunctions.getPrimary(context),
                         borderRadius: BorderRadius.circular(14),
                         boxShadow: [
                           BoxShadow(
-                            color: AppColors.primary.withValues(alpha: 0.35),
+                            color: HelperFunctions.getPrimary(context).withValues(alpha: 0.35),
                             blurRadius: 14,
                             offset: const Offset(0, 5),
                           ),
@@ -800,7 +800,7 @@ class _BookingCard extends StatelessWidget {
 
     return Obx(() {
       final status = booking.status.value;
-      final accentColor = _statusColor(status);
+      final accentColor = _statusColor(status, context);
       final accentBg = _statusBgColor(status);
 
       return Container(
@@ -964,12 +964,12 @@ class _BookingCard extends StatelessWidget {
                                         ),
                                       ),
                                       if (booking.bookingEndTime != null) ...[
-                                        const Padding(
+                                         Padding(
                                           padding: EdgeInsets.symmetric(horizontal: 6),
                                           child: Text(
                                             '→',
                                             style: TextStyle(
-                                              color: AppColors.primary,
+                                              color: HelperFunctions.getPrimary(context),
                                               fontSize: 12,
                                               fontWeight: FontWeight.w700,
                                             ),
@@ -1038,8 +1038,7 @@ class _BookingCard extends StatelessWidget {
                             ],
 
                             // ── Delete button (cancelled or confirmed) ────────────
-                            if (status == 'cancelled' ||
-                                status == 'confirmed') ...[
+                            if (status == 'cancelled') ...[
                               const SizedBox(height: 12),
                               Align(
                                 alignment: Alignment.centerRight,
@@ -1112,7 +1111,7 @@ class _StatusBadge extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final color = _statusColor(status);
+    final color = _statusColor(status, context);
     final bg = _statusBgColor(status);
     final label = switch (status) {
       'confirmed' => 'status_confirmed'.tr,

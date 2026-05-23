@@ -181,12 +181,12 @@ class _LangCard extends StatelessWidget {
               color: isSelected
                   ? (isDarkMode
                         ? AppColors.primaryBg
-                        : AppColors.primary.withValues(alpha: 0.08))
+                        : HelperFunctions.getPrimary(context).withValues(alpha: 0.08))
                   : (isDarkMode ? AppColors.bgCard : AppColors.bgCardLight),
               borderRadius: BorderRadius.circular(18),
               border: Border.all(
                 color: isSelected
-                    ? AppColors.primary
+                    ? HelperFunctions.getPrimary(context)
                     : (isDarkMode ? AppColors.divider : AppColors.borderLight),
                 width: isSelected ? 1.5 : 1,
               ),
@@ -195,7 +195,7 @@ class _LangCard extends StatelessWidget {
                   : [
                       BoxShadow(
                         color: isSelected
-                            ? AppColors.primary.withValues(alpha: 0.12)
+                            ? HelperFunctions.getPrimary(context).withValues(alpha: 0.12)
                             : Colors.black.withValues(alpha: 0.04),
                         blurRadius: isSelected ? 14 : 8,
                         offset: const Offset(0, 3),
@@ -212,7 +212,7 @@ class _LangCard extends StatelessWidget {
                   padding: const EdgeInsets.all(6),
                   decoration: BoxDecoration(
                     color: isSelected
-                        ? AppColors.primary.withValues(alpha: 0.12)
+                        ? HelperFunctions.getPrimary(context).withValues(alpha: 0.12)
                         : (isDarkMode
                               ? AppColors.bgSurface
                               : AppColors.bgSurfaceLight),
@@ -235,7 +235,7 @@ class _LangCard extends StatelessWidget {
                         style: TextStyle(
                           color: isDarkMode
                               ? isSelected
-                                    ? AppColors.primary
+                                    ? HelperFunctions.getPrimary(context)
                                     : AppColors.textPrimary
                               : isSelected
                               ? AppColors.textBlack
@@ -268,8 +268,8 @@ class _LangCard extends StatelessWidget {
                     child: Container(
                       width: 24,
                       height: 24,
-                      decoration: const BoxDecoration(
-                        color: AppColors.primary,
+                      decoration:  BoxDecoration(
+                        color: HelperFunctions.getPrimary(context),
                         shape: BoxShape.circle,
                       ),
                       child: const Icon(

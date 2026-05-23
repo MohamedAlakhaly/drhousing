@@ -90,14 +90,14 @@ class BlockedView extends StatelessWidget {
                       color: AppColors.dangerColor.withValues(alpha: 0.4),
                     ),
                   ),
-                  child: const Row(
+                  child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Icon(Icons.logout_rounded, color: AppColors.dangerColor, size: 18),
-                      SizedBox(width: 8),
+                      const Icon(Icons.logout_rounded, color: AppColors.dangerColor, size: 18),
+                      const SizedBox(width: 8),
                       Text(
-                        'sign_out',
-                        style: TextStyle(
+                        'sign_out'.tr,
+                        style: const TextStyle(
                           color: AppColors.dangerColor,
                           fontWeight: FontWeight.w600,
                           fontSize: 15,

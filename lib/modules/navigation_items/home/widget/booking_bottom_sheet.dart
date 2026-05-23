@@ -1,21 +1,11 @@
+import 'package:apartment_rentals/core/constant/app_colors.dart';
+import 'package:apartment_rentals/core/functions/helper_functions.dart';
 import 'package:apartment_rentals/models/static/apartment_model.dart';
 import 'package:apartment_rentals/modules/navigation_items/home/controller/apartment_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 
-// ── Colors ────────────────────────────────────────────────────
-const _bg = Color(0xFF121212);
-const _surface = Color(0xFF1E1E1E);
-const _card = Color(0xFF2A2A2A);
-const _neon = Color(0xFFCCFF00);
-const _neonDim = Color(0x33CCFF00);
-const _textPrimary = Color(0xFFF5F5F5);
-const _textMuted = Color(0xFF888888);
-const _divider = Color(0xFF2E2E2E);
-const _danger = Color(0xFFE24B4A);
-
-// ── Entry point ───────────────────────────────────────────────
 void showBookingBottomSheet(BuildContext context, ApartmentModel apartment) {
   showModalBottomSheet(
     context: context,
@@ -25,7 +15,6 @@ void showBookingBottomSheet(BuildContext context, ApartmentModel apartment) {
   );
 }
 
-// ── Sheet widget ──────────────────────────────────────────────
 class _BookingSheet extends StatefulWidget {
   final ApartmentModel apartment;
   const _BookingSheet({required this.apartment});
@@ -74,6 +63,9 @@ class _BookingSheetState extends State<_BookingSheet> {
   }
 
   Future<void> _pickTime({required bool isFrom}) async {
+    final isDark = HelperFunctions.isDarkMode(context);
+    final primary = HelperFunctions.getPrimary(context);
+
     final initial = isFrom
         ? (_fromTime ?? const TimeOfDay(hour: 9, minute: 0))
         : (_toTime ?? const TimeOfDay(hour: 11, minute: 0));
@@ -82,25 +74,34 @@ class _BookingSheetState extends State<_BookingSheet> {
       context: context,
       initialTime: initial,
       builder: (ctx, child) => Theme(
-        data: ThemeData.dark().copyWith(
-          colorScheme: const ColorScheme.dark(
-            primary: _neon,
-            onPrimary: Colors.black,
-            surface: _surface,
-            onSurface: _textPrimary,
-          ),
-          dialogTheme: const DialogThemeData(backgroundColor: _bg),
-          timePickerTheme: const TimePickerThemeData(
-            backgroundColor: _bg,
-            dialHandColor: _neon,
-            dialBackgroundColor: _card,
-            entryModeIconColor: _neon,
-            hourMinuteColor: _card,
-            hourMinuteTextColor: _textPrimary,
-            dayPeriodColor: _card,
-            dayPeriodTextColor: _neon,
-          ),
-        ),
+        data: isDark
+            ? ThemeData.dark().copyWith(
+                colorScheme: ColorScheme.dark(
+                  primary: primary,
+                  onPrimary: Colors.black,
+                  surface: AppColors.bgSurface,
+                  onSurface: AppColors.textPrimary,
+                ),
+                dialogTheme: const DialogThemeData(backgroundColor: AppColors.bgDark),
+                timePickerTheme: TimePickerThemeData(
+                  backgroundColor: AppColors.bgDark,
+                  dialHandColor: primary,
+                  dialBackgroundColor: AppColors.bgCard,
+                  entryModeIconColor: primary,
+                  hourMinuteColor: AppColors.bgCard,
+                  hourMinuteTextColor: AppColors.textPrimary,
+                  dayPeriodColor: AppColors.bgCard,
+                  dayPeriodTextColor: primary,
+                ),
+              )
+            : ThemeData.light().copyWith(
+                colorScheme: ColorScheme.light(
+                  primary: primary,
+                  onPrimary: Colors.white,
+                  surface: AppColors.bgLight,
+                  onSurface: AppColors.textBlack,
+                ),
+              ),
         child: child!,
       ),
     );
@@ -119,23 +120,15 @@ class _BookingSheetState extends State<_BookingSheet> {
 
   Future<void> _confirm() async {
     if (!canConfirm) return;
-
     setState(() => isLoading = true);
 
     final bookingStart = DateTime(
-      selectedDate!.year,
-      selectedDate!.month,
-      selectedDate!.day,
-      _fromTime!.hour,
-      _fromTime!.minute,
+      selectedDate!.year, selectedDate!.month, selectedDate!.day,
+      _fromTime!.hour, _fromTime!.minute,
     );
-
     final bookingEnd = DateTime(
-      selectedDate!.year,
-      selectedDate!.month,
-      selectedDate!.day,
-      _toTime!.hour,
-      _toTime!.minute,
+      selectedDate!.year, selectedDate!.month, selectedDate!.day,
+      _toTime!.hour, _toTime!.minute,
     );
 
     final ctrl = Get.find<ApartmentController>();
@@ -151,10 +144,16 @@ class _BookingSheetState extends State<_BookingSheet> {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = HelperFunctions.isDarkMode(context);
+    final primary = HelperFunctions.getPrimary(context);
+
     return Container(
-      decoration: const BoxDecoration(
-        color: _bg,
-        borderRadius: BorderRadius.vertical(top: Radius.circular(28)),
+      decoration: BoxDecoration(
+        color: isDark ? AppColors.bgDark : AppColors.bgLight,
+        borderRadius: const BorderRadius.vertical(top: Radius.circular(28)),
+        boxShadow: isDark
+            ? null
+            : [BoxShadow(color: Colors.black.withValues(alpha: 0.08), blurRadius: 20, offset: const Offset(0, -4))],
       ),
       padding: EdgeInsets.only(
         bottom: MediaQuery.of(context).viewInsets.bottom + 24,
@@ -170,7 +169,7 @@ class _BookingSheetState extends State<_BookingSheet> {
               width: 40,
               height: 4,
               decoration: BoxDecoration(
-                color: _divider,
+                color: isDark ? AppColors.divider : AppColors.borderLight,
                 borderRadius: BorderRadius.circular(2),
               ),
             ),
@@ -187,20 +186,16 @@ class _BookingSheetState extends State<_BookingSheet> {
                     Container(
                       padding: const EdgeInsets.all(8),
                       decoration: BoxDecoration(
-                        color: _neonDim,
+                        color: AppColors.primaryBg,
                         borderRadius: BorderRadius.circular(10),
                       ),
-                      child: const Icon(
-                        Icons.calendar_today_rounded,
-                        color: _neon,
-                        size: 16,
-                      ),
+                      child: Icon(Icons.calendar_today_rounded, color: primary, size: 16),
                     ),
                     const SizedBox(width: 12),
                     Text(
                       'book_a_viewing'.tr,
-                      style: const TextStyle(
-                        color: _textPrimary,
+                      style: TextStyle(
+                        color: isDark ? AppColors.textPrimary : AppColors.textBlack,
                         fontSize: 20,
                         fontWeight: FontWeight.w700,
                         letterSpacing: -0.4,
@@ -211,10 +206,7 @@ class _BookingSheetState extends State<_BookingSheet> {
                 const SizedBox(height: 6),
                 Text(
                   widget.apartment.title,
-                  style: const TextStyle(
-                    color: _textMuted,
-                    fontSize: 13,
-                  ),
+                  style: const TextStyle(color: AppColors.textMuted, fontSize: 13),
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                 ),
@@ -230,7 +222,7 @@ class _BookingSheetState extends State<_BookingSheet> {
             child: Text(
               'select_date_label'.tr,
               style: const TextStyle(
-                color: _textMuted,
+                color: AppColors.textMuted,
                 fontSize: 10,
                 fontWeight: FontWeight.w600,
                 letterSpacing: 1.2,
@@ -261,10 +253,14 @@ class _BookingSheetState extends State<_BookingSheet> {
                     margin: const EdgeInsets.symmetric(horizontal: 4),
                     width: 56,
                     decoration: BoxDecoration(
-                      color: isSelected ? _neon : _card,
+                      color: isSelected
+                          ? primary
+                          : (isDark ? AppColors.bgCard : AppColors.bgCardLight),
                       borderRadius: BorderRadius.circular(16),
                       border: Border.all(
-                        color: isSelected ? _neon : _divider,
+                        color: isSelected
+                            ? primary
+                            : (isDark ? AppColors.divider : AppColors.borderLight),
                         width: 1.5,
                       ),
                     ),
@@ -274,7 +270,7 @@ class _BookingSheetState extends State<_BookingSheet> {
                         Text(
                           _dayName(date),
                           style: TextStyle(
-                            color: isSelected ? Colors.black : _textMuted,
+                            color: isSelected ? Colors.black : AppColors.textMuted,
                             fontSize: 11,
                             fontWeight: FontWeight.w500,
                           ),
@@ -283,7 +279,9 @@ class _BookingSheetState extends State<_BookingSheet> {
                         Text(
                           '${date.day}',
                           style: TextStyle(
-                            color: isSelected ? Colors.black : _textPrimary,
+                            color: isSelected
+                                ? Colors.black
+                                : (isDark ? AppColors.textPrimary : AppColors.textBlack),
                             fontSize: 20,
                             fontWeight: FontWeight.w800,
                             height: 1,
@@ -293,7 +291,7 @@ class _BookingSheetState extends State<_BookingSheet> {
                         Text(
                           _monthName(date),
                           style: TextStyle(
-                            color: isSelected ? Colors.black54 : _textMuted,
+                            color: isSelected ? Colors.black54 : AppColors.textMuted,
                             fontSize: 10,
                           ),
                         ),
@@ -313,7 +311,7 @@ class _BookingSheetState extends State<_BookingSheet> {
             child: Text(
               'select_time_label'.tr,
               style: const TextStyle(
-                color: _textMuted,
+                color: AppColors.textMuted,
                 fontSize: 10,
                 fontWeight: FontWeight.w600,
                 letterSpacing: 1.2,
@@ -334,6 +332,8 @@ class _BookingSheetState extends State<_BookingSheet> {
                     time: _fromTime != null ? _formatTime(_fromTime!) : null,
                     hasError: false,
                     onTap: () => _pickTime(isFrom: true),
+                    isDark: isDark,
+                    primary: primary,
                   ),
                 ),
                 const SizedBox(width: 12),
@@ -343,20 +343,22 @@ class _BookingSheetState extends State<_BookingSheet> {
                     time: _toTime != null ? _formatTime(_toTime!) : null,
                     hasError: _hasTimeError,
                     onTap: () => _pickTime(isFrom: false),
+                    isDark: isDark,
+                    primary: primary,
                   ),
                 ),
               ],
             ),
           ),
 
-          // ── Inline time error ─────────────────────────────────
+          // ── Time error ────────────────────────────────────────
           if (_hasTimeError)
             Padding(
               padding: const EdgeInsets.only(top: 8, left: 24, right: 24),
               child: Text(
                 'invalid_time_range'.tr,
                 style: const TextStyle(
-                  color: _danger,
+                  color: AppColors.dangerColor,
                   fontSize: 12,
                   fontWeight: FontWeight.w500,
                 ),
@@ -375,17 +377,15 @@ class _BookingSheetState extends State<_BookingSheet> {
                 width: double.infinity,
                 height: 56,
                 decoration: BoxDecoration(
-                  color: canConfirm ? _neon : _card,
+                  color: canConfirm
+                      ? primary
+                      : (isDark ? AppColors.bgCard : AppColors.bgSurfaceLight),
                   borderRadius: BorderRadius.circular(16),
+                  border: canConfirm
+                      ? null
+                      : Border.all(color: isDark ? AppColors.divider : AppColors.borderLight),
                   boxShadow: canConfirm
-                      ? [
-                          BoxShadow(
-                            color: _neon.withValues(alpha: 0.35),
-                            blurRadius: 20,
-                            spreadRadius: 1,
-                            offset: const Offset(0, 4),
-                          ),
-                        ]
+                      ? [BoxShadow(color: primary.withValues(alpha: 0.35), blurRadius: 20, spreadRadius: 1, offset: const Offset(0, 4))]
                       : [],
                 ),
                 child: Center(
@@ -393,17 +393,14 @@ class _BookingSheetState extends State<_BookingSheet> {
                       ? const SizedBox(
                           width: 22,
                           height: 22,
-                          child: CircularProgressIndicator(
-                            color: Colors.black,
-                            strokeWidth: 2.5,
-                          ),
+                          child: CircularProgressIndicator(color: Colors.black, strokeWidth: 2.5),
                         )
                       : Text(
-                          canConfirm
-                              ? 'confirm_booking'.tr
-                              : 'select_date_time'.tr,
+                          canConfirm ? 'confirm_booking'.tr : 'select_date_time'.tr,
                           style: TextStyle(
-                            color: canConfirm ? Colors.black : _textMuted,
+                            color: canConfirm
+                                ? Colors.black
+                                : AppColors.textMuted,
                             fontWeight: FontWeight.w700,
                             fontSize: 15,
                           ),
@@ -418,26 +415,34 @@ class _BookingSheetState extends State<_BookingSheet> {
   }
 }
 
-// ── Time picker tile ──────────────────────────────────────────
+// ── Time picker tile ───────────────────────────────────────────────────────────
 class _TimePickerTile extends StatelessWidget {
   final String label;
   final String? time;
   final bool hasError;
   final VoidCallback onTap;
+  final bool isDark;
+  final Color primary;
 
   const _TimePickerTile({
     required this.label,
     required this.time,
     required this.hasError,
     required this.onTap,
+    required this.isDark,
+    required this.primary,
   });
 
   @override
   Widget build(BuildContext context) {
-    final borderColor = hasError ? _danger : (time != null ? _neon : _divider);
+    final borderColor = hasError
+        ? AppColors.dangerColor
+        : (time != null ? primary : (isDark ? AppColors.divider : AppColors.borderLight));
     final bgColor = hasError
-        ? const Color(0x1AE24B4A)
-        : (time != null ? _neonDim : _card);
+        ? AppColors.dangerBg
+        : (time != null
+            ? primary.withValues(alpha: 0.1)
+            : (isDark ? AppColors.bgCard : AppColors.bgCardLight));
 
     return GestureDetector(
       onTap: onTap,
@@ -455,7 +460,7 @@ class _TimePickerTile extends StatelessWidget {
             Text(
               label,
               style: const TextStyle(
-                color: _textMuted,
+                color: AppColors.textMuted,
                 fontSize: 10,
                 fontWeight: FontWeight.w600,
                 letterSpacing: 0.8,
@@ -467,15 +472,15 @@ class _TimePickerTile extends StatelessWidget {
                 Icon(
                   Icons.access_time_rounded,
                   size: 14,
-                  color: hasError ? _danger : (time != null ? _neon : _textMuted),
+                  color: hasError ? AppColors.dangerColor : (time != null ? primary : AppColors.textMuted),
                 ),
                 const SizedBox(width: 6),
                 Text(
                   time ?? '--:-- --',
                   style: TextStyle(
                     color: hasError
-                        ? _danger
-                        : (time != null ? _neon : _textMuted),
+                        ? AppColors.dangerColor
+                        : (time != null ? primary : AppColors.textMuted),
                     fontSize: 14,
                     fontWeight: FontWeight.w700,
                   ),

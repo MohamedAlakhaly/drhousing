@@ -1,0 +1,23 @@
+```bash
+flutter build web --release --no-tree-shake-icons
+email
+info@drhousing.be
+
+password
+B60139qiw0Dt942349Ts
+```
+// build Dr Housing web
+flutter build web --release --no-tree-shake-icons
+cd build/web
+vercel --prod
+
+aab file
+D:\customer_projects\apartment_rentals\build\app\outputs\bundle\release
+
+keystore
+DrHousing@2026
+
+
+keytool -list -v -keystore drhousing.keystore -alias drhousing
+
+keytool -list -v -keystore C:\Users\asus\.android\debug.keystore -alias androiddebugkey -storepass android -keypass android

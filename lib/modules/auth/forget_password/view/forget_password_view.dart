@@ -1,5 +1,6 @@
 import 'package:apartment_rentals/core/constant/app_colors.dart';
 import 'package:apartment_rentals/core/constant/app_routes.dart';
+import 'package:apartment_rentals/core/functions/helper_functions.dart';
 import 'package:apartment_rentals/global/auth_button.dart';
 import 'package:apartment_rentals/global/auth_text_field.dart';
 import 'package:apartment_rentals/modules/auth/forget_password/controller/forget_password_controller.getx.dart';
@@ -15,7 +16,7 @@ class ForgetPasswordView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final ctrl = Get.put(ForgetPasswordControllerImp());
-
+    final isDarkMode = HelperFunctions.isDarkMode(context);
     return Scaffold(
       body: SafeArea(
         child: SingleChildScrollView(
@@ -32,12 +33,12 @@ class ForgetPasswordView extends StatelessWidget {
                   width: 42,
                   height: 42,
                   decoration: BoxDecoration(
-                    color: AppColors.bgCard,
+                    color:isDarkMode ? AppColors.bgCard:Colors.grey[300],
                     borderRadius: BorderRadius.circular(12),
                   ),
-                  child: const Icon(
+                  child:  Icon(
                     Icons.arrow_back_ios_new_rounded,
-                    color: AppColors.textPrimary,
+                    color:isDarkMode ? AppColors.textPrimary:Colors.black,
                     size: 18,
                   ),
                 ),
@@ -52,13 +53,13 @@ class ForgetPasswordView extends StatelessWidget {
                   height: 90,
                   color: AppColors.primaryBg,
                   borderRadius: BorderRadius.circular(26),
-                  glowColor: AppColors.primary.withValues(alpha: 0.45),
+                  glowColor: HelperFunctions.getPrimary(context).withValues(alpha: 0.45),
                   blurRadius: 32,
                   spreadRadius: 2,
-                  child: const Center(
+                  child:  Center(
                     child: Icon(
                       Icons.lock_reset_rounded,
-                      color: AppColors.primary,
+                      color: HelperFunctions.getPrimary(context),
                       size: 42,
                     ),
                   ),
@@ -79,7 +80,7 @@ class ForgetPasswordView extends StatelessWidget {
                 child: Text(
                   'forgot_password_title'.tr,
                   style: TextStyle(
-                    color: AppColors.textPrimary,
+                    
                     fontSize: 28,
                     fontWeight: FontWeight.w800,
                     letterSpacing: -0.4,
@@ -148,7 +149,7 @@ class ForgetPasswordView extends StatelessWidget {
                       child: Text(
                         'sign_in_button'.tr,
                         style: TextStyle(
-                          color: AppColors.primary,
+                          color: HelperFunctions.getPrimary(context),
                           fontSize: 13,
                           fontWeight: FontWeight.w700,
                         ),

@@ -1,5 +1,6 @@
 import 'package:apartment_rentals/core/constant/app_colors.dart';
 import 'package:apartment_rentals/core/constant/app_routes.dart';
+import 'package:apartment_rentals/core/functions/helper_functions.dart';
 import 'package:apartment_rentals/global/auth_button.dart';
 import 'package:apartment_rentals/global/auth_text_field.dart';
 import 'package:apartment_rentals/modules/auth/reset_password/controller/reset_password_controller.dart';
@@ -54,13 +55,13 @@ class ResetPasswordView extends GetView<ResetPasswordControllerImp> {
                     height: 80,
                     color: AppColors.primaryBg,
                     borderRadius: BorderRadius.circular(22),
-                    glowColor: AppColors.primary.withValues(alpha: 0.40),
+                    glowColor: HelperFunctions.getPrimary(context).withValues(alpha: 0.40),
                     blurRadius: 28,
                     spreadRadius: 2,
-                    child: const Center(
+                    child:  Center(
                       child: Icon(
                         Icons.shield_rounded,
-                        color: AppColors.primary,
+                        color: HelperFunctions.getPrimary(context),
                         size: 36,
                       ),
                     ),
@@ -77,11 +78,10 @@ class ResetPasswordView extends GetView<ResetPasswordControllerImp> {
                 const SizedBox(height: 28),
 
                 // ── Headline ─────────────────────────────────────────────────
-                const Center(
+                Center(
                   child: Text(
-                    'New Password',
-                    style: TextStyle(
-                      color: AppColors.textPrimary,
+                    'reset_password_new_title'.tr,
+                    style: const TextStyle(
                       fontSize: 28,
                       fontWeight: FontWeight.w800,
                       letterSpacing: -0.4,
@@ -94,10 +94,10 @@ class ResetPasswordView extends GetView<ResetPasswordControllerImp> {
 
                 const SizedBox(height: 6),
 
-                const Center(
+                Center(
                   child: Text(
-                    'Enter a strong password for your account',
-                    style: TextStyle(color: AppColors.textMuted, fontSize: 13),
+                    'reset_password_new_content'.tr,
+                    style: const TextStyle(color: AppColors.textMuted, fontSize: 13),
                   ),
                 ).animate().fadeIn(delay: 200.ms, duration: 400.ms),
 
@@ -107,7 +107,7 @@ class ResetPasswordView extends GetView<ResetPasswordControllerImp> {
                 GetBuilder<ResetPasswordControllerImp>(
                   builder: (ctrl) => AuthTextField(
                     controller: ctrl.passwordController,
-                    hint: 'New password',
+                    hint: 'reset_password_new_hint'.tr,
                     prefixIcon: Iconsax.lock,
                     obscureText: ctrl.obscureText,
                     onToggleVisibility: ctrl.showPassword,
@@ -133,7 +133,7 @@ class ResetPasswordView extends GetView<ResetPasswordControllerImp> {
                 GetBuilder<ResetPasswordControllerImp>(
                   builder: (ctrl) => AuthTextField(
                     controller: ctrl.confirmPasswordController,
-                    hint: 'Confirm new password',
+                    hint: 'reset_password_confirm_hint'.tr,
                     prefixIcon: Iconsax.lock_1,
                     obscureText: ctrl.obscureConfirmText,
                     onToggleVisibility: ctrl.showConfirmPassword,
@@ -158,7 +158,7 @@ class ResetPasswordView extends GetView<ResetPasswordControllerImp> {
                 // ── Submit button ─────────────────────────────────────────────
                 Obx(
                   () => AuthButton(
-                    text: 'Reset Password',
+                    text: 'reset_password_button'.tr,
                     isLoading: controller.isLoading.value,
                     onTap: controller.resetPassword,
                   ),

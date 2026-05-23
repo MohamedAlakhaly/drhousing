@@ -1,5 +1,6 @@
 import 'dart:developer';
 import 'dart:convert';
+import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 import 'package:apartment_rentals/core/controllers/user_controller.dart';
 import 'package:apartment_rentals/core/widgets/paywall_bottom_sheet.dart';
@@ -7,7 +8,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:url_launcher/url_launcher.dart';
-
+import 'package:apartment_rentals/core/services/web_redirect_stub.dart'
+    if (dart.library.html) 'package:apartment_rentals/core/services/web_redirect.dart';
 final _supabase = Supabase.instance.client;
 
 const _supabaseUrl = 'https://bjrhshhmjjyggzfuogsu.supabase.co';
@@ -44,7 +46,16 @@ class PaymentService {
       final url = data['url'] as String?;
       if (url == null) throw Exception('No checkout URL returned');
 
-      await launchUrl(Uri.parse(url), mode: LaunchMode.externalApplication);
+      if (kIsWeb) {
+        assignUrl(url);
+      } else {
+        await launchUrl(
+          Uri.parse(url),
+          mode: defaultTargetPlatform == TargetPlatform.iOS
+              ? LaunchMode.inAppWebView
+              : LaunchMode.externalApplication,
+        );
+      }
     } catch (e) {
       log('PaymentService.startPremiumCheckout: $e');
       Get.snackbar(

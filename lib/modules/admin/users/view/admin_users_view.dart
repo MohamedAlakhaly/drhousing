@@ -241,7 +241,7 @@ class _UserRow extends StatelessWidget {
                           children: [
                             Expanded(
                               child: Text(
-                                user.fullName.isNotEmpty ? user.fullName : 'No name',
+                                user.fullName.isNotEmpty ? user.fullName : 'no_name_label'.tr,
                                 style: TextStyle(
                                   color: blocked ? AppColors.textMuted : AppColors.textPrimary,
                                   fontSize: 14,

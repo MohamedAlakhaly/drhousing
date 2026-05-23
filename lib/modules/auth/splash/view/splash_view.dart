@@ -1,5 +1,6 @@
 import 'package:apartment_rentals/core/constant/app_colors.dart';
 import 'package:apartment_rentals/core/constant/app_images.dart';
+import 'package:apartment_rentals/core/functions/helper_functions.dart';
 import 'package:apartment_rentals/modules/auth/splash/controller/splash_controller.getx.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
@@ -29,8 +30,8 @@ class SplashView extends StatelessWidget {
                     shape: BoxShape.circle,
                     gradient: RadialGradient(
                       colors: [
-                        AppColors.primary.withValues(alpha: 0.10),
-                        AppColors.primary.withValues(alpha: 0.03),
+                        HelperFunctions.getPrimary(context).withValues(alpha: 0.10),
+                        HelperFunctions.getPrimary(context).withValues(alpha: 0.03),
                         Colors.transparent,
                       ],
                     ),
@@ -50,14 +51,17 @@ class SplashView extends StatelessWidget {
                     height: 100,
                     color: AppColors.primaryBg,
                     borderRadius: BorderRadius.circular(28),
-                    glowColor: AppColors.primary.withValues(alpha: 0.50),
+                    glowColor: HelperFunctions.getPrimary(context).withValues(alpha: 0.50),
                     blurRadius: 40,
                     spreadRadius: 4,
                     child:  Center(
-                      child: Image.asset(
-                        AppImages.logo,
-                        width: 100,
-                        height: 100,
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(28),
+                        child: Image.asset(
+                          AppImages.logo,
+                          width: 100,
+                          height: 100,
+                        ),
                       ),
                     ),
                   )
@@ -75,7 +79,7 @@ class SplashView extends StatelessWidget {
                   const Text(
                     'Dr Housing',
                     style: TextStyle(
-                      color: AppColors.textPrimary,
+                      
                       fontSize: 42,
                       fontWeight: FontWeight.w800,
                       letterSpacing: 6,
@@ -111,8 +115,8 @@ class SplashView extends StatelessWidget {
                 child: Container(
                   width: 6,
                   height: 6,
-                  decoration: const BoxDecoration(
-                    color: AppColors.primary,
+                  decoration:  BoxDecoration(
+                    color: HelperFunctions.getPrimary(context),
                     shape: BoxShape.circle,
                   ),
                 )

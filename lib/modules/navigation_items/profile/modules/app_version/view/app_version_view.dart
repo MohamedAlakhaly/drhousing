@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_glow/flutter_glow.dart';
 import 'package:get/get.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 
 // ─── Screen ───────────────────────────────────────────────────────────────────
@@ -33,7 +34,9 @@ class _AppVersionViewState extends State<AppVersionView> {
     final bool isDarkMode = HelperFunctions.isDarkMode(context);
     final String version = _info?.version ?? '1.0.0';
     final String build = _info?.buildNumber ?? '1';
-    final String platform = defaultTargetPlatform == TargetPlatform.android
+    final String platform = kIsWeb
+        ? 'Web'
+        : defaultTargetPlatform == TargetPlatform.android
         ? 'Android'
         : 'iOS';
 
@@ -123,13 +126,11 @@ class _AppVersionViewState extends State<AppVersionView> {
                     // ── App name ──
                     Text(
                           'Dr Housing',
-                          style: TextStyle(
-                            color: isDarkMode
-                                ? AppColors.textPrimary
-                                : AppColors.textBlack,
-                            fontSize: 30,
+                          style: GoogleFonts.cormorantGaramond(
+                            color: const Color(0xffD4AF37),
+                            fontSize: 32,
                             fontWeight: FontWeight.w800,
-                            letterSpacing: -1,
+                            letterSpacing: -0.5,
                           ),
                         )
                         .animate()
@@ -232,15 +233,17 @@ class _AnimatedAppIconState extends State<_AnimatedAppIcon>
             width: 100,
             color: widget.isDarkMode ? AppColors.bgCard : Colors.white,
             borderRadius: BorderRadius.circular(28),
-            glowColor: AppColors.primary.withValues(alpha: 0.46),
+            glowColor: HelperFunctions.getPrimary(context).withValues(alpha: 0.46),
             spreadRadius: 3,
             blurRadius: 38,
             child: Center(
-              child: Image.asset(
-                AppImages.logo,
-                color: AppColors.primary,
-                width: 104,
-                height: 104,
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(28),
+                child: Image.asset(
+                  AppImages.logo,
+                  width: 104,
+                  height: 104,
+                ),
               ),
             ),
           ),
@@ -388,13 +391,13 @@ class _ChangelogSection extends StatelessWidget {
                     color: AppColors.primaryBg,
                     borderRadius: BorderRadius.circular(12),
                     border: Border.all(
-                      color: AppColors.primary.withValues(alpha: 0.40),
+                      color: HelperFunctions.getPrimary(context).withValues(alpha: 0.40),
                     ),
                   ),
                   child: Text(
                     'v$version',
-                    style: const TextStyle(
-                      color: AppColors.primary,
+                    style:  TextStyle(
+                      color: HelperFunctions.getPrimary(context),
                       fontSize: 11,
                       fontWeight: FontWeight.w700,
                       letterSpacing: 0.3,
@@ -474,7 +477,7 @@ class _PrivilegeItem extends StatelessWidget {
                       color: AppColors.primaryBg,
                       borderRadius: BorderRadius.circular(10),
                     ),
-                    child: Icon(icon, color: AppColors.primary, size: 17),
+                    child: Icon(icon, color: HelperFunctions.getPrimary(context), size: 17),
                   ),
                   const SizedBox(width: 14),
                   Expanded(
@@ -497,9 +500,9 @@ class _PrivilegeItem extends StatelessWidget {
                       color: AppColors.primaryBg,
                       shape: BoxShape.circle,
                     ),
-                    child: const Icon(
+                    child: Icon(
                       Icons.check_rounded,
-                      color: AppColors.primary,
+                      color: HelperFunctions.getPrimary(context),
                       size: 13,
                     ),
                   ),
@@ -542,22 +545,22 @@ class _UpToDateBadge extends StatelessWidget {
             color: AppColors.primaryBg,
             borderRadius: BorderRadius.circular(16),
             border: Border.all(
-              color: AppColors.primary.withValues(alpha: 0.36),
+              color: HelperFunctions.getPrimary(context).withValues(alpha: 0.36),
             ),
           ),
           child: Row(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Icon(
+               Icon(
                 Icons.check_circle_rounded,
-                color: AppColors.primary,
+                color: HelperFunctions.getPrimary(context),
                 size: 18,
               ),
-              SizedBox(width: 9),
+              const SizedBox(width: 9),
               Text(
-                'up_to_date_msg'.tr,
-                style: TextStyle(
-                  color: AppColors.primary,
+                kIsWeb ? 'web_latest_version'.tr : 'up_to_date_msg'.tr,
+                style:  TextStyle(
+                  color: HelperFunctions.getPrimary(context),
                   fontSize: 13.5,
                   fontWeight: FontWeight.w600,
                 ),
@@ -574,7 +577,6 @@ class _UpToDateBadge extends StatelessWidget {
         );
   }
 }
-
 // ── Shared ─────────────────────────────────────────────────────────────────────
 
 BoxDecoration _cardDecoration(bool isDarkMode) {

@@ -38,7 +38,7 @@ class ProfileView extends StatelessWidget {
                       vertical: 16,
                     ),
                     child: Text(
-                      'profileTitle'.tr,
+                      'profile_title'.tr,
                       style: TextStyle(
                         color: isDarkMode
                             ? AppColors.textPrimary
@@ -54,7 +54,7 @@ class ProfileView extends StatelessWidget {
                   .slideY(begin: -0.1, curve: Curves.easeOut),
 
               // ── Avatar + name ────────────────────────────────────────────
-              _buildProfileSection(userController, isDarkMode),
+              _buildProfileSection(userController, isDarkMode, context,),
 
               const SizedBox(height: 8),
 
@@ -66,6 +66,7 @@ class ProfileView extends StatelessWidget {
                 delay: 400.ms,
                 items: [
                   _buildMenuItem(
+                    context: context,
                     isDarkMode: isDarkMode,
                     icon: Icons.badge_outlined,
                     title: 'my_tenant_card'.tr,
@@ -74,6 +75,7 @@ class ProfileView extends StatelessWidget {
                     onTap: () => Get.to(() => const TenantProfileView()),
                   ),
                   _buildMenuItem(
+                    context: context,
                     isDarkMode: isDarkMode,
                     icon: Icons.workspace_premium_outlined,
                     title: 'my_subscriptions'.tr,
@@ -94,6 +96,7 @@ class ProfileView extends StatelessWidget {
                 delay: 540.ms,
                 items: [
                   _buildMenuItem(
+                    context: context,
                     isDarkMode: isDarkMode,
                     icon: Icons.language_outlined,
                     title: 'manageLanguageAppBarTitle'.tr,
@@ -107,6 +110,7 @@ class ProfileView extends StatelessWidget {
                     onTap: () => Get.to(() => const ManageLanguageView()),
                   ),
                   _buildMenuItem(
+                    context: context,
                     isDarkMode: isDarkMode,
                     icon: Icons.dark_mode_outlined,
                     title: 'visual_mode'.tr,
@@ -117,6 +121,7 @@ class ProfileView extends StatelessWidget {
                     onTap: () => Get.to(() => const ChangeThemeView()),
                   ),
                   _buildMenuItem(
+                    context: context,
                     isDarkMode: isDarkMode,
                     icon: Icons.info_outline_rounded,
                     title: 'app_info'.tr,
@@ -125,6 +130,7 @@ class ProfileView extends StatelessWidget {
                     onTap: () => Get.to(() => const AppInfoView()),
                   ),
                   _buildMenuItem(
+                    context: context,
                     isDarkMode: isDarkMode,
                     icon: Icons.system_update_outlined,
                     title: 'app_version'.tr,
@@ -148,6 +154,7 @@ class ProfileView extends StatelessWidget {
                       items: [
                         if (userController.isSuperAdmin)
                           _buildMenuItem(
+                            context: context,
                             isDarkMode: isDarkMode,
                             icon: Icons.dashboard_outlined,
                             title: 'admin_dashboard_title'.tr,
@@ -157,6 +164,7 @@ class ProfileView extends StatelessWidget {
                                 Get.to(() => const AdminDashboardView()),
                           ),
                         _buildMenuItem(
+                          context: context,
                           isDarkMode: isDarkMode,
                           icon: Icons.calendar_month_outlined,
                           title: 'admin_bookings_title'.tr,
@@ -184,7 +192,7 @@ class ProfileView extends StatelessWidget {
     );
   }
 
-  Widget _buildProfileSection(UserController userController, bool isDarkMode) {
+  Widget _buildProfileSection(UserController userController, bool isDarkMode,BuildContext context) {
     bool isPremium = userController.isPremium;
     return Obx(() {
       return Padding(
@@ -197,7 +205,7 @@ class ProfileView extends StatelessWidget {
                   height: 72,
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
-                    border: Border.all(color: AppColors.primary, width: 2),
+                    border: Border.all(color: HelperFunctions.getPrimary(context), width: 2),
                   ),
                   child: Padding(
                     padding: const EdgeInsets.all(3),
@@ -211,8 +219,8 @@ class ProfileView extends StatelessWidget {
                           HelperFunctions().getInitials(
                             userController.displayName,
                           ),
-                          style: const TextStyle(
-                            color: AppColors.primary,
+                          style:  TextStyle(
+                            color: HelperFunctions.getPrimary(context),
                             fontSize: 22,
                             fontWeight: FontWeight.w700,
                           ),
@@ -281,7 +289,7 @@ class ProfileView extends StatelessWidget {
                           borderRadius: BorderRadius.circular(20),
                           border: Border.all(
                             color: isPremium
-                                ? AppColors.primary
+                                ? HelperFunctions.getPrimary(context)
                                 : AppColors.dangerColor,
                             width: isPremium ? 1 : 0,
                           ),
@@ -294,7 +302,7 @@ class ProfileView extends StatelessWidget {
                                   ? Icons.workspace_premium_rounded
                                   : Icons.person_outline_rounded,
                               color: isPremium
-                                  ? AppColors.primary
+                                  ? HelperFunctions.getPrimary(context)
                                   : AppColors.dangerColor,
                               size: 12,
                             ),
@@ -303,7 +311,7 @@ class ProfileView extends StatelessWidget {
                               isPremium ? 'premium_badge'.tr : 'basic_badge'.tr,
                               style: TextStyle(
                                 color: isPremium
-                                    ? AppColors.primary
+                                    ? HelperFunctions.getPrimary(context)
                                     : AppColors.dangerColor,
                                 fontSize: 10,
                                 fontWeight: FontWeight.w700,
@@ -410,6 +418,7 @@ class ProfileView extends StatelessWidget {
     bool isSecondary = false,
     required Duration delay,
     VoidCallback? onTap,
+    required BuildContext context
   }) {
     return GestureDetector(
       onTap: onTap,
@@ -443,7 +452,7 @@ class ProfileView extends StatelessWidget {
               ),
               child: Icon(
                 icon,
-                color: isSecondary ? AppColors.textMuted : AppColors.primary,
+                color: isSecondary ? AppColors.textMuted : HelperFunctions.getPrimary(context),
                 size: 17,
               ),
             ),

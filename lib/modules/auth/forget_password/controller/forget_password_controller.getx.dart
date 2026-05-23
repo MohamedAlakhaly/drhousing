@@ -1,5 +1,6 @@
 import 'package:apartment_rentals/core/constant/app_routes.dart';
 import 'package:apartment_rentals/core/services/app_services.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
@@ -27,6 +28,9 @@ class ForgetPasswordControllerImp extends ForgetPasswordController {
 
       await supabase.auth.resetPasswordForEmail(
         emailController.text.trim(),
+        redirectTo: kIsWeb
+      ? 'https://drhousing.be'
+      : 'io.supabase.apartmentrentals://login-callback',
       );
 
       Get.offAllNamed(AppRoutes.successSendEmail);

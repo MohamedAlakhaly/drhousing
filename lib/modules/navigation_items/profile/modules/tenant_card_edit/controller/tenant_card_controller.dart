@@ -16,12 +16,12 @@ class TenantCardController extends GetxController {
 
   final RxString selectedMaritalStatus = ''.obs;
   final RxDouble monthlyBudget = 0.0.obs;
-  final RxInt occupantsCount = 0.obs;
+  final RxInt occupantsCount = 1.obs;
   final Rx<bool?> hasPets = Rx<bool?>(null);
 
   bool get isEmpty =>
     selectedMaritalStatus.value.isEmpty &&
-    occupantsCount.value == 0 &&
+    occupantsCount.value == 1 &&
     hasPets.value == null &&
     selectedCities.isEmpty;
 

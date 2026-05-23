@@ -52,11 +52,14 @@ class GoogleAuthService {
 
   // في GoogleAuthService أضف دالة منفصلة للويب
 static Future<void> signInWithGoogleWeb() async {
+   final redirectTo = kIsWeb
+      ? (kDebugMode
+          ? 'http://localhost:5000'      // development
+          : 'https://drhousing.be')      // production
+      : 'io.supabase.apartmentrentals://login-callback';
   await supabase.auth.signInWithOAuth(
     OAuthProvider.google,
-    redirectTo: kIsWeb
-        ? 'http://localhost:5000'
-        : 'io.supabase.apartmentrentals://login-callback',
+    redirectTo: redirectTo,
     queryParams: {
       'prompt': 'select_account',
       'access_type': 'offline',

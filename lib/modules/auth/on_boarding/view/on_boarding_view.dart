@@ -1,4 +1,5 @@
 import 'package:apartment_rentals/core/constant/app_colors.dart';
+import 'package:apartment_rentals/core/functions/helper_functions.dart';
 import 'package:apartment_rentals/models/data/on_boarding_data.dart';
 import 'package:apartment_rentals/modules/auth/on_boarding/controller/on_boarding_controller.getx.dart';
 import 'package:flutter/material.dart';
@@ -83,7 +84,7 @@ class OnBoardingView extends StatelessWidget {
                           height: 7,
                           decoration: BoxDecoration(
                             color: ctrl.currentPage == i
-                                ? AppColors.primary
+                                ? HelperFunctions.getPrimary(context)
                                 : AppColors.bgCard,
                             borderRadius: BorderRadius.circular(4),
                           ),
@@ -100,11 +101,11 @@ class OnBoardingView extends StatelessWidget {
                         width: double.infinity,
                         height: 56,
                         decoration: BoxDecoration(
-                          color: AppColors.primary,
+                          color: HelperFunctions.getPrimary(context),
                           borderRadius: BorderRadius.circular(16),
                           boxShadow: [
                             BoxShadow(
-                              color: AppColors.primary.withValues(alpha: 0.35),
+                              color: HelperFunctions.getPrimary(context).withValues(alpha: 0.35),
                               blurRadius: 20,
                               spreadRadius: 1,
                               offset: const Offset(0, 4),
@@ -144,6 +145,7 @@ class _SlidePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    bool isDarkMode = HelperFunctions.isDarkMode(context);
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 24),
       child: Column(
@@ -154,7 +156,7 @@ class _SlidePage extends StatelessWidget {
             width: double.infinity,
             height: 260,
             decoration: BoxDecoration(
-              color: AppColors.bgCard,
+              color:isDarkMode? AppColors.bgCard:Colors.grey[300],
               borderRadius: BorderRadius.circular(28),
               border: Border.all(color: AppColors.divider),
             ),
@@ -169,7 +171,7 @@ class _SlidePage extends StatelessWidget {
                     shape: BoxShape.circle,
                     gradient: RadialGradient(
                       colors: [
-                        AppColors.primary.withValues(alpha: 0.10),
+                        HelperFunctions.getPrimary(context).withValues(alpha: 0.10),
                         Colors.transparent,
                       ],
                     ),

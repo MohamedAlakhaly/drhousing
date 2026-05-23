@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_glow/flutter_glow.dart';
 import 'package:get/get.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -157,14 +158,15 @@ class _HeroSection extends StatelessWidget {
                 width: 96,
                 color: isDarkMode ? AppColors.bgCard : Colors.white,
                 borderRadius: BorderRadius.circular(26),
-                glowColor: AppColors.primary.withValues(alpha: 0.42),
+                glowColor: HelperFunctions.getPrimary(
+                  context,
+                ).withValues(alpha: 0.42),
                 spreadRadius: 2,
                 blurRadius: 34,
                 child: Center(
-                  child: Image.asset(
-                    AppImages.logo,
-                    width: 100,
-                    height: 100,
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(26),
+                    child: Image.asset(AppImages.logo, width: 100, height: 100),
                   ),
                 ),
               )
@@ -177,13 +179,11 @@ class _HeroSection extends StatelessWidget {
           // ── App name ──
           Text(
                 'Dr Housing',
-                style: TextStyle(
-                  color: isDarkMode
-                      ? AppColors.textPrimary
-                      : AppColors.textBlack,
+                style: GoogleFonts.cormorantGaramond(
+                  color: const Color(0xffD4AF37),
                   fontSize: 32,
                   fontWeight: FontWeight.w800,
-                  letterSpacing: -1.2,
+                  letterSpacing: -0.5,
                 ),
               )
               .animate()
@@ -211,13 +211,15 @@ class _HeroSection extends StatelessWidget {
                   color: AppColors.primaryBg,
                   borderRadius: BorderRadius.circular(20),
                   border: Border.all(
-                    color: AppColors.primary.withValues(alpha: 0.40),
+                    color: HelperFunctions.getPrimary(
+                      context,
+                    ).withValues(alpha: 0.40),
                   ),
                 ),
                 child: Text(
                   'v$version',
-                  style: const TextStyle(
-                    color: AppColors.primary,
+                  style: TextStyle(
+                    color: HelperFunctions.getPrimary(context),
                     fontSize: 12,
                     fontWeight: FontWeight.w700,
                     letterSpacing: 0.6,
@@ -373,10 +375,16 @@ class _FeatureItem extends StatelessWidget {
                     decoration: BoxDecoration(
                       color: isDarkMode
                           ? AppColors.primaryBg
-                          : AppColors.primary.withValues(alpha: 0.10),
+                          : HelperFunctions.getPrimary(
+                              context,
+                            ).withValues(alpha: 0.10),
                       borderRadius: BorderRadius.circular(12),
                     ),
-                    child: Icon(icon, color: AppColors.primary, size: 19),
+                    child: Icon(
+                      icon,
+                      color: HelperFunctions.getPrimary(context),
+                      size: 19,
+                    ),
                   ),
                   const SizedBox(width: 14),
                   Expanded(
@@ -494,26 +502,59 @@ class _LegalSection extends StatelessWidget {
                       onTap: () {
                         Get.to(
                           () => Theme(
-                            data: ThemeData.dark().copyWith(
-                              colorScheme: const ColorScheme.dark(
-                                primary: Color(0xFFCCFF00),
-                                onPrimary: Colors.black,
-                                surface: Color(0xFF1E1E1E),
-                                onSurface: Color(0xFFF5F5F5),
-                              ),
-                              scaffoldBackgroundColor: const Color(0xFF0F0F0F),
-                              appBarTheme: const AppBarTheme(
-                                backgroundColor: Color(0xFF0F0F0F),
-                                foregroundColor: Color(0xFFF5F5F5),
-                                elevation: 0,
-                              ),
-                              cardColor: const Color(0xFF1E1E1E),
-                              dividerColor: const Color(0xFF2E2E2E),
-                              textTheme: const TextTheme(
-                                bodyMedium: TextStyle(color: Color(0xFF888888)),
-                                bodyLarge: TextStyle(color: Color(0xFFF5F5F5)),
-                              ),
-                            ),
+                            data: isDarkMode
+                                ? ThemeData.dark().copyWith(
+                                    colorScheme: ColorScheme.dark(
+                                      primary: HelperFunctions.getPrimary(
+                                        context,
+                                      ),
+                                      onPrimary: Colors.black,
+                                      surface: AppColors.bgSurface,
+                                      onSurface: AppColors.textPrimary,
+                                    ),
+                                    scaffoldBackgroundColor: AppColors.bgDark,
+                                    appBarTheme: AppBarTheme(
+                                      backgroundColor: AppColors.bgDark,
+                                      foregroundColor: AppColors.textPrimary,
+                                      elevation: 0,
+                                    ),
+                                    cardColor: AppColors.bgCard,
+                                    dividerColor: AppColors.divider,
+                                    textTheme: TextTheme(
+                                      bodyMedium: TextStyle(
+                                        color: AppColors.textMuted,
+                                      ),
+                                      bodyLarge: TextStyle(
+                                        color: AppColors.textPrimary,
+                                      ),
+                                    ),
+                                  )
+                                : ThemeData.light().copyWith(
+                                    colorScheme: ColorScheme.light(
+                                      primary: HelperFunctions.getPrimary(
+                                        context,
+                                      ),
+                                      onPrimary: Colors.white,
+                                      surface: AppColors.bgLight,
+                                      onSurface: AppColors.textBlack,
+                                    ),
+                                    scaffoldBackgroundColor: AppColors.bgLight,
+                                    appBarTheme: AppBarTheme(
+                                      backgroundColor: AppColors.bgLight,
+                                      foregroundColor: AppColors.textBlack,
+                                      elevation: 0,
+                                    ),
+                                    cardColor: AppColors.bgCardLight,
+                                    dividerColor: AppColors.borderLight,
+                                    textTheme: TextTheme(
+                                      bodyMedium: TextStyle(
+                                        color: AppColors.textMuted,
+                                      ),
+                                      bodyLarge: TextStyle(
+                                        color: AppColors.textBlack,
+                                      ),
+                                    ),
+                                  ),
                             child: LicensePage(
                               applicationName: 'Dr Housing',
                               applicationVersion: '1.0.0',

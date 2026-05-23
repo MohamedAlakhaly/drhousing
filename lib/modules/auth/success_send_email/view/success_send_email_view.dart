@@ -13,6 +13,7 @@ class SuccessSendEmailView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    bool isDarkMode = HelperFunctions.isDarkMode(context);
     final ctrl = Get.put(SuccessSendEmailControllerImp());
 
     return Scaffold(
@@ -29,7 +30,7 @@ class SuccessSendEmailView extends StatelessWidget {
                 child: GlowContainer(
                   width: 110,
                   height: 110,
-                  color: AppColors.primary,
+                  color: HelperFunctions.getPrimary(context),
                   shape: BoxShape.circle,
                   glowColor: AppColors.primary.withValues(alpha: 0.50),
                   blurRadius: 40,
@@ -64,7 +65,7 @@ class SuccessSendEmailView extends StatelessWidget {
                 'success_send_email_title'.tr,
                 textAlign: TextAlign.center,
                 style: TextStyle(
-                  color: AppColors.textPrimary,
+                  
                   fontSize: 30,
                   fontWeight: FontWeight.w800,
                   letterSpacing: -0.5,
@@ -116,13 +117,13 @@ class SuccessSendEmailView extends StatelessWidget {
               Container(
                 padding: const EdgeInsets.all(16),
                 decoration: BoxDecoration(
-                  color: AppColors.bgCard,
+                  color: isDarkMode ? AppColors.bgCard : Colors.grey[300],
                   borderRadius: BorderRadius.circular(14),
-                  border: Border.all(color: AppColors.divider),
+                  border: Border.all(color:isDarkMode? AppColors.divider:AppColors.textMuted),
                 ),
                 child: Row(
                   children: [
-                    Icon(Iconsax.info_circle, color: AppColors.primary, size: 18),
+                    Icon(Iconsax.info_circle, color: HelperFunctions.getPrimary(context), size: 18),
                     SizedBox(width: 12),
                     Expanded(
                       child: Text(

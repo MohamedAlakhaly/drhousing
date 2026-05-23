@@ -55,7 +55,7 @@ Map<String, String> english = {
   'continue_with_google_button': 'Continue with Google',
   'or': 'or',
   'choose_auth_method_footer':
-      'By continuing you agree to our Terms of Service\nand Privacy Policy.',
+      'By continuing you agree to our',
 
   //! sign in view
   'welcome_back_in_app_title': 'Welcome Back',
@@ -75,7 +75,9 @@ Map<String, String> english = {
   'full_name': 'Full Name',
   //? 'email' => sign in view,
   //? 'password' => sign in view,
-  'agree_privacy': 'I agree to the Terms of Service and Privacy Policy',
+  'agree_privacy': 'I agree to the',
+  'and':'and',
+
   'create_account_button': 'Create Account',
   'have_account': 'Already have an account? ',
   'account_created_title': 'Welcome Aboard!',
@@ -106,6 +108,13 @@ Map<String, String> english = {
   'access_temporarily_blocked_title': 'Access Temporarily Blocked',
   'access_temporarily_blocked_content':
       'We have blocked all requests from this device due to unusual activity. Please try again later to ensure your account\'s security.',
+      'resend_email_not_found': 'Email address not found. Please sign up again.',
+'resend_success_title': 'Email Sent',
+'resend_success_body': 'A new confirmation email has been sent. Check your inbox.',
+'resend_failed': 'Failed to resend email. Please try again.',
+'resend_button': 'Resend Email',
+'resend_cooldown': 'Resend in {seconds}s',
+'spam_message': 'Can\'t find the email? Check your spam or junk folder.',
 
   //! forget password
   'forgot_password_title': 'Forgot Password?',
@@ -128,8 +137,8 @@ Map<String, String> english = {
       'Check your inbox for the reset link.\nFollow the instructions to regain access.',
   //? 'open_email_button': 'Open Email App',
   //? 'back_to_sign_in': 'Back to Sign In',
-  'spam_message':
-      'Can\'t find the email? Check your spam or\njunk folder — it may have ended up there.',
+  // 'spam_message':
+      // 'Can\'t find the email? Check your spam or\njunk folder — it may have ended up there.',
   'email_failed_to_open_message_title': 'Warning',
   'email_failed_to_open_message_content':
       'Please manually open the Mail app to check the message.',
@@ -215,9 +224,9 @@ Map<String, String> english = {
   'navigation_menu_profile': 'Profile',
 
   //! change app theme
-  'changeAppThemeTitle': 'Choose a style',
+  'changeAppThemeTitle': 'Choose Your Theme',
   'changeAppThemeDescription':
-      'Pop or subtle. Day or night customize your interface.',
+      'Select the appearance that suits you best. Changes apply instantly.',
   'lightButton': 'Light',
   'darkButton': 'Dark',
   'systemButton': 'System',
@@ -234,91 +243,6 @@ Map<String, String> english = {
   'lang_fr': 'French',
   'lang_en': 'English',
 
-  //! About App
-  'aboutAppAppbar': 'About App',
-  'aboutAppSectionTitle': 'About the App',
-  'aboutAppContent':
-      'The app aims to organize daily life within the residence, facilitate communication between residents and management, and improve order, cleanliness, and discipline.',
-  'appGoalsTitle': 'App Goals',
-  'appGoalsFooter': 'Organization – Communication – Smart Management',
-  'goal1': 'Organizing shared tasks like cleaning schedules',
-  'goal2': 'Facilitating communication between residents and management',
-  'goal3': 'Posting events and activities within the residence',
-  'goal4': 'Promoting commitment to order and discipline',
-  'goal5': 'Providing a safe and organized living environment for everyone',
-  'goal6': 'Improving quality of life within the shared residence',
-  'targetGroupTitle': 'Target Group',
-  'targetGroupContent':
-      '• Residents within the housing\n• Housing management and supervisors',
-  'mainFeaturesTitle': 'Main Features',
-  'appVisionTitle': 'App Vision',
-  'appVisionDescription':
-      'Transforming shared housing into an organized and smart environment that relies on technology to reduce problems and improve the quality of life for residents.',
-  'appInitiativeTitle': 'App Development Initiative',
-  'appInitiativeContent1':
-      'This app was developed as a technical initiative to organize housing and improve the quality of life for residents.',
-  'appInitiativeContent2':
-      'It aims to support management and facilitate communication within the housing.',
-  'developerCredit': 'Designed & Developed by:\nMohamed Al-Akhali',
-  //? extra services
-  'eventsTitle': 'Events',
-  'eventsContent':
-      'Stay updated with activities, meetings, and announcements inside the residence.',
-
-  'guidelinesTitle': 'Guidelines',
-  'guidelinesContent':
-      'Clear instructions and rules to help you live comfortably and avoid issues.',
-
-  'settingsTitle': 'Settings',
-  'settingsContent':
-      'Control language, theme, and personalize your app experience easily.',
-
-  'profileTitle': 'Profile',
-  'profileContent':
-      'Manage your personal information like name, photo, and room details.',
-
-  'notificationsTitle': 'Notifications',
-  'notificationsContent':
-      'Receive important alerts, reminders, and updates from the administration.',
-
-  //! privacy policy
-  'privacy_policy_title': 'Privacy Policy',
-  'privacy_matters_title': 'Your Privacy Matters',
-  'privacy_matters_desc':
-      'We respect your privacy and are committed to protecting your personal data while using the app.',
-  'data_collection_title': 'Data We Collect',
-  'data_collection_footer':
-      'This data is essential for providing a personalized experience and better housing management.',
-  'name': 'Name',
-  //? 'email': 'Email',
-  'room_number': 'Room Number',
-  'user_image': 'User Photo (Optional)',
-  'location': 'Location (For display only)',
-  'usage_title': 'How We Use Your Data',
-  'usage_desc':
-      'We use your data to manage your account, organize housing tasks, and improve your experience within the app.',
-  'notifications_title': 'Notifications',
-  'notifications_desc':
-      'You may receive notifications such as reminders or announcements regarding housing or events.',
-  'storage_title': 'Data Storage',
-  'storage_desc':
-      'Data is securely stored using Firebase services like Firestore, Authentication, and Storage.',
-  'security_title': 'Data Security',
-  'security_desc':
-      'We are committed to protecting your data and do not share it with any third party.',
-  'location_usage_title': 'Geographical Location',
-  'location_usage_desc':
-      'Your location is used only to show your current position on the map and is not tracked or stored.',
-  'sharing_title': 'Data Sharing',
-  'sharing_desc':
-      'Your data is not shared with any external parties; only management can access it for housing organization.',
-  'app_nature_title': 'App Nature',
-  'app_nature_desc':
-      'This app is a personal initiative aimed at improving housing management and facilitating daily life for residents.',
-  'contact_us_title': 'Contact Us',
-  'contact_us_desc':
-      'For any privacy-related inquiries, you can contact us via email:',
-  'last_update': 'Last Update: 2026',
 
   //! My Subscription view
   'my_subscription': 'My Subscription',
@@ -354,6 +278,7 @@ Map<String, String> english = {
   'renew_price_note': 'Renew for €10 — one-time payment',
 
   //! Profile view
+  'profile_title': 'Profile',
   'my_tenant_card': 'My Tenant Card',
   'view_rental_resume': 'View your rental resume',
   'my_subscriptions': 'My Subscriptions',
@@ -578,6 +503,7 @@ Map<String, String> english = {
   'status_pending': 'Pending',
   'status_confirmed': 'Confirmed',
   'status_cancelled': 'Cancelled',
+  'status_expired': 'Expired',
 
   //! Amenity filter options (display keys — stored value stays English)
   'amenity_parking': 'Parking',
@@ -613,6 +539,7 @@ Map<String, String> english = {
   'admin_tab_expired': 'Expired',
   'admin_no_bookings': 'No bookings found',
   'admin_mark_complete': 'Mark as Confirmed',
+  'admin_mark_expired': 'Mark as Expired',
   'admin_delete_booking': 'Delete Booking',
   'admin_booking_deleted_title': 'Booking Deleted',
   'admin_booking_deleted_msg': 'The booking has been removed.',
@@ -650,6 +577,7 @@ Map<String, String> english = {
   'admin_users_subtitle': 'View and manage all users',
   'admin_search_users': 'Search by name or email...',
   'admin_no_users': 'No users found',
+  'no_name_label': 'No name',
   'admin_change_role': 'CHANGE ROLE',
   'admin_block_user': 'Block User',
   'admin_unblock_user': 'Unblock User',
@@ -661,6 +589,16 @@ Map<String, String> english = {
   'account_blocked_contact': 'Contact support: support@drhousing.be',
 
   //? 'sign_out': 'Sign Out',
+
+  //! Reset password view
+  'reset_password_new_title': 'New Password',
+  'reset_password_new_content': 'Enter a strong password for your account',
+  'reset_password_new_hint': 'New password',
+  'reset_password_confirm_hint': 'Confirm new password',
+  'pleaseEnterPassword': 'Please enter a password',
+  'passwordTooShort': 'Password must be at least 8 characters',
+  'pleaseConfirmPassword': 'Please confirm your password',
+  'passwordsDoNotMatch': 'Passwords do not match',
 
   //! app version view
   'app_version_title': 'App Version',
@@ -677,6 +615,7 @@ Map<String, String> english = {
   'release_premium': 'Premium membership (Monthly)',
   'release_favorites': 'Favorites and tenant profile',
   'up_to_date_msg': 'You\'re up to date',
+  'web_latest_version': 'You\'re on the latest version',
 
   //! about & legal
   'app_info_title': 'App Info',

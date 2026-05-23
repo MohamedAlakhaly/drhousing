@@ -104,7 +104,7 @@ class SavedView extends StatelessWidget {
                 }
 
                 return RefreshIndicator(
-                  color: AppColors.primary,
+                  color: HelperFunctions.getPrimary(context),
                   backgroundColor: isDarkMode ? AppColors.bgCard : Colors.white,
                   onRefresh: savedController.fetchSavedApartments,
                   child: Responsive.isMobile(context)
@@ -225,11 +225,11 @@ class _ErrorState extends StatelessWidget {
                         vertical: 14,
                       ),
                       decoration: BoxDecoration(
-                        color: AppColors.primary,
+                        color: HelperFunctions.getPrimary(context),
                         borderRadius: BorderRadius.circular(14),
                         boxShadow: [
                           BoxShadow(
-                            color: AppColors.primary.withValues(alpha: 0.35),
+                            color: HelperFunctions.getPrimary(context).withValues(alpha: 0.35),
                             blurRadius: 14,
                             offset: const Offset(0, 5),
                           ),
@@ -318,14 +318,14 @@ class _EmptyState extends StatelessWidget {
                       decoration: BoxDecoration(
                         gradient: LinearGradient(
                           colors: [
-                            AppColors.primary,
-                            AppColors.primary.withValues(alpha: 0.80),
+                            HelperFunctions.getPrimary(context),
+                            HelperFunctions.getPrimary(context).withValues(alpha: 0.80),
                           ],
                         ),
                         borderRadius: BorderRadius.circular(14),
                         boxShadow: [
                           BoxShadow(
-                            color: AppColors.primary.withValues(alpha: 0.35),
+                            color: HelperFunctions.getPrimary(context).withValues(alpha: 0.35),
                             blurRadius: 16,
                             offset: const Offset(0, 6),
                           ),
@@ -426,9 +426,9 @@ class ApartmentCard extends StatelessWidget {
                                         color: isDarkMode
                                             ? AppColors.bgSurface
                                             : AppColors.bgLight,
-                                        child: const Center(
+                                        child: Center(
                                           child: CircularProgressIndicator(
-                                            color: AppColors.primary,
+                                            color: HelperFunctions.getPrimary(context),
                                             strokeWidth: 2,
                                           ),
                                         ),
@@ -470,7 +470,7 @@ class ApartmentCard extends StatelessWidget {
                                       vertical: 6,
                                     ),
                                     decoration: BoxDecoration(
-                                      color: AppColors.primary,
+                                      color: HelperFunctions.getPrimary(context),
                                       borderRadius: BorderRadius.circular(30),
                                     ),
                                     child: Row(
@@ -525,13 +525,13 @@ class ApartmentCard extends StatelessWidget {
                                 isLiked: apartmentModel.isFavorite.value,
                                 size: 22,
                                 circleColor: CircleColor(
-                                  start: AppColors.primary.withValues(
+                                  start: HelperFunctions.getPrimary(context).withValues(
                                     alpha: 0.5,
                                   ),
-                                  end: AppColors.primary,
+                                  end: HelperFunctions.getPrimary(context),
                                 ),
                                 bubblesColor: BubblesColor(
-                                  dotPrimaryColor: AppColors.primary,
+                                  dotPrimaryColor: HelperFunctions.getPrimary(context),
                                   dotSecondaryColor: Colors.orangeAccent,
                                 ),
                                 likeBuilder: (isLiked) => Icon(
@@ -539,7 +539,7 @@ class ApartmentCard extends StatelessWidget {
                                       ? Icons.favorite_rounded
                                       : Icons.favorite_border_rounded,
                                   color: isLiked
-                                      ? AppColors.primary
+                                      ? HelperFunctions.getPrimary(context)
                                       : Colors.white,
                                   size: 20,
                                 ),
@@ -586,7 +586,7 @@ class ApartmentCard extends StatelessWidget {
                                 ),
                                 style: TextStyle(
                                   color: isDarkMode
-                                      ? AppColors.primary
+                                      ? HelperFunctions.getPrimary(context)
                                       : AppColors.primaryBg,
                                   fontSize: 20,
                                   fontWeight: FontWeight.w700,
@@ -616,7 +616,9 @@ class ApartmentCard extends StatelessWidget {
                                     Icons.layers_outlined,
                                     '${apartmentModel.floor!} ${'floor_label'.tr}',
                                   ),
+                                  if(apartmentModel.sqm !=0)
                                   const SizedBox(width: 8),
+                                  if(apartmentModel.sqm !=0)
                                   _featureChip(
                                     Icons.square_foot,
                                     '${apartmentModel.sqm} ${'sqm_label'.tr}',

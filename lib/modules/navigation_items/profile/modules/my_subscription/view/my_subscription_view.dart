@@ -290,9 +290,9 @@ class _ExpiredState extends StatelessWidget {
               child: GlowContainer(
                 width: double.infinity,
                 padding: const EdgeInsets.symmetric(vertical: 17),
-                color: AppColors.primary,
+                color: HelperFunctions.getPrimary(context),
                 borderRadius: BorderRadius.circular(16),
-                glowColor: AppColors.primary.withValues(alpha: 0.45),
+                glowColor: HelperFunctions.getPrimary(context).withValues(alpha: 0.45),
                 spreadRadius: 2,
                 blurRadius: 24,
                 child: Row(
@@ -433,12 +433,12 @@ class _ActivePlanCard extends StatelessWidget {
             color: isDarkMode ? AppColors.bgCard : AppColors.bgCardLight,
             borderRadius: BorderRadius.circular(22),
             border: Border.all(
-              color: AppColors.primary.withValues(alpha: 0.45),
+              color: HelperFunctions.getPrimary(context).withValues(alpha: 0.45),
               width: 1.5,
             ),
             boxShadow: [
               BoxShadow(
-                color: AppColors.primary.withValues(
+                color: HelperFunctions.getPrimary(context).withValues(
                   alpha: isDarkMode ? 0.12 : 0.18,
                 ),
                 blurRadius: isDarkMode ? 36 : 24,
@@ -446,7 +446,7 @@ class _ActivePlanCard extends StatelessWidget {
                 offset: const Offset(0, 10),
               ),
               BoxShadow(
-                color: AppColors.primary.withValues(
+                color: HelperFunctions.getPrimary(context).withValues(
                   alpha: isDarkMode ? 0.06 : 0.08,
                 ),
                 blurRadius: 70,
@@ -469,22 +469,22 @@ class _ActivePlanCard extends StatelessWidget {
                       color: AppColors.primaryBg,
                       borderRadius: BorderRadius.circular(20),
                       border: Border.all(
-                        color: AppColors.primary.withValues(alpha: 0.4),
+                        color: HelperFunctions.getPrimary(context).withValues(alpha: 0.4),
                       ),
                     ),
                     child: Row(
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        const Icon(
+                         Icon(
                           Icons.workspace_premium_rounded,
-                          color: AppColors.primary,
+                          color: HelperFunctions.getPrimary(context),
                           size: 13,
                         ),
                         const SizedBox(width: 5),
                         Text(
                           'premium_badge'.tr,
-                          style: const TextStyle(
-                            color: AppColors.primary,
+                          style:  TextStyle(
+                            color: HelperFunctions.getPrimary(context),
                             fontSize: 11,
                             fontWeight: FontWeight.w700,
                             letterSpacing: 1.3,
@@ -499,7 +499,7 @@ class _ActivePlanCard extends StatelessWidget {
                       vertical: 6,
                     ),
                     decoration: BoxDecoration(
-                      color: AppColors.primary,
+                      color: HelperFunctions.getPrimary(context),
                       borderRadius: BorderRadius.circular(20),
                     ),
                     child: Row(
@@ -541,8 +541,8 @@ class _ActivePlanCard extends StatelessWidget {
                 children: [
                   Text(
                     'premium_price'.tr,
-                    style: const TextStyle(
-                      color: AppColors.primary,
+                    style:  TextStyle(
+                      color: HelperFunctions.getPrimary(context),
                       fontSize: 52,
                       fontWeight: FontWeight.w800,
                       letterSpacing: -2,
@@ -572,7 +572,7 @@ class _ActivePlanCard extends StatelessWidget {
               // Activation date
               _InfoRow(
                 icon: Icons.calendar_today_rounded,
-                iconColor: AppColors.primary,
+                iconColor: HelperFunctions.getPrimary(context),
                 iconBg: AppColors.primaryBg,
                 label: 'activation_date'.tr,
                 value: controller.formattedActivationDate,
@@ -586,7 +586,7 @@ class _ActivePlanCard extends StatelessWidget {
                 icon: Icons.event_rounded,
                 iconColor: isWarning
                     ? AppColors.dangerColor
-                    : AppColors.primary,
+                    : HelperFunctions.getPrimary(context),
                 iconBg: isWarning
                     ? AppColors.dangerColor.withValues(alpha: 0.1)
                     : AppColors.primaryBg,
@@ -611,7 +611,7 @@ class _ActivePlanCard extends StatelessWidget {
                   border: Border.all(
                     color: isWarning
                         ? AppColors.dangerColor.withValues(alpha: 0.4)
-                        : AppColors.primary.withValues(alpha: 0.3),
+                        : HelperFunctions.getPrimary(context).withValues(alpha: 0.3),
                   ),
                 ),
                 child: Row(
@@ -623,7 +623,7 @@ class _ActivePlanCard extends StatelessWidget {
                           : Icons.timer_outlined,
                       color: isWarning
                           ? AppColors.dangerColor
-                          : AppColors.primary,
+                          : HelperFunctions.getPrimary(context),
                       size: 14,
                     ),
                     const SizedBox(width: 6),
@@ -632,7 +632,7 @@ class _ActivePlanCard extends StatelessWidget {
                       style: TextStyle(
                         color: isWarning
                             ? AppColors.dangerColor
-                            : AppColors.primary,
+                            : HelperFunctions.getPrimary(context),
                         fontSize: 12,
                         fontWeight: FontWeight.w600,
                       ),
@@ -711,7 +711,7 @@ class _PrivilegesSection extends StatelessWidget {
                     '${privileges.length}',
                     style: TextStyle(
                       color: isDarkMode
-                          ? AppColors.primary
+                          ? HelperFunctions.getPrimary(context)
                           : AppColors.textMuted,
                       fontSize: 13,
                       fontWeight: FontWeight.w700,
@@ -790,7 +790,7 @@ class _PrivilegeItem extends StatelessWidget {
                       color: AppColors.primaryBg,
                       borderRadius: BorderRadius.circular(10),
                     ),
-                    child: Icon(icon, color: AppColors.primary, size: 17),
+                    child: Icon(icon, color: HelperFunctions.getPrimary(context), size: 17),
                   ),
                   const SizedBox(width: 14),
                   Expanded(
@@ -1027,7 +1027,7 @@ class _FreePlanCard extends StatelessWidget {
                         'upgrade_price_label'.tr,
                         style: TextStyle(
                           color: isDarkMode
-                              ? AppColors.primary
+                              ? HelperFunctions.getPrimary(context)
                               : AppColors.textMuted,
                           fontWeight: FontWeight.w600,
                           fontSize: 14,
@@ -1211,9 +1211,9 @@ class _UpgradeButton extends StatelessWidget {
           child: GlowContainer(
             width: double.infinity,
             padding: const EdgeInsets.symmetric(vertical: 17),
-            color: AppColors.primary,
+            color: HelperFunctions.getPrimary(context),
             borderRadius: BorderRadius.circular(16),
-            glowColor: AppColors.primary.withValues(alpha: 0.45),
+            glowColor: HelperFunctions.getPrimary(context).withValues(alpha: 0.45),
             spreadRadius: 2,
             blurRadius: 24,
             child: Row(

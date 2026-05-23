@@ -1,5 +1,6 @@
 import 'package:apartment_rentals/core/constant/app_colors.dart';
 import 'package:apartment_rentals/core/controllers/user_controller.dart';
+import 'package:apartment_rentals/core/functions/helper_functions.dart';
 import 'package:apartment_rentals/modules/admin/apartment_form/view/apartment_form_view.dart';
 import 'package:apartment_rentals/modules/admin/bookings/view/admin_bookings_view.dart';
 import 'package:apartment_rentals/modules/admin/dashboard/controller/admin_dashboard_controller.dart';
@@ -18,7 +19,6 @@ class AdminDashboardView extends StatelessWidget {
     final userCtrl = Get.find<UserController>();
 
     return Scaffold(
-      backgroundColor: AppColors.bgDark,
       body: SafeArea(
         child: RefreshIndicator(
           color: AppColors.primary,
@@ -56,7 +56,6 @@ class AdminDashboardView extends StatelessWidget {
                       Text(
                         'admin_dashboard_title'.tr,
                         style: const TextStyle(
-                          color: AppColors.textPrimary,
                           fontSize: 20,
                           fontWeight: FontWeight.w700,
                           letterSpacing: -0.3,
@@ -77,7 +76,9 @@ class AdminDashboardView extends StatelessWidget {
                   // Role badge
                   Container(
                     padding: const EdgeInsets.symmetric(
-                        horizontal: 10, vertical: 4),
+                      horizontal: 10,
+                      vertical: 4,
+                    ),
                     decoration: BoxDecoration(
                       color: AppColors.primaryBg,
                       borderRadius: BorderRadius.circular(20),
@@ -130,7 +131,7 @@ class AdminDashboardView extends StatelessWidget {
                                   icon: Iconsax.building,
                                   label: 'admin_stat_apartments'.tr,
                                   value: ctrl.totalApartments.value,
-                                  color: AppColors.primary,
+                                  color: HelperFunctions.getPrimary(context),
                                 ),
                               ),
                               const SizedBox(width: 12),
@@ -233,12 +234,15 @@ class _StatCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    bool isDarkMode = HelperFunctions.isDarkMode(context);
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: AppColors.bgCard,
+        color: isDarkMode ? AppColors.bgCard : Colors.grey[200],
         borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: AppColors.divider),
+        border: Border.all(
+          color: isDarkMode ? AppColors.divider : Colors.grey[400]!,
+        ),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -290,15 +294,18 @@ class _NavCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    bool isDarkMode = HelperFunctions.isDarkMode(context);
     return GestureDetector(
           onTap: onTap,
           child: Container(
             margin: const EdgeInsets.only(bottom: 10),
             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
             decoration: BoxDecoration(
-              color: AppColors.bgCard,
+              color: isDarkMode ? AppColors.bgCard : Colors.grey[200],
               borderRadius: BorderRadius.circular(16),
-              border: Border.all(color: AppColors.divider),
+              border: Border.all(
+                color: isDarkMode ? AppColors.divider : Colors.grey[400]!,
+              ),
             ),
             child: Row(
               children: [
@@ -319,7 +326,6 @@ class _NavCard extends StatelessWidget {
                       Text(
                         title,
                         style: const TextStyle(
-                          color: AppColors.textPrimary,
                           fontSize: 14,
                           fontWeight: FontWeight.w600,
                         ),

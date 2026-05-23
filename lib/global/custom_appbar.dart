@@ -33,12 +33,26 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
       leading: showBack
           ? Container(
               margin: const EdgeInsets.all(8),
-              decoration: BoxDecoration(
-                color: isDarkMode
-                    ? AppColors.bgCard
-                    : Colors.grey[300],
-                borderRadius: BorderRadius.circular(12),
-              ),
+            decoration: BoxDecoration(
+                    color: isDarkMode
+                        ? AppColors.bgCard
+                        : AppColors.bgCardLight,
+                    borderRadius: BorderRadius.circular(12),
+                    border: Border.all(
+                      color: isDarkMode
+                          ? AppColors.divider
+                          : AppColors.borderLight,
+                    ),
+                    boxShadow: isDarkMode
+                        ? null
+                        : [
+                            BoxShadow(
+                              color: Colors.black.withValues(alpha: 0.06),
+                              blurRadius: 8,
+                              offset: const Offset(0, 2),
+                            ),
+                          ],
+                  ),
               child: IconButton(
                 icon: Icon(
                   services.getUserLanguage() == 'ar' ||

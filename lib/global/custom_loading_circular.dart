@@ -18,7 +18,7 @@ class CustomLoadingCircular extends StatelessWidget {
             color:isDarkMode? Colors.grey[900]:Colors.grey[200],
             borderRadius: BorderRadius.circular(12),
           ),
-          child: CircularProgressIndicator(color: AppColors.primary),
+          child: CircularProgressIndicator(color: HelperFunctions.getPrimary(context)),
         ),
       ],
     );

@@ -1,4 +1,5 @@
 import 'package:apartment_rentals/core/constant/app_colors.dart';
+import 'package:apartment_rentals/core/functions/helper_functions.dart';
 import 'package:apartment_rentals/models/static/admin_booking_model.dart';
 import 'package:apartment_rentals/modules/admin/bookings/controller/admin_bookings_controller.dart';
 import 'package:flutter/material.dart';
@@ -11,8 +12,18 @@ import 'package:shimmer/shimmer.dart';
 
 String _fmtDate(DateTime dt) {
   const months = [
-    'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
-    'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec',
+    'Jan',
+    'Feb',
+    'Mar',
+    'Apr',
+    'May',
+    'Jun',
+    'Jul',
+    'Aug',
+    'Sep',
+    'Oct',
+    'Nov',
+    'Dec',
   ];
   return '${months[dt.month - 1]} ${dt.day}, ${dt.year}';
 }
@@ -26,16 +37,16 @@ String _fmtTime(DateTime dt) {
 }
 
 Color _statusColor(String s) => switch (s) {
-      'confirmed' => AppColors.primary,
-      'cancelled' => AppColors.dangerColor,
-      _ => const Color(0xFFFFA726),
-    };
+  'confirmed' => AppColors.primary,
+  'cancelled' => AppColors.dangerColor,
+  _ => const Color(0xFFFFA726),
+};
 
 Color _statusBg(String s) => switch (s) {
-      'confirmed' => AppColors.primaryBg,
-      'cancelled' => AppColors.dangerBg,
-      _ => const Color(0x1AFFA726),
-    };
+  'confirmed' => AppColors.primaryBg,
+  'cancelled' => AppColors.dangerBg,
+  _ => const Color(0x1AFFA726),
+};
 
 // ── Root view ─────────────────────────────────────────────────────────────────
 
@@ -47,7 +58,6 @@ class AdminBookingsView extends StatelessWidget {
     final ctrl = Get.put(AdminBookingsController());
 
     return Scaffold(
-      backgroundColor: AppColors.bgDark,
       body: SafeArea(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -81,7 +91,6 @@ class AdminBookingsView extends StatelessWidget {
                       Text(
                         'admin_bookings_title'.tr,
                         style: const TextStyle(
-                          color: AppColors.textPrimary,
                           fontSize: 20,
                           fontWeight: FontWeight.w700,
                           letterSpacing: -0.3,
@@ -127,8 +136,9 @@ class AdminBookingsView extends StatelessWidget {
                   children: ctrl.filters.map((f) {
                     final selected = ctrl.selectedFilter.value == f;
                     const expiredColor = Color(0xFFFF6B35);
-                    final activeColor =
-                        f == 'expired' ? expiredColor : AppColors.primary;
+                    final activeColor = f == 'expired'
+                        ? expiredColor
+                        : AppColors.primary;
                     return GestureDetector(
                       onTap: () {
                         HapticFeedback.selectionClick();
@@ -278,13 +288,14 @@ class _BookingRow extends StatelessWidget {
   final int index;
 
   void _showActions(BuildContext context) {
+    bool isDarkMode = HelperFunctions.isDarkMode(context);
     showModalBottomSheet(
       context: context,
       backgroundColor: Colors.transparent,
       builder: (_) => Container(
         padding: const EdgeInsets.fromLTRB(20, 16, 20, 32),
         decoration: BoxDecoration(
-          color: AppColors.bgCard,
+          color: isDarkMode ? AppColors.bgCard : Colors.grey[300],
           borderRadius: const BorderRadius.vertical(top: Radius.circular(24)),
           border: Border.all(color: AppColors.divider),
         ),
@@ -305,11 +316,7 @@ class _BookingRow extends StatelessWidget {
             const SizedBox(height: 20),
             Text(
               booking.tenantName,
-              style: const TextStyle(
-                color: AppColors.textPrimary,
-                fontSize: 16,
-                fontWeight: FontWeight.w700,
-              ),
+              style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w700),
             ),
             const SizedBox(height: 4),
             Text(
@@ -320,8 +327,10 @@ class _BookingRow extends StatelessWidget {
               const SizedBox(height: 2),
               Text(
                 booking.tenantPhone!,
-                style:
-                    const TextStyle(color: AppColors.textMuted, fontSize: 13),
+                style: const TextStyle(
+                  color: AppColors.textMuted,
+                  fontSize: 13,
+                ),
               ),
             ],
             const SizedBox(height: 20),
@@ -337,6 +346,19 @@ class _BookingRow extends StatelessWidget {
                   controller.markComplete(booking);
                 },
               ),
+            const SizedBox(height: 10),
+            if (booking.status.value == 'confirmed') ...[
+              const SizedBox(height: 10),
+              _ActionButton(
+                icon: Icons.access_time_filled_rounded,
+                label: 'admin_mark_expired'.tr,
+                color: const Color(0xFFFF6B35),
+                onTap: () {
+                  Get.back();
+                  controller.markExpired(booking);
+                },
+              ),
+            ],
             const SizedBox(height: 10),
             _ActionButton(
               icon: Icons.delete_outline_rounded,
@@ -355,21 +377,24 @@ class _BookingRow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    bool isDarkMode = HelperFunctions.isDarkMode(context);
     return Obx(() {
       final status = booking.status.value;
       final sColor = _statusColor(status);
       final sBg = _statusBg(status);
-      final isExpired = booking.bookingDate.isBefore(DateTime.now()) &&
-          status == 'pending';
+      final isExpired =
+          booking.bookingDate.isBefore(DateTime.now()) && status == 'pending';
 
       return GestureDetector(
             onTap: () => _showActions(context),
             child: Container(
               margin: const EdgeInsets.only(bottom: 12),
               decoration: BoxDecoration(
-                color: AppColors.bgCard,
+                color: isDarkMode ? AppColors.bgCard : Colors.grey[200],
                 borderRadius: BorderRadius.circular(16),
-                border: Border.all(color: AppColors.divider),
+                border: Border.all(
+                  color: isDarkMode ? AppColors.divider : Colors.grey[400]!,
+                ),
               ),
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(15),
@@ -392,9 +417,10 @@ class _BookingRow extends StatelessWidget {
                                 children: [
                                   Expanded(
                                     child: Text(
-                                      booking.apartmentTitle.isEmpty ? '—' : booking.apartmentTitle,
+                                      booking.apartmentTitle.isEmpty
+                                          ? '—'
+                                          : booking.apartmentTitle,
                                       style: const TextStyle(
-                                        color: AppColors.textPrimary,
                                         fontSize: 14,
                                         fontWeight: FontWeight.w700,
                                       ),
@@ -431,13 +457,16 @@ class _BookingRow extends StatelessWidget {
                                 const SizedBox(height: 6),
                                 Container(
                                   padding: const EdgeInsets.symmetric(
-                                      horizontal: 8, vertical: 3),
+                                    horizontal: 8,
+                                    vertical: 3,
+                                  ),
                                   decoration: BoxDecoration(
                                     color: const Color(0x1AFF6B35),
                                     borderRadius: BorderRadius.circular(6),
                                     border: Border.all(
-                                      color: const Color(0xFFFF6B35)
-                                          .withValues(alpha: 0.4),
+                                      color: const Color(
+                                        0xFFFF6B35,
+                                      ).withValues(alpha: 0.4),
                                     ),
                                   ),
                                   child: Row(
@@ -574,12 +603,12 @@ class _InfoRow extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       children: [
-        Icon(icon, color: AppColors.primary, size: 12),
+        Icon(icon, color: HelperFunctions.getPrimary(context), size: 12),
         const SizedBox(width: 6),
         Expanded(
           child: Text(
             text,
-            style: const TextStyle(color: AppColors.textPrimary, fontSize: 13),
+            style: const TextStyle(fontSize: 13),
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
           ),
@@ -636,17 +665,20 @@ class _ActionButton extends StatelessWidget {
 class _SkeletonList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    final isDark = HelperFunctions.isDarkMode(context);
     return ListView.builder(
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
       itemCount: 5,
       itemBuilder: (_, index) => Shimmer.fromColors(
-        baseColor: AppColors.bgCard,
-        highlightColor: const Color(0xFF2A2A2A),
+        baseColor: isDark ? AppColors.bgCard : AppColors.bgSurfaceLight,
+        highlightColor: isDark
+            ? const Color(0xFF2A2A2A)
+            : AppColors.borderLight,
         child: Container(
           margin: const EdgeInsets.only(bottom: 12),
           height: 130,
           decoration: BoxDecoration(
-            color: AppColors.bgCard,
+            color: isDark ? AppColors.bgCard : AppColors.bgCardLight,
             borderRadius: BorderRadius.circular(16),
           ),
         ),

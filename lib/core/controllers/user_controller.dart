@@ -1,11 +1,24 @@
 import 'dart:developer';
 
 import 'package:apartment_rentals/models/static/auth/user_model.module.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 final _supabase = Supabase.instance.client;
+
+class _AppLifecycleObserver extends WidgetsBindingObserver {
+  final UserController controller;
+  _AppLifecycleObserver(this.controller);
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (state == AppLifecycleState.resumed) {
+      controller.fetchUserData();
+    }
+  }
+}
 
 class UserController extends GetxController {
   final Rx<UserModel?> user = Rx<UserModel?>(null);
@@ -18,7 +31,7 @@ class UserController extends GetxController {
   String get email => user.value?.email ?? '';
 
   // ── Premium ────────────────────────────────────────────────────────
-bool get isPremium => user.value?.isPremium ?? false;
+  bool get isPremium => user.value?.isPremiumActive ?? false;
   DateTime? get premiumActivatedAt => user.value?.premiumActivatedAt;
   DateTime? get premiumExpiresAt => user.value?.premiumExpiresAt;
   int get premiumDaysRemaining => user.value?.daysRemaining ?? 0;
@@ -30,19 +43,19 @@ bool get isPremium => user.value?.isPremium ?? false;
   bool get isManager => role == 'manager' || role == 'super_admin';
 
   // ── Formatted dates ────────────────────────────────────────────────
-String get formattedActivationDate {
-  final date = premiumActivatedAt;
-  if (date == null) return 'N/A';
-  final locale = Get.locale?.languageCode ?? 'en';
-  return DateFormat('MMMM d, yyyy', locale).format(date.toLocal());
-}
+  String get formattedActivationDate {
+    final date = premiumActivatedAt;
+    if (date == null) return 'N/A';
+    final locale = Get.locale?.languageCode ?? 'en';
+    return DateFormat('MMMM d, yyyy', locale).format(date.toLocal());
+  }
 
-String get formattedExpiryDate {
-  final date = premiumExpiresAt;
-  if (date == null) return 'N/A';
-  final locale = Get.locale?.languageCode ?? 'en';
-  return DateFormat('MMMM d, yyyy', locale).format(date.toLocal());
-}
+  String get formattedExpiryDate {
+    final date = premiumExpiresAt;
+    if (date == null) return 'N/A';
+    final locale = Get.locale?.languageCode ?? 'en';
+    return DateFormat('MMMM d, yyyy', locale).format(date.toLocal());
+  }
 
   Future<void> fetchUserData() async {
     try {
@@ -74,7 +87,9 @@ String get formattedExpiryDate {
     if (fullName != null) updates['full_name'] = fullName;
     if (phone != null) updates['phone'] = phone;
     if (jobTitle != null) updates['job_title'] = jobTitle;
-    if (employmentStatus != null) updates['employment_status'] = employmentStatus;
+    if (employmentStatus != null) {
+      updates['employment_status'] = employmentStatus;
+    }
     if (updates.isEmpty) return;
 
     try {
@@ -94,5 +109,18 @@ String get formattedExpiryDate {
 
   void clearUser() {
     user.value = null;
+  }
+
+  @override
+  void onInit() {
+    fetchUserData();
+    WidgetsBinding.instance.addObserver(_AppLifecycleObserver(this));
+    super.onInit();
+  }
+
+  @override
+  void onClose() {
+    WidgetsBinding.instance.removeObserver(_AppLifecycleObserver(this));
+    super.onClose();
   }
 }
